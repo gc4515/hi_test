@@ -33,37 +33,82 @@
    <string notr="true"/>
   </property>
   <widget class="QPushButton" name="pb_pause">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
-     <x>610</x>
+     <x>190</x>
      <y>660</y>
-     <width>60</width>
+     <width>30</width>
      <height>30</height>
     </rect>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
    <property name="styleSheet">
-    <string notr="true"/>
+    <string notr="true">QPushButton{border-radius:3px}</string>
    </property>
    <property name="text">
-    <string>pause</string>
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../build/image/pbicon.qrc">
+     <normaloff>:/new/prefix1/pause.png</normaloff>:/new/prefix1/pause.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>30</width>
+     <height>30</height>
+    </size>
+   </property>
+   <property name="autoRepeatDelay">
+    <number>300</number>
+   </property>
+   <property name="autoRepeatInterval">
+    <number>100</number>
+   </property>
+   <property name="autoDefault">
+    <bool>false</bool>
+   </property>
+   <property name="flat">
+    <bool>false</bool>
    </property>
   </widget>
   <widget class="QPushButton" name="pb_resume">
    <property name="geometry">
     <rect>
-     <x>680</x>
+     <x>230</x>
      <y>660</y>
-     <width>60</width>
+     <width>30</width>
      <height>30</height>
     </rect>
    </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{border-radius:3px}</string>
+   </property>
    <property name="text">
-    <string>resume</string>
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../build/image/pbicon.qrc">
+     <normaloff>:/new/prefix1/slow.png</normaloff>:/new/prefix1/slow.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>30</width>
+     <height>30</height>
+    </size>
    </property>
   </widget>
  </widget>
  <resources>
   <include location="../hi_test/Resource/image.qrc"/>
+  <include location="../build/image/pbicon.qrc"/>
  </resources>
  <connections/>
 </ui>

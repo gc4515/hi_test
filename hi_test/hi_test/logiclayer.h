@@ -23,8 +23,9 @@ public:
 signals:
     void signalPause();
     void signalResume();
-    void signalVideoPlay(QString filepath);
+    void signalVideoPlay(QString filepath,bool status);
     void signalVideoPlayStart();
+    void signalRealPlay(QString filepath,bool status);
 public slots:
     void slotVideoShow(QString filepath, bool status);
     void slotPause();

@@ -3,6 +3,7 @@
 #include <QWSServer>
 #include <QMessageBox>
 #include <QPalette>
+
 ShowForm::ShowForm(QWidget *parent) :
     QWidget(parent),
     ui(new Ui::ShowForm)
@@ -12,6 +13,7 @@ ShowForm::ShowForm(QWidget *parent) :
     setPalette(pal);
     //this->setAttribute(Qt::WA_TranslucentBackground,true);
     QWSServer::setBackground(QColor(0x0,0x0,0x0,0x0));
+
     ui->setupUi(this);
 }
 
@@ -35,6 +37,7 @@ void ShowForm::closeEvent(QCloseEvent *e)
 
 void ShowForm::on_pb_pause_clicked()
 {
+
     emit signalPause();
 }
 

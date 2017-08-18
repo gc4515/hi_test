@@ -19,7 +19,7 @@ Logiclayer::Logiclayer(QObject *parent) :
     m_showForm->hide();
     //m_documentForm->hide();
 
-    connect(m_DesktopForm,SIGNAL(signalVideoShow(QString,bool)),this,SLOT(slotVideoShow(QString,bool)));//显示实时流播放界面
+    connect(m_DesktopForm,SIGNAL(signalRealPlay(QString,bool)),this,SLOT(slotVideoShow(QString,bool)));//显示实时流播放界面
     connect(m_DesktopForm,SIGNAL(signalSelectFile()),this,SLOT(slotSelectFile()));//选取播放文件
     //connect(m_documentForm,SIGNAL(signalVideoShow(QString,bool)),this,SLOT(slotVideoShow(QString,bool)));
     connect(m_showForm,SIGNAL(signalDesktopFormShow()),this,SLOT(slotDesktopFormShow()));
@@ -58,18 +58,18 @@ void Logiclayer::slotVideoShow( QString filepath,bool status)
     if(getStatus() == 0)
     {
         m_venc = new Venc();
-    }/*else{
-        m_documentForm->hide();
-    }*/
-
+        connect(this,SIGNAL(signalRealPlay(QString,bool)),m_venc,SLOT(slotRealPlay(QString,bool)));
+        emit signalRealPlay(filepath,status);
+    }
+    //usleep(50);
     emit signalVideoPlayStart();
     //sleep(1);
     m_vdec = new vdec;
-    connect(this,SIGNAL(signalVideoPlay(QString)),m_vdec,SLOT(slotVideoPlay(QString)));
+    connect(this,SIGNAL(signalVideoPlay(QString,bool)),m_vdec,SLOT(slotVideoPlay(QString,bool)));
     connect(m_showForm,SIGNAL(signalPause()),m_vdec,SLOT(slotPause()));
     connect(m_showForm,SIGNAL(signalResume()),m_vdec,SLOT(slotResume()));
 
-    emit signalVideoPlay(filepath);
+    emit signalVideoPlay(filepath,status);
 
     HI_MPI_VO_ChnShow(0,0);
     m_DesktopForm->hide();

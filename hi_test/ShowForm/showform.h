@@ -1,6 +1,6 @@
 #ifndef SHOWFORM_H
 #define SHOWFORM_H
-
+#include "chead.h"
 #include <QWidget>
 #include <QCloseEvent>
 namespace Ui {
@@ -27,6 +27,8 @@ private slots:
 
 private:
     Ui::ShowForm *ui;
+
+    int m_status;
 };
 
 #endif // SHOWFORM_H

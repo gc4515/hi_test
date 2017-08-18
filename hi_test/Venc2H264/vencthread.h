@@ -12,6 +12,8 @@ class VencThread : public QThread
 public:
     explicit VencThread(QObject *parent = 0);
     ~VencThread();
+    void setVencFilePath(const QString &filepath);
+    QString getVencFilePath()const;
 
     void run();
     HI_S32 SAMPLE_COMM_VENC_SaveH264(FILE *fpH264File, VENC_STREAM_S *pstStream);
@@ -20,10 +22,10 @@ public:
 signals:
 
 public slots:
-
+    void slotRealPlay(QString filepath,bool status);
 private:
     QReadWriteLock *m_lock;
-    QDateTime *m_dateTime;
+    QString m_vencFilePath;
 };
 
 #endif // VENCTHREAD_H

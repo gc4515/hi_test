@@ -4,7 +4,7 @@ vdec::vdec(QObject *parent) :
     QObject(parent)
 {
     m_vdecThread = new VdecThread();
-    connect(this,SIGNAL(signalVideoPlay(QString)),m_vdecThread,SLOT(slotVideoPlay(QString)));
+    connect(this,SIGNAL(signalVideoPlay(QString,bool)),m_vdecThread,SLOT(slotVideoPlay(QString,bool)));
     VdecBindVpss();
     VpssBindVo();
 
@@ -62,9 +62,9 @@ void vdec::VpssBindVo()
     m_vdecThread->start();
 }
 
-void vdec::slotVideoPlay(QString filepath)
+void vdec::slotVideoPlay(QString filepath,bool status)
 {
-    emit signalVideoPlay(filepath);
+    emit signalVideoPlay(filepath,status);
 }
 void vdec::slotPause()
 {

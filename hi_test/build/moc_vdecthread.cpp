@@ -30,13 +30,14 @@ static const uint qt_meta_data_VdecThread[] = {
        0,       // signalCount
 
  // slots: signature, parameters, type, tag, flags
-      21,   12,   11,   11, 0x0a,
+      28,   12,   11,   11, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_VdecThread[] = {
-    "VdecThread\0\0filepath\0slotVideoPlay(QString)\0"
+    "VdecThread\0\0filepath,status\0"
+    "slotVideoPlay(QString,bool)\0"
 };
 
 void VdecThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -45,7 +46,7 @@ void VdecThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         Q_ASSERT(staticMetaObject.cast(_o));
         VdecThread *_t = static_cast<VdecThread *>(_o);
         switch (_id) {
-        case 0: _t->slotVideoPlay((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 0: _t->slotVideoPlay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         default: ;
         }
     }

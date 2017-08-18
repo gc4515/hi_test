@@ -22,7 +22,7 @@ public:
 signals:
 
 public slots:
-    void slotVideoPlay(QString filepath);
+    void slotVideoPlay(QString filepath, bool status);
 private:
     HI_S64 s32UsedBytes;
     QReadWriteLock *m_readlock;

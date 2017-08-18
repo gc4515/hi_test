@@ -25,6 +25,7 @@ const HI_S64 &VdecThread::getUsedBytes()const
 }
 void VdecThread::setFilePath(const QString &filepath)
 {
+    m_filePath.clear();
     m_filePath = filepath;
 }
 
@@ -32,13 +33,18 @@ const QString &VdecThread::getFilePath() const
 {
     return m_filePath;
 }
-void VdecThread::slotVideoPlay(QString filepath)
+void VdecThread::slotVideoPlay(QString filepath,bool status)
 {
     //filepath = filepath.replace(QString("\n"),QString(""));
     //printf("file:%s\n",filepath.toLocal8Bit().data());
-    m_filePath.clear();
-    filepath = filepath.left(filepath.length() - 1);
-    setFilePath(filepath);
+    if(status == 0)
+    {
+        setFilePath(filepath);
+    }else{
+        filepath = filepath.left(filepath.length() - 1);
+        setFilePath(filepath);
+    }
+
 }
 void VdecThread::run()
 {
@@ -141,7 +147,7 @@ void VdecThread::run()
          stStream.u32Len  = s32ReadLen;
         if(VdecThread::gs_sendParam->enVideoMode==VIDEO_MODE_FRAME)
         {
-            u64pts+=40000;
+            u64pts+=20000;
         }
         //printf("get\n");
         /******************* send stream *****************/

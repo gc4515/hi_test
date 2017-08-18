@@ -6,14 +6,28 @@ VencThread::VencThread(QObject *parent) :
     QThread(parent)
 {
     m_lock = new QReadWriteLock();
-    m_dateTime = new QDateTime(QDateTime::currentDateTime());
+
 }
 VencThread::~VencThread()
 {
     delete m_lock;
-    delete m_dateTime;
 }
 
+void VencThread::setVencFilePath(const QString &filepath)
+{
+    m_vencFilePath.clear();
+    m_vencFilePath = filepath;
+}
+
+QString VencThread::getVencFilePath() const
+{
+    return m_vencFilePath;
+}
+
+void VencThread::slotRealPlay(QString filepath, bool status)
+{
+    setVencFilePath(filepath);
+}
 void VencThread::run()
 {
     HI_S32 i;
@@ -32,10 +46,6 @@ void VencThread::run()
     HI_S32 s32Ret;
     VENC_CHN VencChn;
     PAYLOAD_TYPE_E enPayLoadType[VENC_MAX_CHN_NUM];
-
-    //pstPara->bThreadStart = VencThread::gs_stPara->bThreadStart;
-    //pstPara->s32Cnt = VencThread::gs_stPara->s32Cnt;
-    //s32ChnTotal = 1;
 
     /********************************************
      * step 1: check &prepare save-file &venc-fd
@@ -57,18 +67,16 @@ void VencThread::run()
         enPayLoadType[i] = stVencChnAttr.stVeAttr.enType;
 
         //strcpy(szFilePostfix, ".h264");
-        QString strTime;
-        strTime.clear();
-        strTime = m_dateTime->toString("yyyy.MM.dd_hh-mm-ss");
-        QString filename = "/home/" +strTime +".h264";
+
         //aszFileName[i] = filename.toLocal8Bit().data();
         //sprintf(aszFileName[i], "/home/save_stream%s", szFilePostfix);
-        pFile[i] = fopen64(filename.toLocal8Bit().data(), "w");
-        if (!pFile[i])
-        {
-            SAMPLE_PRT("open file[%s] failed!\n",
-                   aszFileName[i]);
-        }
+        pFile[i] = fopen64(getVencFilePath().toLocal8Bit().data(), "w");
+        printf("venc:%s\n",getVencFilePath().toLocal8Bit().data());
+//        if (!pFile[i])
+//        {
+//            SAMPLE_PRT("open file[%s] failed!\n",
+//                   getVencFilePath().toLocal8Bit().data());
+//        }
 
         /*Set Venc Fd*/
         VencFd[i] = HI_MPI_VENC_GetFd(i);

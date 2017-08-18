@@ -16,11 +16,11 @@ public:
     void VpssBindVo();
 
 signals:
-    void signalVideoPlay(const QString &filepath);
+    void signalVideoPlay(const QString &filepath,bool status);
 public slots:
     void slotPause();
     void slotResume();
-    void slotVideoPlay(QString filepath);
+    void slotVideoPlay(QString filepath, bool status);
 private:
     VdecThread *m_vdecThread;
     QTimer *m_timer;

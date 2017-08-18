@@ -31,18 +31,18 @@ static const uint qt_meta_data_DesktopForm[] = {
 
  // signals: signature, parameters, type, tag, flags
       29,   13,   12,   12, 0x05,
-      59,   12,   12,   12, 0x05,
+      58,   12,   12,   12, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      78,   12,   12,   12, 0x08,
-      99,   12,   12,   12, 0x08,
+      77,   12,   12,   12, 0x08,
+      98,   12,   12,   12, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_DesktopForm[] = {
     "DesktopForm\0\0filepath,status\0"
-    "signalVideoShow(QString,bool)\0"
+    "signalRealPlay(QString,bool)\0"
     "signalSelectFile()\0on_pb_show_clicked()\0"
     "on_pb_document_clicked()\0"
 };
@@ -53,7 +53,7 @@ void DesktopForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id,
         Q_ASSERT(staticMetaObject.cast(_o));
         DesktopForm *_t = static_cast<DesktopForm *>(_o);
         switch (_id) {
-        case 0: _t->signalVideoShow((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 0: _t->signalRealPlay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         case 1: _t->signalSelectFile(); break;
         case 2: _t->on_pb_show_clicked(); break;
         case 3: _t->on_pb_document_clicked(); break;
@@ -102,7 +102,7 @@ int DesktopForm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void DesktopForm::signalVideoShow(QString _t1, bool _t2)
+void DesktopForm::signalRealPlay(QString _t1, bool _t2)
 {
     void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);

@@ -22,26 +22,39 @@ static const uint qt_meta_data_Venc[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       0,    0, // methods
+       2,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       0,       // signalCount
+       1,       // signalCount
+
+ // signals: signature, parameters, type, tag, flags
+      22,    6,    5,    5, 0x05,
+
+ // slots: signature, parameters, type, tag, flags
+      51,    6,    5,    5, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_Venc[] = {
-    "Venc\0"
+    "Venc\0\0filepath,status\0"
+    "signalRealPlay(QString,bool)\0"
+    "slotRealPlay(QString,bool)\0"
 };
 
 void Venc::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    Q_UNUSED(_o);
-    Q_UNUSED(_id);
-    Q_UNUSED(_c);
-    Q_UNUSED(_a);
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        Q_ASSERT(staticMetaObject.cast(_o));
+        Venc *_t = static_cast<Venc *>(_o);
+        switch (_id) {
+        case 0: _t->signalRealPlay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 1: _t->slotRealPlay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        default: ;
+        }
+    }
 }
 
 const QMetaObjectExtraData Venc::staticMetaObjectExtraData = {
@@ -75,6 +88,18 @@ int Venc::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     _id = QObject::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 2)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 2;
+    }
     return _id;
+}
+
+// SIGNAL 0
+void Venc::signalRealPlay(QString _t1, bool _t2)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_END_MOC_NAMESPACE

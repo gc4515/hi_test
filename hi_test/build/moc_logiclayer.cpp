@@ -22,33 +22,35 @@ static const uint qt_meta_data_Logiclayer[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       9,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       4,       // signalCount
+       5,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       12,   11,   11,   11, 0x05,
       26,   11,   11,   11, 0x05,
-      50,   41,   11,   11, 0x05,
-      75,   11,   11,   11, 0x05,
+      57,   41,   11,   11, 0x05,
+      87,   11,   11,   11, 0x05,
+     110,   41,   11,   11, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-     114,   98,   11,   11, 0x0a,
-     142,   11,   11,   11, 0x0a,
-     154,   11,   11,   11, 0x0a,
+     139,   41,   11,   11, 0x0a,
      167,   11,   11,   11, 0x0a,
-     189,   11,   11,   11, 0x0a,
+     179,   11,   11,   11, 0x0a,
+     192,   11,   11,   11, 0x0a,
+     214,   11,   11,   11, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_Logiclayer[] = {
     "Logiclayer\0\0signalPause()\0signalResume()\0"
-    "filepath\0signalVideoPlay(QString)\0"
-    "signalVideoPlayStart()\0filepath,status\0"
+    "filepath,status\0signalVideoPlay(QString,bool)\0"
+    "signalVideoPlayStart()\0"
+    "signalRealPlay(QString,bool)\0"
     "slotVideoShow(QString,bool)\0slotPause()\0"
     "slotResume()\0slotDesktopFormShow()\0"
     "slotSelectFile()\0"
@@ -62,13 +64,14 @@ void Logiclayer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         switch (_id) {
         case 0: _t->signalPause(); break;
         case 1: _t->signalResume(); break;
-        case 2: _t->signalVideoPlay((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 2: _t->signalVideoPlay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         case 3: _t->signalVideoPlayStart(); break;
-        case 4: _t->slotVideoShow((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 5: _t->slotPause(); break;
-        case 6: _t->slotResume(); break;
-        case 7: _t->slotDesktopFormShow(); break;
-        case 8: _t->slotSelectFile(); break;
+        case 4: _t->signalRealPlay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 5: _t->slotVideoShow((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 6: _t->slotPause(); break;
+        case 7: _t->slotResume(); break;
+        case 8: _t->slotDesktopFormShow(); break;
+        case 9: _t->slotSelectFile(); break;
         default: ;
         }
     }
@@ -106,9 +109,9 @@ int Logiclayer::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 9)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 9;
+        _id -= 10;
     }
     return _id;
 }
@@ -126,9 +129,9 @@ void Logiclayer::signalResume()
 }
 
 // SIGNAL 2
-void Logiclayer::signalVideoPlay(QString _t1)
+void Logiclayer::signalVideoPlay(QString _t1, bool _t2)
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 2, _a);
 }
 
@@ -136,5 +139,12 @@ void Logiclayer::signalVideoPlay(QString _t1)
 void Logiclayer::signalVideoPlayStart()
 {
     QMetaObject::activate(this, &staticMetaObject, 3, 0);
+}
+
+// SIGNAL 4
+void Logiclayer::signalRealPlay(QString _t1, bool _t2)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
+    QMetaObject::activate(this, &staticMetaObject, 4, _a);
 }
 QT_END_MOC_NAMESPACE

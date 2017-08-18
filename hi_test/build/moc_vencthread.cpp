@@ -22,26 +22,34 @@ static const uint qt_meta_data_VencThread[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       0,    0, // methods
+       1,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
        0,       // signalCount
 
+ // slots: signature, parameters, type, tag, flags
+      28,   12,   11,   11, 0x0a,
+
        0        // eod
 };
 
 static const char qt_meta_stringdata_VencThread[] = {
-    "VencThread\0"
+    "VencThread\0\0filepath,status\0"
+    "slotRealPlay(QString,bool)\0"
 };
 
 void VencThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
 {
-    Q_UNUSED(_o);
-    Q_UNUSED(_id);
-    Q_UNUSED(_c);
-    Q_UNUSED(_a);
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        Q_ASSERT(staticMetaObject.cast(_o));
+        VencThread *_t = static_cast<VencThread *>(_o);
+        switch (_id) {
+        case 0: _t->slotRealPlay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        default: ;
+        }
+    }
 }
 
 const QMetaObjectExtraData VencThread::staticMetaObjectExtraData = {
@@ -75,6 +83,11 @@ int VencThread::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     _id = QThread::qt_metacall(_c, _id, _a);
     if (_id < 0)
         return _id;
+    if (_c == QMetaObject::InvokeMetaMethod) {
+        if (_id < 1)
+            qt_static_metacall(this, _c, _id, _a);
+        _id -= 1;
+    }
     return _id;
 }
 QT_END_MOC_NAMESPACE

@@ -38,11 +38,27 @@ public:
         ShowForm->setStyleSheet(QString::fromUtf8(""));
         pb_pause = new QPushButton(ShowForm);
         pb_pause->setObjectName(QString::fromUtf8("pb_pause"));
-        pb_pause->setGeometry(QRect(610, 660, 60, 30));
-        pb_pause->setStyleSheet(QString::fromUtf8(""));
+        pb_pause->setEnabled(true);
+        pb_pause->setGeometry(QRect(190, 660, 30, 30));
+        pb_pause->setFocusPolicy(Qt::NoFocus);
+        pb_pause->setStyleSheet(QString::fromUtf8("QPushButton{border-radius:3px}"));
+        QIcon icon1;
+        icon1.addFile(QString::fromUtf8(":/new/prefix1/pause.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pb_pause->setIcon(icon1);
+        pb_pause->setIconSize(QSize(30, 30));
+        pb_pause->setAutoRepeatDelay(300);
+        pb_pause->setAutoRepeatInterval(100);
+        pb_pause->setAutoDefault(false);
+        pb_pause->setFlat(false);
         pb_resume = new QPushButton(ShowForm);
         pb_resume->setObjectName(QString::fromUtf8("pb_resume"));
-        pb_resume->setGeometry(QRect(680, 660, 60, 30));
+        pb_resume->setGeometry(QRect(230, 660, 30, 30));
+        pb_resume->setFocusPolicy(Qt::NoFocus);
+        pb_resume->setStyleSheet(QString::fromUtf8("QPushButton{border-radius:3px}"));
+        QIcon icon2;
+        icon2.addFile(QString::fromUtf8(":/new/prefix1/slow.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pb_resume->setIcon(icon2);
+        pb_resume->setIconSize(QSize(30, 30));
 
         retranslateUi(ShowForm);
 
@@ -52,8 +68,8 @@ public:
     void retranslateUi(QWidget *ShowForm)
     {
         ShowForm->setWindowTitle(QApplication::translate("ShowForm", "Video", 0, QApplication::UnicodeUTF8));
-        pb_pause->setText(QApplication::translate("ShowForm", "pause", 0, QApplication::UnicodeUTF8));
-        pb_resume->setText(QApplication::translate("ShowForm", "resume", 0, QApplication::UnicodeUTF8));
+        pb_pause->setText(QString());
+        pb_resume->setText(QString());
     } // retranslateUi
 
 };

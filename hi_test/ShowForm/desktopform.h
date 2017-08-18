@@ -3,6 +3,8 @@
 
 #include <QWidget>
 #include <QCloseEvent>
+#include <QDateTime>
+
 namespace Ui {
 class DesktopForm;
 }
@@ -16,7 +18,7 @@ public:
     ~DesktopForm();
 
 signals:
-    void signalVideoShow(QString filepath,bool status);
+    void signalRealPlay(QString filepath,bool status);
     void signalSelectFile();
 private slots:
     void on_pb_show_clicked();
@@ -24,6 +26,7 @@ private slots:
     void on_pb_document_clicked();
 
 private:
+    QDateTime *m_dateTime;
     Ui::DesktopForm *ui;
 };
 

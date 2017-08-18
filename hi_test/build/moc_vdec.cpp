@@ -30,20 +30,20 @@ static const uint qt_meta_data_vdec[] = {
        1,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
-      15,    6,    5,    5, 0x05,
+      22,    6,    5,    5, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      40,    5,    5,    5, 0x0a,
       52,    5,    5,    5, 0x0a,
-      65,    6,    5,    5, 0x0a,
+      64,    5,    5,    5, 0x0a,
+      77,    6,    5,    5, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_vdec[] = {
-    "vdec\0\0filepath\0signalVideoPlay(QString)\0"
-    "slotPause()\0slotResume()\0"
-    "slotVideoPlay(QString)\0"
+    "vdec\0\0filepath,status\0"
+    "signalVideoPlay(QString,bool)\0slotPause()\0"
+    "slotResume()\0slotVideoPlay(QString,bool)\0"
 };
 
 void vdec::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -52,10 +52,10 @@ void vdec::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
         Q_ASSERT(staticMetaObject.cast(_o));
         vdec *_t = static_cast<vdec *>(_o);
         switch (_id) {
-        case 0: _t->signalVideoPlay((*reinterpret_cast< const QString(*)>(_a[1]))); break;
+        case 0: _t->signalVideoPlay((*reinterpret_cast< const QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         case 1: _t->slotPause(); break;
         case 2: _t->slotResume(); break;
-        case 3: _t->slotVideoPlay((*reinterpret_cast< QString(*)>(_a[1]))); break;
+        case 3: _t->slotVideoPlay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         default: ;
         }
     }
@@ -101,9 +101,9 @@ int vdec::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
 }
 
 // SIGNAL 0
-void vdec::signalVideoPlay(const QString & _t1)
+void vdec::signalVideoPlay(const QString & _t1, bool _t2)
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 QT_END_MOC_NAMESPACE

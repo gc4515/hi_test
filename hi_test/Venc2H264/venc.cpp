@@ -4,6 +4,7 @@ Venc::Venc(QObject *parent) :
     QObject(parent)
 {
     m_vencThread = new VencThread;
+    connect(this,SIGNAL(signalRealPlay(QString,bool)),m_vencThread,SLOT(slotRealPlay(QString,bool)));
     ViBindVenc();
 }
 Venc::~Venc()
@@ -33,3 +34,7 @@ void Venc::ViBindVenc()
     m_vencThread->start();
 }
 
+void Venc::slotRealPlay(QString filepath,bool status)
+{
+    emit signalRealPlay(filepath,status);
+}

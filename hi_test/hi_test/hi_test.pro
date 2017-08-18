@@ -26,7 +26,8 @@ INCLUDEPATH += /myhome/Hisiqt/Qt/build_qt/hinclude
 LIBS += -L/myhome/Hisiqt/Qt/build_qt/hilib -lmpi -lhdmi -ltde -lanr -laec -ljpeg -lresampler -lVoiceEngine
 
 RESOURCES += \
-    Resource/image.qrc
+    Resource/image.qrc \
+    ../build/image/pbicon.qrc
 
 
 
