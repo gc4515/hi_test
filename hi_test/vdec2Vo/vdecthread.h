@@ -16,7 +16,7 @@ public:
     const HI_S64 &getUsedBytes()const;
 
     void setFilePath(const QString &filepath);
-    const QString &getFilePath()const;
+    const QString getFilePath()const;
 
     static SAMPLE_VDEC_SENDPARAM_S *gs_sendParam;
 signals:

@@ -11,6 +11,7 @@ ShowForm::ShowForm(QWidget *parent) :
     QPalette pal = palette();
     pal.setColor(QPalette::Background, QColor(0x00,0xff,0x00,0x00));
     setPalette(pal);
+    m_videoFlag = 0;
     //this->setAttribute(Qt::WA_TranslucentBackground,true);
     QWSServer::setBackground(QColor(0x0,0x0,0x0,0x0));
 
@@ -37,11 +38,16 @@ void ShowForm::closeEvent(QCloseEvent *e)
 
 void ShowForm::on_pb_pause_clicked()
 {
-
-    emit signalPause();
+    if(m_videoFlag == 0)//当前为播放态
+    {
+        m_videoFlag = 1;
+        ui->pb_pause->setIcon(QIcon("./image/play.png"));
+        emit signalPause();
+    }else if(m_videoFlag == 1)
+    {
+        m_videoFlag = 0;
+        ui->pb_pause->setIcon(QIcon("./image/pause.png"));
+        emit signalResume();
+    }
 }
 
-void ShowForm::on_pb_resume_clicked()
-{
-    emit signalResume();
-}

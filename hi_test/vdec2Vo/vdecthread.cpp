@@ -29,7 +29,7 @@ void VdecThread::setFilePath(const QString &filepath)
     m_filePath = filepath;
 }
 
-const QString &VdecThread::getFilePath() const
+const QString VdecThread::getFilePath() const
 {
     return m_filePath;
 }
@@ -147,7 +147,7 @@ void VdecThread::run()
          stStream.u32Len  = s32ReadLen;
         if(VdecThread::gs_sendParam->enVideoMode==VIDEO_MODE_FRAME)
         {
-            u64pts+=20000;
+            u64pts+=35000;
         }
         //printf("get\n");
         /******************* send stream *****************/
@@ -184,5 +184,6 @@ void VdecThread::run()
     }
     fclose(fp);
 }
+
 
 

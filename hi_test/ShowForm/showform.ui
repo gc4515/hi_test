@@ -76,7 +76,36 @@
     <bool>false</bool>
    </property>
   </widget>
-  <widget class="QPushButton" name="pb_resume">
+  <widget class="QPushButton" name="pb_delay1">
+   <property name="geometry">
+    <rect>
+     <x>270</x>
+     <y>660</y>
+     <width>30</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{border-radius:3px}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../build/image/pbicon.qrc">
+     <normaloff>:/new/prefix1/slow.png</normaloff>:/new/prefix1/slow.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>30</width>
+     <height>30</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pb_delay10">
    <property name="geometry">
     <rect>
      <x>230</x>
@@ -96,7 +125,65 @@
    </property>
    <property name="icon">
     <iconset resource="../build/image/pbicon.qrc">
-     <normaloff>:/new/prefix1/slow.png</normaloff>:/new/prefix1/slow.png</iconset>
+     <normaloff>:/new/prefix1/back.png</normaloff>:/new/prefix1/back.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>30</width>
+     <height>30</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pb_fast1">
+   <property name="geometry">
+    <rect>
+     <x>310</x>
+     <y>660</y>
+     <width>30</width>
+     <height>30</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{border-radius:3px}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../build/image/pbicon.qrc">
+     <normaloff>:/new/prefix1/fast.png</normaloff>:/new/prefix1/fast.png</iconset>
+   </property>
+   <property name="iconSize">
+    <size>
+     <width>30</width>
+     <height>30</height>
+    </size>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pb_fast10">
+   <property name="geometry">
+    <rect>
+     <x>350</x>
+     <y>659</y>
+     <width>31</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <property name="focusPolicy">
+    <enum>Qt::NoFocus</enum>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">QPushButton{border-radius:3px}</string>
+   </property>
+   <property name="text">
+    <string/>
+   </property>
+   <property name="icon">
+    <iconset resource="../build/image/pbicon.qrc">
+     <normaloff>:/new/prefix1/back.png</normaloff>:/new/prefix1/back.png</iconset>
    </property>
    <property name="iconSize">
     <size>

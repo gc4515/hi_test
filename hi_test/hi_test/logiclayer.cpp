@@ -5,7 +5,6 @@ Logiclayer::Logiclayer(QObject *parent) :
     QObject(parent)
 {
     m_showForm = new ShowForm();
-    //m_showForm->setWindowTitle(QObject::trUtf8("播放"));
     m_DesktopForm = new DesktopForm();
     //m_documentForm = new DocumentForm();
 

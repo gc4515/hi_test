@@ -23,11 +23,9 @@ signals:
 private slots:
     void on_pb_pause_clicked();
 
-    void on_pb_resume_clicked();
-
 private:
     Ui::ShowForm *ui;
-
+    bool m_videoFlag;//0:play 1:pause
     int m_status;
 };
 

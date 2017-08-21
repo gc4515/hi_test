@@ -50,29 +50,29 @@ HI_S32 SystemInit::Mpp_ModuleInit()
     memset(&stVbConf,0,sizeof(VB_CONF_S));
     u32BlkSize = SAMPLE_COMM_SYS_CalcPicVbBlkSize(gs_enNorm,PIC_HD1080,\
                                                   SAMPLE_PIXEL_FORMAT,SAMPLE_SYS_ALIGN_WIDTH);
-    //stVbConf.u32MaxPoolCnt = 128;
+    stVbConf.u32MaxPoolCnt = 128;
 
     /*  ddro video buffer   */
     stVbConf.astCommPool[0].u32BlkSize = u32BlkSize;
-    stVbConf.astCommPool[0].u32BlkCnt = u32ViChnCnt *16;
+    stVbConf.astCommPool[0].u32BlkCnt = u32ViChnCnt *3;
     memset(stVbConf.astCommPool[0].acMmzName,\
             0,sizeof(stVbConf.astCommPool[0].acMmzName));
 
 //    /*ddr0 hist buffer  */
-//    stVbConf.astCommPool[1].u32BlkSize = u32BlkSize;
-//    stVbConf.astCommPool[1].u32BlkCnt = u32ViChnCnt * 16;
-//    memset(stVbConf.astCommPool[0].acMmzName,\
-//            0,sizeof(stVbConf.astCommPool[0].acMmzName));
+    stVbConf.astCommPool[1].u32BlkSize = u32BlkSize;
+    stVbConf.astCommPool[1].u32BlkCnt = u32ViChnCnt * 3;
+    memset(stVbConf.astCommPool[0].acMmzName,\
+            0,sizeof(stVbConf.astCommPool[0].acMmzName));
 
 //    /*  ddr1 video buffer  */
-//    stVbConf.astCommPool[2].u32BlkSize = u32BlkSize*2;
-//    stVbConf.astCommPool[2].u32BlkCnt = u32ViChnCnt * 16;
-//    strcpy(stVbConf.astCommPool[2].acMmzName,"ddr1");
+    stVbConf.astCommPool[2].u32BlkSize = u32BlkSize;
+    stVbConf.astCommPool[2].u32BlkCnt = u32ViChnCnt * 3;
+    strcpy(stVbConf.astCommPool[2].acMmzName,"ddr1");
 
 //    /*  ddr1 hist buffer    */
-//    stVbConf.astCommPool[3].u32BlkSize = u32BlkSize;
-//    stVbConf.astCommPool[3].u32BlkCnt = u32ViChnCnt * 16;
-//    strcpy(stVbConf.astCommPool[3].acMmzName,"ddr1");
+    stVbConf.astCommPool[3].u32BlkSize = u32BlkSize;
+    stVbConf.astCommPool[3].u32BlkCnt = u32ViChnCnt * 3;
+    strcpy(stVbConf.astCommPool[3].acMmzName,"ddr1");
 
     /***********************************************
      * step 1: mpp init
@@ -287,7 +287,7 @@ HI_S32 SystemInit::Vo_ModuleInit()
     m_u32ViFrmRate = (VIDEO_ENCODING_MODE_PAL == gs_enNorm)?25:30;
 
     //开启视频层
-    s32Ret = SAMPLE_COMM_VO_StartDevLayer(0,&stPutAttr,25);
+    s32Ret = SAMPLE_COMM_VO_StartDevLayer(0,&stPutAttr,30);
     if(HI_SUCCESS != s32Ret)
     {
         SAMPLE_PRT("SAMPLE_COMM_VO_StartDevLayer failed!\n");

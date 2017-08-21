@@ -22,7 +22,7 @@ static const uint qt_meta_data_ShowForm[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       5,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -36,7 +36,6 @@ static const uint qt_meta_data_ShowForm[] = {
 
  // slots: signature, parameters, type, tag, flags
       63,    9,    9,    9, 0x08,
-      85,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -44,7 +43,6 @@ static const uint qt_meta_data_ShowForm[] = {
 static const char qt_meta_stringdata_ShowForm[] = {
     "ShowForm\0\0signalPause()\0signalResume()\0"
     "signalDesktopFormShow()\0on_pb_pause_clicked()\0"
-    "on_pb_resume_clicked()\0"
 };
 
 void ShowForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -57,7 +55,6 @@ void ShowForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 1: _t->signalResume(); break;
         case 2: _t->signalDesktopFormShow(); break;
         case 3: _t->on_pb_pause_clicked(); break;
-        case 4: _t->on_pb_resume_clicked(); break;
         default: ;
         }
     }
@@ -96,9 +93,9 @@ int ShowForm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 5)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 5;
+        _id -= 4;
     }
     return _id;
 }
