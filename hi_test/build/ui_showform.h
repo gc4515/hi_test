@@ -15,6 +15,7 @@
 #include <QtGui/QButtonGroup>
 #include <QtGui/QHeaderView>
 #include <QtGui/QPushButton>
+#include <QtGui/QSlider>
 #include <QtGui/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -30,6 +31,7 @@ public:
     QPushButton *pb_fast;
     QPushButton *pb_slow;
     QPushButton *pb_realplay;
+    QSlider *horizontalSlider;
 
     void setupUi(QWidget *ShowForm)
     {
@@ -101,6 +103,27 @@ public:
         pb_realplay = new QPushButton(ShowForm);
         pb_realplay->setObjectName(QString::fromUtf8("pb_realplay"));
         pb_realplay->setGeometry(QRect(460, 660, 31, 27));
+        horizontalSlider = new QSlider(ShowForm);
+        horizontalSlider->setObjectName(QString::fromUtf8("horizontalSlider"));
+        horizontalSlider->setGeometry(QRect(170, 630, 600, 20));
+        horizontalSlider->setSizeIncrement(QSize(0, 0));
+        horizontalSlider->setStyleSheet(QString::fromUtf8("QSlider::add-page:horizontal  {       \n"
+"        background-color: rgb(87, 97, 106); \n"
+"        height:20px; \n"
+"     } \n"
+"QSlider::sub-page:Horizontal  {\n"
+"        background-color:qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(231,80,229, 255), stop:1 rgba(7,208,255, 255));\\  \n"
+"        height:20px; \n"
+"}\n"
+"QSlider::handle:horizontal {      \n"
+"		height: 20px;\\  \n"
+"        width:8px;\\  \n"
+"        margin: -8 0px; 	\n"
+"		background-color: rgb(0, 85, 255);\n"
+"        border-radius: 3px;\n"
+"}"));
+        horizontalSlider->setPageStep(7);
+        horizontalSlider->setOrientation(Qt::Horizontal);
 
         retranslateUi(ShowForm);
 

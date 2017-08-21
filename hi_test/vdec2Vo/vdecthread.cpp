@@ -128,7 +128,7 @@ void VdecThread::slotRealPlay()
     }
     if(play_status == 0)
     {
-        setPts(35000);
+        setPts(40000);
         setSleepTime(20000);
     }else{
         setPts(40000);
