@@ -1,11 +1,12 @@
 <RCC>
     <qresource prefix="/new/prefix1">
-        <file>back.png</file>
-        <file>fast.png</file>
-        <file>go.png</file>
         <file>pause.png</file>
         <file>play.png</file>
-        <file>slow.png</file>
         <file>stop.png</file>
+        <file>delay1.png</file>
+        <file>delay10.png</file>
+        <file>fast1.png</file>
+        <file>fast10.png</file>
+        <file>realplay.png</file>
     </qresource>
 </RCC>

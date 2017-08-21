@@ -51,3 +51,18 @@ void ShowForm::on_pb_pause_clicked()
     }
 }
 
+
+void ShowForm::on_pb_fast_clicked()
+{
+    emit signalFastPlay();
+}
+
+void ShowForm::on_pb_slow_clicked()
+{
+    emit signalSlowPlay();
+}
+
+void ShowForm::on_pb_realplay_clicked()
+{
+    emit signalRealPlay();
+}

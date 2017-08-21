@@ -193,6 +193,7 @@ HI_S32 VencThread::SAMPLE_COMM_VENC_SaveH264(FILE *fpH264File, VENC_STREAM_S *ps
 {
     HI_S32 i;
     m_lock->lockForWrite();
+
     for(i = 0; i < pstStream->u32PackCount;i++)
     {
         fflush(fpH264File);

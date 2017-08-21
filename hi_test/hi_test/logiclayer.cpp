@@ -22,9 +22,6 @@ Logiclayer::Logiclayer(QObject *parent) :
     connect(m_DesktopForm,SIGNAL(signalSelectFile()),this,SLOT(slotSelectFile()));//选取播放文件
     //connect(m_documentForm,SIGNAL(signalVideoShow(QString,bool)),this,SLOT(slotVideoShow(QString,bool)));
     connect(m_showForm,SIGNAL(signalDesktopFormShow()),this,SLOT(slotDesktopFormShow()));
-    connect(m_showForm,SIGNAL(signalPause()),this,SLOT(slotPause()));//showform send pause signal to logiclayer
-    connect(m_showForm,SIGNAL(signalResume()),this,SLOT(slotResume()));//showform send resume signal to logiclayer
-
 }
 
 Logiclayer::~Logiclayer()
@@ -51,7 +48,7 @@ void Logiclayer::slotSelectFile()
     m_documentForm->show();
 }
 
-void Logiclayer::slotVideoShow( QString filepath,bool status)
+void Logiclayer::slotVideoShow(QString filepath,bool status)
 {
     setStatus(status);
     if(getStatus() == 0)
@@ -60,16 +57,17 @@ void Logiclayer::slotVideoShow( QString filepath,bool status)
         connect(this,SIGNAL(signalRealPlay(QString,bool)),m_venc,SLOT(slotRealPlay(QString,bool)));
         emit signalRealPlay(filepath,status);
     }
-    //usleep(50);
     emit signalVideoPlayStart();
-    //sleep(1);
+    //usleep(1000);
     m_vdec = new vdec;
     connect(this,SIGNAL(signalVideoPlay(QString,bool)),m_vdec,SLOT(slotVideoPlay(QString,bool)));
-    connect(m_showForm,SIGNAL(signalPause()),m_vdec,SLOT(slotPause()));
-    connect(m_showForm,SIGNAL(signalResume()),m_vdec,SLOT(slotResume()));
+    connect(m_showForm,SIGNAL(signalPause()),m_vdec,SLOT(slotPause()));//暂停播放
+    connect(m_showForm,SIGNAL(signalResume()),m_vdec,SLOT(slotResume()));//恢复播放
+    connect(m_showForm,SIGNAL(signalFastPlay()),m_vdec,SLOT(slotFastPlay()));//快放 50帧/S
+    connect(m_showForm,SIGNAL(signalSlowPlay()),m_vdec,SLOT(slotSlowPlay()));//慢放 13帧/S
+    connect(m_showForm,SIGNAL(signalRealPlay()),m_vdec,SLOT(slotRealPlay())); //恢复正常播放 25帧/S
 
     emit signalVideoPlay(filepath,status);
-
     HI_MPI_VO_ChnShow(0,0);
     m_DesktopForm->hide();
     m_showForm->showMaximized();
@@ -88,7 +86,7 @@ void Logiclayer::slotDesktopFormShow()
     HI_S32 s32Ret;
     HI_MPI_VO_ClearChnBuffer(0,0,HI_TRUE);
     VdecThread::gs_sendParam->bRun = HI_FALSE;
-    vdecUnbindVpss(0,0);
+    vdecUnbindVpss(0,2);
 
     HI_MPI_VDEC_StopRecvStream(0);
 
@@ -151,14 +149,6 @@ void Logiclayer::vpssUnbindVo(VPSS_CHN vpssChn, VO_CHN voChn)
     stDestChn1.s32ChnId = voChn;
     HI_MPI_SYS_UnBind(&stSrcChn1,&stDestChn1);
 }
-void Logiclayer::slotPause()
-{
-    emit signalPause();
-}
 
-void Logiclayer::slotResume()
-{
-    emit signalResume();
-}
 
 

@@ -28,8 +28,8 @@ signals:
     void signalRealPlay(QString filepath,bool status);
 public slots:
     void slotVideoShow(QString filepath, bool status);
-    void slotPause();
-    void slotResume();
+//    void slotPause();
+//    void slotResume();
     void slotDesktopFormShow();
     void slotSelectFile();
 private:

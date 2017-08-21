@@ -54,24 +54,24 @@ HI_S32 SystemInit::Mpp_ModuleInit()
 
     /*  ddro video buffer   */
     stVbConf.astCommPool[0].u32BlkSize = u32BlkSize;
-    stVbConf.astCommPool[0].u32BlkCnt = u32ViChnCnt *3;
+    stVbConf.astCommPool[0].u32BlkCnt = u32ViChnCnt *16;
     memset(stVbConf.astCommPool[0].acMmzName,\
             0,sizeof(stVbConf.astCommPool[0].acMmzName));
 
 //    /*ddr0 hist buffer  */
     stVbConf.astCommPool[1].u32BlkSize = u32BlkSize;
-    stVbConf.astCommPool[1].u32BlkCnt = u32ViChnCnt * 3;
+    stVbConf.astCommPool[1].u32BlkCnt = u32ViChnCnt * 16;
     memset(stVbConf.astCommPool[0].acMmzName,\
             0,sizeof(stVbConf.astCommPool[0].acMmzName));
 
 //    /*  ddr1 video buffer  */
     stVbConf.astCommPool[2].u32BlkSize = u32BlkSize;
-    stVbConf.astCommPool[2].u32BlkCnt = u32ViChnCnt * 3;
+    stVbConf.astCommPool[2].u32BlkCnt = u32ViChnCnt * 16;
     strcpy(stVbConf.astCommPool[2].acMmzName,"ddr1");
 
 //    /*  ddr1 hist buffer    */
     stVbConf.astCommPool[3].u32BlkSize = u32BlkSize;
-    stVbConf.astCommPool[3].u32BlkCnt = u32ViChnCnt * 3;
+    stVbConf.astCommPool[3].u32BlkCnt = u32ViChnCnt * 16;
     strcpy(stVbConf.astCommPool[3].acMmzName,"ddr1");
 
     /***********************************************
@@ -287,7 +287,7 @@ HI_S32 SystemInit::Vo_ModuleInit()
     m_u32ViFrmRate = (VIDEO_ENCODING_MODE_PAL == gs_enNorm)?25:30;
 
     //开启视频层
-    s32Ret = SAMPLE_COMM_VO_StartDevLayer(0,&stPutAttr,30);
+    s32Ret = SAMPLE_COMM_VO_StartDevLayer(0,&stPutAttr,25);
     if(HI_SUCCESS != s32Ret)
     {
         SAMPLE_PRT("SAMPLE_COMM_VO_StartDevLayer failed!\n");

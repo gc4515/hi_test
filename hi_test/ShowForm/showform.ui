@@ -26,7 +26,7 @@
    <string>Video</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../hi_test/Resource/image.qrc">
+   <iconset resource="../build/image/pbicon.qrc">
     <normaloff>:/new/prefix1/play.png</normaloff>:/new/prefix1/play.png</iconset>
   </property>
   <property name="styleSheet">
@@ -96,7 +96,7 @@
    </property>
    <property name="icon">
     <iconset resource="../build/image/pbicon.qrc">
-     <normaloff>:/new/prefix1/slow.png</normaloff>:/new/prefix1/slow.png</iconset>
+     <normaloff>:/new/prefix1/delay1.png</normaloff>:/new/prefix1/delay1.png</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -125,7 +125,7 @@
    </property>
    <property name="icon">
     <iconset resource="../build/image/pbicon.qrc">
-     <normaloff>:/new/prefix1/back.png</normaloff>:/new/prefix1/back.png</iconset>
+     <normaloff>:/new/prefix1/delay10.png</normaloff>:/new/prefix1/delay10.png</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -154,7 +154,7 @@
    </property>
    <property name="icon">
     <iconset resource="../build/image/pbicon.qrc">
-     <normaloff>:/new/prefix1/fast.png</normaloff>:/new/prefix1/fast.png</iconset>
+     <normaloff>:/new/prefix1/fast1.png</normaloff>:/new/prefix1/fast1.png</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -183,7 +183,7 @@
    </property>
    <property name="icon">
     <iconset resource="../build/image/pbicon.qrc">
-     <normaloff>:/new/prefix1/back.png</normaloff>:/new/prefix1/back.png</iconset>
+     <normaloff>:/new/prefix1/fast10.png</normaloff>:/new/prefix1/fast10.png</iconset>
    </property>
    <property name="iconSize">
     <size>
@@ -192,9 +192,47 @@
     </size>
    </property>
   </widget>
+  <widget class="QPushButton" name="pb_fast">
+   <property name="geometry">
+    <rect>
+     <x>380</x>
+     <y>660</y>
+     <width>31</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>f</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pb_slow">
+   <property name="geometry">
+    <rect>
+     <x>420</x>
+     <y>660</y>
+     <width>31</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>s</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="pb_realplay">
+   <property name="geometry">
+    <rect>
+     <x>460</x>
+     <y>660</y>
+     <width>31</width>
+     <height>27</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>r</string>
+   </property>
+  </widget>
  </widget>
  <resources>
-  <include location="../hi_test/Resource/image.qrc"/>
   <include location="../build/image/pbicon.qrc"/>
  </resources>
  <connections/>

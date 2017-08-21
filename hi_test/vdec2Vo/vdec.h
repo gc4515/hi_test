@@ -17,9 +17,15 @@ public:
 
 signals:
     void signalVideoPlay(const QString &filepath,bool status);
+    void signalFastPlay();
+    void signalSlowPlay();
+    void signalRealPlay();
 public slots:
     void slotPause();
     void slotResume();
+    void slotFastPlay();
+    void slotSlowPlay();
+    void slotRealPlay();
     void slotVideoPlay(QString filepath, bool status);
 private:
     VdecThread *m_vdecThread;

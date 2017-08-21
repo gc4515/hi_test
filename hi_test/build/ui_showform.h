@@ -27,6 +27,9 @@ public:
     QPushButton *pb_delay10;
     QPushButton *pb_fast1;
     QPushButton *pb_fast10;
+    QPushButton *pb_fast;
+    QPushButton *pb_slow;
+    QPushButton *pb_realplay;
 
     void setupUi(QWidget *ShowForm)
     {
@@ -59,7 +62,7 @@ public:
         pb_delay1->setFocusPolicy(Qt::NoFocus);
         pb_delay1->setStyleSheet(QString::fromUtf8("QPushButton{border-radius:3px}"));
         QIcon icon2;
-        icon2.addFile(QString::fromUtf8(":/new/prefix1/slow.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon2.addFile(QString::fromUtf8(":/new/prefix1/delay1.png"), QSize(), QIcon::Normal, QIcon::Off);
         pb_delay1->setIcon(icon2);
         pb_delay1->setIconSize(QSize(30, 30));
         pb_delay10 = new QPushButton(ShowForm);
@@ -68,7 +71,7 @@ public:
         pb_delay10->setFocusPolicy(Qt::NoFocus);
         pb_delay10->setStyleSheet(QString::fromUtf8("QPushButton{border-radius:3px}"));
         QIcon icon3;
-        icon3.addFile(QString::fromUtf8(":/new/prefix1/back.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon3.addFile(QString::fromUtf8(":/new/prefix1/delay10.png"), QSize(), QIcon::Normal, QIcon::Off);
         pb_delay10->setIcon(icon3);
         pb_delay10->setIconSize(QSize(30, 30));
         pb_fast1 = new QPushButton(ShowForm);
@@ -77,7 +80,7 @@ public:
         pb_fast1->setFocusPolicy(Qt::NoFocus);
         pb_fast1->setStyleSheet(QString::fromUtf8("QPushButton{border-radius:3px}"));
         QIcon icon4;
-        icon4.addFile(QString::fromUtf8(":/new/prefix1/fast.png"), QSize(), QIcon::Normal, QIcon::Off);
+        icon4.addFile(QString::fromUtf8(":/new/prefix1/fast1.png"), QSize(), QIcon::Normal, QIcon::Off);
         pb_fast1->setIcon(icon4);
         pb_fast1->setIconSize(QSize(30, 30));
         pb_fast10 = new QPushButton(ShowForm);
@@ -85,8 +88,19 @@ public:
         pb_fast10->setGeometry(QRect(350, 659, 31, 31));
         pb_fast10->setFocusPolicy(Qt::NoFocus);
         pb_fast10->setStyleSheet(QString::fromUtf8("QPushButton{border-radius:3px}"));
-        pb_fast10->setIcon(icon3);
+        QIcon icon5;
+        icon5.addFile(QString::fromUtf8(":/new/prefix1/fast10.png"), QSize(), QIcon::Normal, QIcon::Off);
+        pb_fast10->setIcon(icon5);
         pb_fast10->setIconSize(QSize(30, 30));
+        pb_fast = new QPushButton(ShowForm);
+        pb_fast->setObjectName(QString::fromUtf8("pb_fast"));
+        pb_fast->setGeometry(QRect(380, 660, 31, 27));
+        pb_slow = new QPushButton(ShowForm);
+        pb_slow->setObjectName(QString::fromUtf8("pb_slow"));
+        pb_slow->setGeometry(QRect(420, 660, 31, 27));
+        pb_realplay = new QPushButton(ShowForm);
+        pb_realplay->setObjectName(QString::fromUtf8("pb_realplay"));
+        pb_realplay->setGeometry(QRect(460, 660, 31, 27));
 
         retranslateUi(ShowForm);
 
@@ -101,6 +115,9 @@ public:
         pb_delay10->setText(QString());
         pb_fast1->setText(QString());
         pb_fast10->setText(QString());
+        pb_fast->setText(QApplication::translate("ShowForm", "f", 0, QApplication::UnicodeUTF8));
+        pb_slow->setText(QApplication::translate("ShowForm", "s", 0, QApplication::UnicodeUTF8));
+        pb_realplay->setText(QApplication::translate("ShowForm", "r", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

@@ -20,8 +20,17 @@ signals:
     void signalPause();
     void signalResume();
     void signalDesktopFormShow();
+    void signalFastPlay();
+    void signalSlowPlay();
+    void signalRealPlay();
 private slots:
     void on_pb_pause_clicked();
+
+    void on_pb_fast_clicked();
+
+    void on_pb_slow_clicked();
+
+    void on_pb_realplay_clicked();
 
 private:
     Ui::ShowForm *ui;

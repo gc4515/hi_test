@@ -22,27 +22,36 @@ static const uint qt_meta_data_ShowForm[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       4,   14, // methods
+      10,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       3,       // signalCount
+       6,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       10,    9,    9,    9, 0x05,
       24,    9,    9,    9, 0x05,
       39,    9,    9,    9, 0x05,
+      63,    9,    9,    9, 0x05,
+      80,    9,    9,    9, 0x05,
+      97,    9,    9,    9, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-      63,    9,    9,    9, 0x08,
+     114,    9,    9,    9, 0x08,
+     136,    9,    9,    9, 0x08,
+     157,    9,    9,    9, 0x08,
+     178,    9,    9,    9, 0x08,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_ShowForm[] = {
     "ShowForm\0\0signalPause()\0signalResume()\0"
-    "signalDesktopFormShow()\0on_pb_pause_clicked()\0"
+    "signalDesktopFormShow()\0signalFastPlay()\0"
+    "signalSlowPlay()\0signalRealPlay()\0"
+    "on_pb_pause_clicked()\0on_pb_fast_clicked()\0"
+    "on_pb_slow_clicked()\0on_pb_realplay_clicked()\0"
 };
 
 void ShowForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -54,7 +63,13 @@ void ShowForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 0: _t->signalPause(); break;
         case 1: _t->signalResume(); break;
         case 2: _t->signalDesktopFormShow(); break;
-        case 3: _t->on_pb_pause_clicked(); break;
+        case 3: _t->signalFastPlay(); break;
+        case 4: _t->signalSlowPlay(); break;
+        case 5: _t->signalRealPlay(); break;
+        case 6: _t->on_pb_pause_clicked(); break;
+        case 7: _t->on_pb_fast_clicked(); break;
+        case 8: _t->on_pb_slow_clicked(); break;
+        case 9: _t->on_pb_realplay_clicked(); break;
         default: ;
         }
     }
@@ -93,9 +108,9 @@ int ShowForm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 4)
+        if (_id < 10)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 4;
+        _id -= 10;
     }
     return _id;
 }
@@ -116,5 +131,23 @@ void ShowForm::signalResume()
 void ShowForm::signalDesktopFormShow()
 {
     QMetaObject::activate(this, &staticMetaObject, 2, 0);
+}
+
+// SIGNAL 3
+void ShowForm::signalFastPlay()
+{
+    QMetaObject::activate(this, &staticMetaObject, 3, 0);
+}
+
+// SIGNAL 4
+void ShowForm::signalSlowPlay()
+{
+    QMetaObject::activate(this, &staticMetaObject, 4, 0);
+}
+
+// SIGNAL 5
+void ShowForm::signalRealPlay()
+{
+    QMetaObject::activate(this, &staticMetaObject, 5, 0);
 }
 QT_END_MOC_NAMESPACE

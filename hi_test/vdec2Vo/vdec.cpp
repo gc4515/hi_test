@@ -5,6 +5,10 @@ vdec::vdec(QObject *parent) :
 {
     m_vdecThread = new VdecThread();
     connect(this,SIGNAL(signalVideoPlay(QString,bool)),m_vdecThread,SLOT(slotVideoPlay(QString,bool)));
+    connect(this,SIGNAL(signalFastPlay()),m_vdecThread,SLOT(slotFastPlay()));
+    connect(this,SIGNAL(signalSlowPlay()),m_vdecThread,SLOT(slotSlowPlay()));
+    connect(this,SIGNAL(signalRealPlay()),m_vdecThread,SLOT(slotRealPlay()));
+
     VdecBindVpss();
     VpssBindVo();
 
@@ -66,12 +70,16 @@ void vdec::slotVideoPlay(QString filepath,bool status)
 {
     emit signalVideoPlay(filepath,status);
 }
+
+//暂停播放
 void vdec::slotPause()
 {
     printf("pause\n");
     HI_MPI_VO_ChnPause(0,0);
     //HI_MPI_VO_ChnHide(0,0);
 }
+
+//恢复播放
 void vdec::slotResume()
 {
     printf("resume\n");
@@ -79,6 +87,19 @@ void vdec::slotResume()
     //HI_MPI_VO_ChnShow(0,0);
 }
 
+//快放 50帧/S
+void vdec::slotFastPlay()
+{
+    emit signalFastPlay();
+}
 
+//慢放 13帧/S
+void vdec::slotSlowPlay()
+{
+    emit signalSlowPlay();
+}
 
-
+void vdec::slotRealPlay()
+{
+    emit signalRealPlay();
+}

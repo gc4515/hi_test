@@ -22,7 +22,7 @@ static const uint qt_meta_data_VdecThread[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-       1,   14, // methods
+       4,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -31,13 +31,17 @@ static const uint qt_meta_data_VdecThread[] = {
 
  // slots: signature, parameters, type, tag, flags
       28,   12,   11,   11, 0x0a,
+      56,   11,   11,   11, 0x0a,
+      71,   11,   11,   11, 0x0a,
+      86,   11,   11,   11, 0x0a,
 
        0        // eod
 };
 
 static const char qt_meta_stringdata_VdecThread[] = {
     "VdecThread\0\0filepath,status\0"
-    "slotVideoPlay(QString,bool)\0"
+    "slotVideoPlay(QString,bool)\0slotFastPlay()\0"
+    "slotSlowPlay()\0slotRealPlay()\0"
 };
 
 void VdecThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -47,6 +51,9 @@ void VdecThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         VdecThread *_t = static_cast<VdecThread *>(_o);
         switch (_id) {
         case 0: _t->slotVideoPlay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 1: _t->slotFastPlay(); break;
+        case 2: _t->slotSlowPlay(); break;
+        case 3: _t->slotRealPlay(); break;
         default: ;
         }
     }
@@ -84,9 +91,9 @@ int VdecThread::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 1)
+        if (_id < 4)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 1;
+        _id -= 4;
     }
     return _id;
 }

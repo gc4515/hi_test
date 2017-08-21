@@ -22,7 +22,7 @@ static const uint qt_meta_data_Logiclayer[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+       8,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -39,9 +39,7 @@ static const uint qt_meta_data_Logiclayer[] = {
  // slots: signature, parameters, type, tag, flags
      139,   41,   11,   11, 0x0a,
      167,   11,   11,   11, 0x0a,
-     179,   11,   11,   11, 0x0a,
-     192,   11,   11,   11, 0x0a,
-     214,   11,   11,   11, 0x0a,
+     189,   11,   11,   11, 0x0a,
 
        0        // eod
 };
@@ -51,9 +49,8 @@ static const char qt_meta_stringdata_Logiclayer[] = {
     "filepath,status\0signalVideoPlay(QString,bool)\0"
     "signalVideoPlayStart()\0"
     "signalRealPlay(QString,bool)\0"
-    "slotVideoShow(QString,bool)\0slotPause()\0"
-    "slotResume()\0slotDesktopFormShow()\0"
-    "slotSelectFile()\0"
+    "slotVideoShow(QString,bool)\0"
+    "slotDesktopFormShow()\0slotSelectFile()\0"
 };
 
 void Logiclayer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -68,10 +65,8 @@ void Logiclayer::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 3: _t->signalVideoPlayStart(); break;
         case 4: _t->signalRealPlay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         case 5: _t->slotVideoShow((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 6: _t->slotPause(); break;
-        case 7: _t->slotResume(); break;
-        case 8: _t->slotDesktopFormShow(); break;
-        case 9: _t->slotSelectFile(); break;
+        case 6: _t->slotDesktopFormShow(); break;
+        case 7: _t->slotSelectFile(); break;
         default: ;
         }
     }
@@ -109,9 +104,9 @@ int Logiclayer::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 8)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 8;
     }
     return _id;
 }
