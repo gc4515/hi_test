@@ -17,7 +17,6 @@ public:
     explicit ShowForm(QWidget *parent = 0);
     ~ShowForm();
     void closeEvent(QCloseEvent *e);
-
 signals:
     void signalPause();
     void signalResume();

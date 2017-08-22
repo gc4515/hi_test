@@ -26,6 +26,7 @@ public slots:
 private:
     QReadWriteLock *m_lock;
     QString m_vencFilePath;
+    int m_Icount;
 };
 
 #endif // VENCTHREAD_H

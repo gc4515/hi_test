@@ -29,7 +29,6 @@ public slots:
     void slotVideoPlay(QString filepath, bool status);
 private:
     VdecThread *m_vdecThread;
-    QTimer *m_timer;
 };
 
 #endif // VDEC_H

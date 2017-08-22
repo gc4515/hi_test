@@ -20,6 +20,7 @@ Logiclayer::Logiclayer(QObject *parent) :
     connect(m_DesktopForm,SIGNAL(signalSelectFile()),this,SLOT(slotSelectFile()));//选取播放文件
     //connect(m_documentForm,SIGNAL(signalVideoShow(QString,bool)),this,SLOT(slotVideoShow(QString,bool)));
     connect(m_showForm,SIGNAL(signalDesktopFormShow()),this,SLOT(slotDesktopFormShow()));
+    connect(m_timer,SIGNAL(timeout()),m_showForm,SLOT(slotTimerOut()));
 }
 
 Logiclayer::~Logiclayer()
@@ -57,16 +58,16 @@ void Logiclayer::slotVideoShow(QString filepath,bool status)
     }
     emit signalVideoPlayStart();
     //sleep(1);
-    usleep(300000);
+    //usleep(400000);
     m_vdec = new vdec;
     m_timer->start();
+    //m_showForm->InitSliderValue();//初始化滑动条信息
     connect(this,SIGNAL(signalVideoPlay(QString,bool)),m_vdec,SLOT(slotVideoPlay(QString,bool)));
     connect(m_showForm,SIGNAL(signalPause()),m_vdec,SLOT(slotPause()));//暂停播放
     connect(m_showForm,SIGNAL(signalResume()),m_vdec,SLOT(slotResume()));//恢复播放
     connect(m_showForm,SIGNAL(signalFastPlay()),m_vdec,SLOT(slotFastPlay()));//快放 50帧/S
     connect(m_showForm,SIGNAL(signalSlowPlay()),m_vdec,SLOT(slotSlowPlay()));//慢放 13帧/S
     connect(m_showForm,SIGNAL(signalRealPlay()),m_vdec,SLOT(slotRealPlay())); //恢复正常播放 25帧/S
-    connect(m_timer,SIGNAL(timeout()),m_showForm,SLOT(slotTimerOut()));
     emit signalVideoPlay(filepath,status);
     HI_MPI_VO_ChnShow(0,0);
     m_DesktopForm->hide();
@@ -75,6 +76,7 @@ void Logiclayer::slotVideoShow(QString filepath,bool status)
 
 void Logiclayer::slotDesktopFormShow()
 {
+    m_timer->stop();
     if(getStatus() == 0)//实时
     {
         VencThread::gs_stPara->bThreadStart = HI_FALSE;

@@ -35,7 +35,6 @@ public slots:
     void slotFastPlay();
     void slotSlowPlay();
     void slotRealPlay();
-    void slotTimerOut();
 private:
     HI_S64 s32UsedBytes;
     QReadWriteLock *m_readlock;
@@ -44,7 +43,7 @@ private:
     QString m_filePath;
     HI_U64 m_pts;
     HI_U64 m_sleepTime;
-
+    QFile *m_saveFile;
     bool play_status;
     bool run_flag;
     HI_U32 m_ICount;

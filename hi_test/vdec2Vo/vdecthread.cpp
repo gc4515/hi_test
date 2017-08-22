@@ -10,8 +10,8 @@ VdecThread::VdecThread(QObject *parent) :
     pu8Buf = NULL;
     run_flag = HI_TRUE;
     m_ICount = 0;
+//    m_saveFile = new QFile();
     m_readlock = new QReadWriteLock;
-
 }
 
 VdecThread::~VdecThread()
@@ -60,32 +60,23 @@ const HI_U64 &VdecThread::getSleepTime()const
     return m_sleepTime;
 }
 
-void VdecThread::slotTimerOut()
-{
-    //printf("time: %llu\n",getPts());
-    if(play_status == 0)
-    {
-        if(getPts() == 30000)
-        {
-            setPts(40000);
-            setSleepTime(20000);
-        }else{
-            setPts(30000);
-        }
-    }
-}
-
 void VdecThread::slotVideoPlay(QString filepath,bool status)
 {
     play_status = status;
     //filepath= filepath.replace(QString("\n"),QString(""));
-    printf("vdec:%s\n",filepath.toLocal8Bit().data());
-    if(status == 0)
+//    printf("vdec:%s\n",filepath.toLocal8Bit().data());
+    m_saveFile = new QFile(filepath.left(filepath.size() -5));
+    if(!m_saveFile->open(QIODevice::ReadWrite))
     {
-        setPts(40000);
+        printf("open save file error\n");
+    }
+    printf("%s\n",m_saveFile->fileName().toLocal8Bit().data());
+    if(status == 0)//实时
+    {
+        setPts(33000);
         setSleepTime(20000);
         setFilePath(filepath);
-    }else{
+    }else{                      //录像文件播放
         setPts(40000);
         setSleepTime(20000);
         filepath = filepath.left(filepath.length() - 1);
@@ -208,7 +199,6 @@ void VdecThread::run()
     //fp = fopen64(sFileName, "r");
     //printf("%s\n",getFilePath().toLocal8Bit().data());
     openFile();
-    //m_timer->start();
     while (HI_TRUE == VdecThread::gs_sendParam->bRun)
     {
         fseeko64(fp, getUsedBytes(), SEEK_SET);
@@ -218,7 +208,7 @@ void VdecThread::run()
              printf("file end.\n");
              break;
         }
-        printf("readLen: %llu\n",s32ReadLen);
+        //printf("readLen: %llu\n",s32ReadLen);
         /******************* cutting the stream for frame *****************/
         if( (VdecThread::gs_sendParam->enVideoMode==VIDEO_MODE_FRAME) && (VdecThread::gs_sendParam->enPayload== PT_H264) )
         {
@@ -233,7 +223,7 @@ void VdecThread::run()
                 {
 //                    if((pu8Buf[i + 3] &0x1F) == 0x5)
 //                    {
-//                        printf("I: %d\n",m_ICount++);
+
 //                    }
                     bFindStart = HI_TRUE;
                     i += 4;

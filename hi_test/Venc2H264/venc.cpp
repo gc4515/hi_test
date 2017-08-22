@@ -15,7 +15,7 @@ Venc::~Venc()
 //Vi 直接绑定VENC
 void Venc::ViBindVenc()
 {
-    //HI_MPI_VENC_SetMaxStreamCnt(0,2);
+    HI_MPI_VENC_SetMaxStreamCnt(0,4);
     HI_S32 s32Ret;
     MPP_CHN_S stBindSrc;
     MPP_CHN_S stBindDest;

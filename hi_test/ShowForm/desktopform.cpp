@@ -15,7 +15,6 @@ DesktopForm::DesktopForm(QWidget *parent) :
     //this->setWindowFlags(Qt::FramelessWindowHint);
     //this->setAttribute(Qt::WA_TranslucentBackground,true);
     QWSServer::setBackground(QColor(0x0,0x0,0x0,0x0));
-    m_dateTime = new QDateTime(QDateTime::currentDateTime());
     ui->setupUi(this);
 }
 
@@ -26,11 +25,11 @@ DesktopForm::~DesktopForm()
 
 void DesktopForm::on_pb_show_clicked()
 {
+    m_dateTime = new QDateTime(QDateTime::currentDateTime());
     QString strTime;
     strTime.clear();
     strTime = m_dateTime->toString("yyyy.MM.dd_hh-mm-ss");
     QString filename = "/home/" +strTime +".h264";
-
     emit signalRealPlay(filename,0);
 }
 

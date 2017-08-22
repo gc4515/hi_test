@@ -6,7 +6,7 @@ VencThread::VencThread(QObject *parent) :
     QThread(parent)
 {
     m_lock = new QReadWriteLock();
-
+    m_Icount = 0;
 }
 VencThread::~VencThread()
 {
@@ -72,11 +72,11 @@ void VencThread::run()
         //sprintf(aszFileName[i], "/home/save_stream%s", szFilePostfix);
         pFile[i] = fopen64(getVencFilePath().toLocal8Bit().data(), "w");
         printf("venc:%s\n",getVencFilePath().toLocal8Bit().data());
-//        if (!pFile[i])
-//        {
-//            SAMPLE_PRT("open file[%s] failed!\n",
-//                   getVencFilePath().toLocal8Bit().data());
-//        }
+        if (!pFile[i])
+        {
+            SAMPLE_PRT("open file[%s] failed!\n",
+                   getVencFilePath().toLocal8Bit().data());
+        }
 
         /*Set Venc Fd*/
         VencFd[i] = HI_MPI_VENC_GetFd(i);
@@ -146,6 +146,7 @@ void VencThread::run()
                      step 2.3 : call mpi to get one-frame stream
                     *******************************************************/
                     stStream.u32PackCount = stStat.u32CurPacks;
+                    stStream.pstPack->u64PTS +=40000;
                     s32Ret = HI_MPI_VENC_GetStream(i, &stStream, HI_TRUE);
                     if (HI_SUCCESS != s32Ret)
                     {
@@ -193,10 +194,17 @@ HI_S32 VencThread::SAMPLE_COMM_VENC_SaveH264(FILE *fpH264File, VENC_STREAM_S *ps
 {
     HI_S32 i;
     m_lock->lockForWrite();
+    //printf("pack: %d\n",pstStream->u32PackCount);
 
     for(i = 0; i < pstStream->u32PackCount;i++)
     {
         fflush(fpH264File);
+            //printf("stream: %x\n",pstStream->pstPack[i].pu8Addr[0][4]);
+            if(pstStream->pstPack[i].pu8Addr[0][4] == 101)
+            {
+                printf("I: %d\n",m_Icount++);
+                printf("where: %llu\n",ftello64(fpH264File));
+            }
         fwrite(pstStream->pstPack[i].pu8Addr[0],\
                 pstStream->pstPack[i].u32Len[0],1,fpH264File);
         fflush(fpH264File);

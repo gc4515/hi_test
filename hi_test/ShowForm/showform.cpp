@@ -12,7 +12,6 @@ ShowForm::ShowForm(QWidget *parent) :
     pal.setColor(QPalette::Background, QColor(0x00,0xff,0x00,0x00));
     setPalette(pal);
     max = 1;
-
 //    m_timer = new QTimer();
 //    connect(m_timer,SIGNAL(timeout()),this,SLOT(slotTimerOut()));
 //    m_timer->setInterval(1000);
@@ -36,6 +35,8 @@ void ShowForm::closeEvent(QCloseEvent *e)
                                   QMessageBox::Yes|QMessageBox::Default,QMessageBox::No|QMessageBox::Escape);
     if(r == QMessageBox::Yes)
     {
+        ui->label_time->clear();
+        max = 1;
         emit signalDesktopFormShow();
         e->accept();
     }else{
@@ -45,12 +46,13 @@ void ShowForm::closeEvent(QCloseEvent *e)
 
 void ShowForm::slotTimerOut()
 {
-    ui->label_time->setText(QString(trUtf8("%1 秒").arg(QString::number(max))));
-    ui->horizontalSlider->setMaximum(max++);
-    int value = ui->horizontalSlider->value();
-    //printf("%d\n",value);
-    value+=1;
-    ui->horizontalSlider->setValue(value);
+        ui->label_time->setText(QString(trUtf8("%1 秒").arg(QString::number(max))));
+        ui->horizontalSlider->setMaximum(max++);
+        int value = ui->horizontalSlider->value();
+        //printf("%d\n",value);
+        value+=1;
+        ui->horizontalSlider->setValue(value);
+        value = 0;
 }
 
 void ShowForm::on_pb_pause_clicked()
