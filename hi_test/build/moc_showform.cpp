@@ -22,7 +22,7 @@ static const uint qt_meta_data_ShowForm[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+      11,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
@@ -39,9 +39,10 @@ static const uint qt_meta_data_ShowForm[] = {
 
  // slots: signature, parameters, type, tag, flags
      114,    9,    9,    9, 0x08,
-     136,    9,    9,    9, 0x08,
-     157,    9,    9,    9, 0x08,
-     178,    9,    9,    9, 0x08,
+     129,    9,    9,    9, 0x08,
+     151,    9,    9,    9, 0x08,
+     172,    9,    9,    9, 0x08,
+     193,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -50,8 +51,9 @@ static const char qt_meta_stringdata_ShowForm[] = {
     "ShowForm\0\0signalPause()\0signalResume()\0"
     "signalDesktopFormShow()\0signalFastPlay()\0"
     "signalSlowPlay()\0signalRealPlay()\0"
-    "on_pb_pause_clicked()\0on_pb_fast_clicked()\0"
-    "on_pb_slow_clicked()\0on_pb_realplay_clicked()\0"
+    "slotTimerOut()\0on_pb_pause_clicked()\0"
+    "on_pb_fast_clicked()\0on_pb_slow_clicked()\0"
+    "on_pb_realplay_clicked()\0"
 };
 
 void ShowForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -66,10 +68,11 @@ void ShowForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 3: _t->signalFastPlay(); break;
         case 4: _t->signalSlowPlay(); break;
         case 5: _t->signalRealPlay(); break;
-        case 6: _t->on_pb_pause_clicked(); break;
-        case 7: _t->on_pb_fast_clicked(); break;
-        case 8: _t->on_pb_slow_clicked(); break;
-        case 9: _t->on_pb_realplay_clicked(); break;
+        case 6: _t->slotTimerOut(); break;
+        case 7: _t->on_pb_pause_clicked(); break;
+        case 8: _t->on_pb_fast_clicked(); break;
+        case 9: _t->on_pb_slow_clicked(); break;
+        case 10: _t->on_pb_realplay_clicked(); break;
         default: ;
         }
     }
@@ -108,9 +111,9 @@ int ShowForm::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 11)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 11;
     }
     return _id;
 }

@@ -4,6 +4,17 @@
 #include "vdec.h"
 #include <QFontDatabase>
 #include <QTextCodec>
+#include <signal.h>
+#include<stdio.h>
+#include<stdlib.h>
+#include <unistd.h>
+//void signalBus(int);
+//void signalBus(int)
+//{
+//    sigaction();
+//    printf("signalbus\n");
+//}
+
 int main(int argc,char *argv[])
 {
     //HI_MPI_SYS_Exit();
@@ -13,7 +24,7 @@ int main(int argc,char *argv[])
 //    vdec m_vdec;
     systeminit.HifbInit();
     QApplication a(argc,argv);
-
+    signal(SIGBUS,SIG_IGN);
     Logiclayer logic;
     QObject::connect(&logic,SIGNAL(signalVideoPlayStart()),&systeminit,SLOT(slotVideoPlayStart()));
 

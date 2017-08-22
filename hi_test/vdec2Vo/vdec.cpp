@@ -8,7 +8,10 @@ vdec::vdec(QObject *parent) :
     connect(this,SIGNAL(signalFastPlay()),m_vdecThread,SLOT(slotFastPlay()));
     connect(this,SIGNAL(signalSlowPlay()),m_vdecThread,SLOT(slotSlowPlay()));
     connect(this,SIGNAL(signalRealPlay()),m_vdecThread,SLOT(slotRealPlay()));
-
+    m_timer = new QTimer();
+    m_timer->setInterval(5000);
+    m_timer->start();
+    connect(m_timer,SIGNAL(timeout()),m_vdecThread,SLOT(slotTimerOut()));
     VdecBindVpss();
     VpssBindVo();
 

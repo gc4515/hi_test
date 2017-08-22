@@ -9,7 +9,9 @@ VdecThread::VdecThread(QObject *parent) :
     fp = NULL;
     pu8Buf = NULL;
     run_flag = HI_TRUE;
+    m_ICount = 0;
     m_readlock = new QReadWriteLock;
+
 }
 
 VdecThread::~VdecThread()
@@ -58,6 +60,21 @@ const HI_U64 &VdecThread::getSleepTime()const
     return m_sleepTime;
 }
 
+void VdecThread::slotTimerOut()
+{
+    //printf("time: %llu\n",getPts());
+    if(play_status == 0)
+    {
+        if(getPts() == 30000)
+        {
+            setPts(40000);
+            setSleepTime(20000);
+        }else{
+            setPts(30000);
+        }
+    }
+}
+
 void VdecThread::slotVideoPlay(QString filepath,bool status)
 {
     play_status = status;
@@ -65,7 +82,7 @@ void VdecThread::slotVideoPlay(QString filepath,bool status)
     printf("vdec:%s\n",filepath.toLocal8Bit().data());
     if(status == 0)
     {
-        setPts(35000);
+        setPts(40000);
         setSleepTime(20000);
         setFilePath(filepath);
     }else{
@@ -121,7 +138,7 @@ void VdecThread::slotRealPlay()
         printf("HI_MPI_VO_ClearChnBuffer failed\n");
     }
 
-    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,25);
+    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,30);
     if(HI_SUCCESS != s32Ret)
     {
         printf("HI_MPI_VO_SetChnFrameRate failed\n");
@@ -143,9 +160,9 @@ void VdecThread::openFile()
 {
     fp = fopen64(getFilePath().toLocal8Bit().data(),"r");
     //fp = fopen64("/home/2017.8.17_11-07-00.h264","r");
-    if (HI_NULL == fp)
+    while(HI_NULL == fp)
     {
-        usleep(20);
+        usleep(10);
         fp = fopen64(getFilePath().toLocal8Bit().data(),"r");
         if(HI_NULL == fp)
         {
@@ -194,9 +211,6 @@ void VdecThread::run()
     //m_timer->start();
     while (HI_TRUE == VdecThread::gs_sendParam->bRun)
     {
-        if(run_flag == HI_TRUE)
-        {
-
         fseeko64(fp, getUsedBytes(), SEEK_SET);
         s32ReadLen = fread(pu8Buf, 1, VdecThread::gs_sendParam->s32MinBufSize, fp);
         if (s32ReadLen<0)
@@ -204,7 +218,7 @@ void VdecThread::run()
              printf("file end.\n");
              break;
         }
-
+        printf("readLen: %llu\n",s32ReadLen);
         /******************* cutting the stream for frame *****************/
         if( (VdecThread::gs_sendParam->enVideoMode==VIDEO_MODE_FRAME) && (VdecThread::gs_sendParam->enPayload== PT_H264) )
         {
@@ -217,6 +231,10 @@ void VdecThread::run()
                     ((pu8Buf[i+4]&0x80) == 0x80)
                    )
                 {
+//                    if((pu8Buf[i + 3] &0x1F) == 0x5)
+//                    {
+//                        printf("I: %d\n",m_ICount++);
+//                    }
                     bFindStart = HI_TRUE;
                     i += 4;
                     break;
@@ -280,7 +298,6 @@ void VdecThread::run()
 //            usleep(s32IntervalTime);
         }
         usleep(getSleepTime());//控制向vdec解码通道发送码流的速度即给予vdec解码时间
-        }
     }
     printf("file end\n");
     if (pu8Buf != HI_NULL)

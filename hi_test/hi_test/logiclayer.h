@@ -8,6 +8,8 @@
 #include "vdec.h"
 #include "venc.h"
 #include "documentform.h"
+#include <QTimer>
+
 class Logiclayer : public QObject
 {
     Q_OBJECT
@@ -39,6 +41,7 @@ private:
     DocumentForm *m_documentForm;
     vdec *m_vdec;
     Venc *m_venc;
+    QTimer *m_timer;
     bool status_flag;
 };
 

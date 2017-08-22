@@ -6,17 +6,15 @@ Logiclayer::Logiclayer(QObject *parent) :
 {
     m_showForm = new ShowForm();
     m_DesktopForm = new DesktopForm();
-    //m_documentForm = new DocumentForm();
 
     m_showForm->setWindowFlags(m_showForm->windowFlags()&~Qt::WindowMaximizeButtonHint\
                                &~Qt::WindowMinimizeButtonHint);
-    /*m_DesktopForm->setWindowFlags(m_DesktopForm->windowFlags()&~Qt::WindowMaximizeButtonHint\
-                                  &~Qt::WindowMinimizeButtonHint);*/
     m_DesktopForm->setWindowFlags(Qt::WindowTitleHint);
 
     m_DesktopForm->showMaximized();
     m_showForm->hide();
-    //m_documentForm->hide();
+    m_timer = new QTimer();
+    m_timer->setInterval(1000);
 
     connect(m_DesktopForm,SIGNAL(signalRealPlay(QString,bool)),this,SLOT(slotVideoShow(QString,bool)));//显示实时流播放界面
     connect(m_DesktopForm,SIGNAL(signalSelectFile()),this,SLOT(slotSelectFile()));//选取播放文件
@@ -58,15 +56,17 @@ void Logiclayer::slotVideoShow(QString filepath,bool status)
         emit signalRealPlay(filepath,status);
     }
     emit signalVideoPlayStart();
-    //usleep(1000);
+    //sleep(1);
+    usleep(300000);
     m_vdec = new vdec;
+    m_timer->start();
     connect(this,SIGNAL(signalVideoPlay(QString,bool)),m_vdec,SLOT(slotVideoPlay(QString,bool)));
     connect(m_showForm,SIGNAL(signalPause()),m_vdec,SLOT(slotPause()));//暂停播放
     connect(m_showForm,SIGNAL(signalResume()),m_vdec,SLOT(slotResume()));//恢复播放
     connect(m_showForm,SIGNAL(signalFastPlay()),m_vdec,SLOT(slotFastPlay()));//快放 50帧/S
     connect(m_showForm,SIGNAL(signalSlowPlay()),m_vdec,SLOT(slotSlowPlay()));//慢放 13帧/S
     connect(m_showForm,SIGNAL(signalRealPlay()),m_vdec,SLOT(slotRealPlay())); //恢复正常播放 25帧/S
-
+    connect(m_timer,SIGNAL(timeout()),m_showForm,SLOT(slotTimerOut()));
     emit signalVideoPlay(filepath,status);
     HI_MPI_VO_ChnShow(0,0);
     m_DesktopForm->hide();

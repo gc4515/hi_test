@@ -11,11 +11,18 @@ ShowForm::ShowForm(QWidget *parent) :
     QPalette pal = palette();
     pal.setColor(QPalette::Background, QColor(0x00,0xff,0x00,0x00));
     setPalette(pal);
-    m_videoFlag = 0;
+    max = 1;
+
+//    m_timer = new QTimer();
+//    connect(m_timer,SIGNAL(timeout()),this,SLOT(slotTimerOut()));
+//    m_timer->setInterval(1000);
+//    m_timer->start();
     //this->setAttribute(Qt::WA_TranslucentBackground,true);
     QWSServer::setBackground(QColor(0x0,0x0,0x0,0x0));
 
     ui->setupUi(this);
+    ui->horizontalSlider->setMaximum(1);
+    ui->horizontalSlider->setValue(0);
 }
 
 ShowForm::~ShowForm()
@@ -34,6 +41,16 @@ void ShowForm::closeEvent(QCloseEvent *e)
     }else{
         e->ignore();
     }
+}
+
+void ShowForm::slotTimerOut()
+{
+    ui->label_time->setText(QString(trUtf8("%1 秒").arg(QString::number(max))));
+    ui->horizontalSlider->setMaximum(max++);
+    int value = ui->horizontalSlider->value();
+    //printf("%d\n",value);
+    value+=1;
+    ui->horizontalSlider->setValue(value);
 }
 
 void ShowForm::on_pb_pause_clicked()

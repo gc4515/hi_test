@@ -14,6 +14,7 @@
 #include <QtGui/QApplication>
 #include <QtGui/QButtonGroup>
 #include <QtGui/QHeaderView>
+#include <QtGui/QLabel>
 #include <QtGui/QPushButton>
 #include <QtGui/QSlider>
 #include <QtGui/QWidget>
@@ -32,6 +33,7 @@ public:
     QPushButton *pb_slow;
     QPushButton *pb_realplay;
     QSlider *horizontalSlider;
+    QLabel *label_time;
 
     void setupUi(QWidget *ShowForm)
     {
@@ -122,8 +124,11 @@ public:
 "		background-color: rgb(0, 85, 255);\n"
 "        border-radius: 3px;\n"
 "}"));
-        horizontalSlider->setPageStep(7);
+        horizontalSlider->setPageStep(1);
         horizontalSlider->setOrientation(Qt::Horizontal);
+        label_time = new QLabel(ShowForm);
+        label_time->setObjectName(QString::fromUtf8("label_time"));
+        label_time->setGeometry(QRect(780, 630, 67, 17));
 
         retranslateUi(ShowForm);
 
@@ -141,6 +146,7 @@ public:
         pb_fast->setText(QApplication::translate("ShowForm", "f", 0, QApplication::UnicodeUTF8));
         pb_slow->setText(QApplication::translate("ShowForm", "s", 0, QApplication::UnicodeUTF8));
         pb_realplay->setText(QApplication::translate("ShowForm", "r", 0, QApplication::UnicodeUTF8));
+        label_time->setText(QApplication::translate("ShowForm", "0", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

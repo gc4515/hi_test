@@ -3,6 +3,8 @@
 #include "chead.h"
 #include <QWidget>
 #include <QCloseEvent>
+#include <QTimer>
+
 namespace Ui {
 class ShowForm;
 }
@@ -24,6 +26,7 @@ signals:
     void signalSlowPlay();
     void signalRealPlay();
 private slots:
+    void slotTimerOut();
     void on_pb_pause_clicked();
 
     void on_pb_fast_clicked();
@@ -33,9 +36,11 @@ private slots:
     void on_pb_realplay_clicked();
 
 private:
+    int max;
     Ui::ShowForm *ui;
     bool m_videoFlag;//0:play 1:pause
     int m_status;
+    QTimer *m_timer;
 };
 
 #endif // SHOWFORM_H
