@@ -1,4 +1,5 @@
 #include "vencthread.h"
+#include "vdecthread.h"
 #define _FILE_OFFSET_BITS 64
 SAMPLE_VENC_GETSTREAM_PARA_S *VencThread::gs_stPara = new SAMPLE_VENC_GETSTREAM_PARA_S;
 
@@ -26,6 +27,7 @@ QString VencThread::getVencFilePath() const
 
 void VencThread::slotRealPlay(QString filepath, bool status)
 {
+
     setVencFilePath(filepath);
 }
 void VencThread::run()
@@ -97,6 +99,7 @@ void VencThread::run()
     while(HI_TRUE == VencThread::gs_stPara->bThreadStart)
     {
         //printf("venc\n");
+        signal(SIGBUS,SIG_IGN);
         FD_ZERO(&read_fds);
         for(i = 0; i < VencThread::gs_stPara->s32Cnt;i++)
         {
@@ -146,7 +149,7 @@ void VencThread::run()
                      step 2.3 : call mpi to get one-frame stream
                     *******************************************************/
                     stStream.u32PackCount = stStat.u32CurPacks;
-                    stStream.pstPack->u64PTS +=40000;
+                    //stStream.pstPack->u64PTS +=40000;
                     s32Ret = HI_MPI_VENC_GetStream(i, &stStream, HI_TRUE);
                     if (HI_SUCCESS != s32Ret)
                     {
@@ -202,8 +205,9 @@ HI_S32 VencThread::SAMPLE_COMM_VENC_SaveH264(FILE *fpH264File, VENC_STREAM_S *ps
             //printf("stream: %x\n",pstStream->pstPack[i].pu8Addr[0][4]);
             if(pstStream->pstPack[i].pu8Addr[0][4] == 101)
             {
-                printf("I: %d\n",m_Icount++);
-                printf("where: %llu\n",ftello64(fpH264File));
+                VdecThread::m_stringList->append(QString::number(ftello64(fpH264File)));
+                printf("I: %d   %llu\n",m_Icount++,ftello64(fpH264File));
+                //printf("where: %llu\n",ftello64(fpH264File));
             }
         fwrite(pstStream->pstPack[i].pu8Addr[0],\
                 pstStream->pstPack[i].u32Len[0],1,fpH264File);

@@ -1,7 +1,7 @@
 #include "vdecthread.h"
-
 #define _FILE_OFFSET_BITS 64
 SAMPLE_VDEC_SENDPARAM_S *VdecThread::gs_sendParam = new SAMPLE_VDEC_SENDPARAM_S;
+QStringList *VdecThread::m_stringList = new QStringList;
 VdecThread::VdecThread(QObject *parent) :
     QThread(parent)
 {
@@ -11,6 +11,7 @@ VdecThread::VdecThread(QObject *parent) :
     run_flag = HI_TRUE;
     m_ICount = 0;
 //    m_saveFile = new QFile();
+
     m_readlock = new QReadWriteLock;
 }
 
@@ -65,12 +66,12 @@ void VdecThread::slotVideoPlay(QString filepath,bool status)
     play_status = status;
     //filepath= filepath.replace(QString("\n"),QString(""));
 //    printf("vdec:%s\n",filepath.toLocal8Bit().data());
-    m_saveFile = new QFile(filepath.left(filepath.size() -5));
-    if(!m_saveFile->open(QIODevice::ReadWrite))
-    {
-        printf("open save file error\n");
-    }
-    printf("%s\n",m_saveFile->fileName().toLocal8Bit().data());
+//    m_saveFile = new QFile(filepath.left(filepath.size() -5));
+//    if(!m_saveFile->open(QIODevice::ReadWrite))
+//    {
+//        printf("open save file error\n");
+//    }
+//    printf("%s\n",m_saveFile->fileName().toLocal8Bit().data());
     if(status == 0)//实时
     {
         setPts(33000);
@@ -88,10 +89,15 @@ void VdecThread::slotFastPlay()
 {
     HI_S32 s32Ret;
 
-    s32Ret = HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
-    if(s32Ret != HI_SUCCESS)
+//    s32Ret = HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
+//    if(s32Ret != HI_SUCCESS)
+//    {
+//        printf("HI_MPI_VO_ClearChnBuffer failed\n");
+//    }
+    s32Ret = HI_MPI_VDEC_StopRecvStream(0);
+    if(HI_SUCCESS != s32Ret)
     {
-        printf("HI_MPI_VO_ClearChnBuffer failed\n");
+        printf("HI_MPI_VDEC_StopRecvStream failed\n");
     }
     s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,50);
     if(HI_SUCCESS != s32Ret)
@@ -100,16 +106,20 @@ void VdecThread::slotFastPlay()
     }
     setPts(20000);
     setSleepTime(10000);
+    s32Ret = HI_MPI_VDEC_StartRecvStream(0);
+    if(HI_SUCCESS != s32Ret)
+    {
+        printf("HI_MPI_VDEC_StartRecvStream failed\n");
+    }
     printf("fast\n");
 }
 void VdecThread::slotSlowPlay()
 {
     HI_S32 s32Ret;
-
-    s32Ret = HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
-    if(s32Ret != HI_SUCCESS)
+    s32Ret = HI_MPI_VDEC_StopRecvStream(0);//解码器停止接收码流
+    if(HI_SUCCESS != s32Ret)
     {
-        printf("HI_MPI_VO_ClearChnBuffer failed\n");
+        printf("HI_MPI_VDEC_StopRecvStream failed\n");
     }
     s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,25);
     if(HI_SUCCESS != s32Ret)
@@ -118,8 +128,17 @@ void VdecThread::slotSlowPlay()
     }
     setPts(80000);
     //setSleepTime(10000);
+    s32Ret = HI_MPI_VDEC_StartRecvStream(0);
+    if(HI_SUCCESS != s32Ret)
+    {
+        printf("HI_MPI_VDEC_StartRecvStream failed\n");
+    }
     printf("slow\n");
 }
+/***********************************************
+ * function:
+ * 
+ * *********************************************/
 void VdecThread::slotRealPlay()
 {
     HI_S32 s32Ret;
@@ -144,24 +163,94 @@ void VdecThread::slotRealPlay()
     }
 }
 
+void VdecThread::slotDelay10(int value)
+{
+    printf("value %d  %s \n",value,VdecThread::m_stringList->at(value-10).toLocal8Bit().data());
+//    HI_MPI_VDEC_StopRecvStream(0);
+//    HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
+    setPts(40000);
+    setSleepTime(20000);
+    setUsedBytes((VdecThread::m_stringList->at(value -10).toLongLong()));
+    HI_MPI_VDEC_StartRecvStream(0);
+    //HI_MPI_VO_ChnPause(0,0);
+    //run_flag = HI_FALSE;
+//    HI_S32 s32Ret;
+//    s32Ret = HI_MPI_VDEC_StopRecvStream(0);
+//    if(HI_SUCCESS != s32Ret)
+//    {
+//        printf("HI_MPI_VDEC_StopRecvStream failed\n");
+//    }
+//    HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
+
+//    HI_MPI_VO_ChnRefresh(0,0);
+
+//    setUsedBytes((VdecThread::m_stringList->at(value -10).toLongLong()));
+//    s32Ret = HI_MPI_VDEC_StartRecvStream(0);
+//    if(HI_SUCCESS != s32Ret)
+//    {
+//        printf("HI_MPI_VDEC_StartRecvStream failed\n");
+//    }
+    //run_flag = HI_TRUE;
+    //HI_MPI_VO_ChnResume(0,0);
+}
+
+void VdecThread::slotDelay2(int value)
+{
+    printf("value %d  %s \n",value,VdecThread::m_stringList->at(value-2).toLocal8Bit().data());
+    setPts(40000);
+    setSleepTime(20000);
+    setUsedBytes((VdecThread::m_stringList->at(value -2).toLongLong()));
+    HI_MPI_VDEC_StartRecvStream(0);
+//    HI_MPI_VO_ChnPause(0,0);
+//    run_flag = HI_FALSE;
+//    HI_S32 s32Ret;
+//    s32Ret = HI_MPI_VDEC_StopRecvStream(0);
+//    if(HI_SUCCESS != s32Ret)
+//    {
+//        printf("HI_MPI_VDEC_StopRecvStream failed\n");
+//    }
+//    HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
+
+//    HI_MPI_VO_ChnRefresh(0,0);
+////    setPts(40000);
+////    setSleepTime(20000);
+//    setUsedBytes((VdecThread::m_stringList->at(value -2).toLongLong()));
+//    s32Ret = HI_MPI_VDEC_StartRecvStream(0);
+//    if(HI_SUCCESS != s32Ret)
+//    {
+//        printf("HI_MPI_VDEC_StartRecvStream failed\n");
+//    }
+//    run_flag = HI_TRUE;
+//    HI_MPI_VO_ChnResume(0,0);
+}
+
+void VdecThread::slotFF10(int value)
+{
+    setUsedBytes((VdecThread::m_stringList->at(value + 10).toLongLong()));
+    HI_MPI_VDEC_StartRecvStream(0);
+}
+void VdecThread::slotFF2(int value)
+{
+    setUsedBytes(VdecThread::m_stringList->at(value + 2).toLongLong());
+    HI_MPI_VDEC_StartRecvStream(0);
+}
 /*********************************************
  * 打开文件并且分配缓存
  * *******************************************/
 void VdecThread::openFile()
 {
     fp = fopen64(getFilePath().toLocal8Bit().data(),"r");
-    //fp = fopen64("/home/2017.8.17_11-07-00.h264","r");
     while(HI_NULL == fp)
     {
         usleep(10);
         fp = fopen64(getFilePath().toLocal8Bit().data(),"r");
-        if(HI_NULL == fp)
-        {
-            SAMPLE_PRT("can't open file %s in send stream thread:%d\n", getFilePath().toLocal8Bit().data(),VdecThread::gs_sendParam->VdChn);
-        }
+//        if(HI_NULL == fp)
+//        {
+//            SAMPLE_PRT("can't open file %s in send stream thread:%d\n", getFilePath().toLocal8Bit().data(),VdecThread::gs_sendParam->VdChn);
+//        }
     }
 
-    printf("open file [%s] ok in send stream thread:%d!\n", getFilePath().toLocal8Bit().data(),VdecThread::gs_sendParam->VdChn);
+//    printf("open file [%s] ok in send stream thread:%d!\n", getFilePath().toLocal8Bit().data(),VdecThread::gs_sendParam->VdChn);
     /******************* malloc the  stream buffer in user space *****************/
     if(VdecThread::gs_sendParam->s32MinBufSize!=0)
     {
@@ -185,13 +274,11 @@ void VdecThread::run()
     //FILE* fp = NULL;
     HI_S32 s32BlockMode = HI_IO_BLOCK;
     HI_U64 u64pts;
-    //HI_S32 s32IntervalTime = 40000;
     HI_S32 i, s32Ret, len, start;
     HI_S64 s32ReadLen;
     HI_BOOL bFindStart, bFindEnd;
     start = 0;
     u64pts= 0;
-    //s32UsedBytes = 0;
     /******************* open the stream file *****************/
 
     //SAMPLE_COMM_SYS_Payload2FilePostfix(VdecThread::gs_sendParam->enPayload, sFilePostfix);
@@ -201,6 +288,10 @@ void VdecThread::run()
     openFile();
     while (HI_TRUE == VdecThread::gs_sendParam->bRun)
     {
+        while(run_flag == HI_TRUE)
+        {
+        signal(SIGBUS,SIG_IGN);
+        //printf("usedbyte: %llu\n",getUsedBytes());
         fseeko64(fp, getUsedBytes(), SEEK_SET);
         s32ReadLen = fread(pu8Buf, 1, VdecThread::gs_sendParam->s32MinBufSize, fp);
         if (s32ReadLen<0)
@@ -221,10 +312,6 @@ void VdecThread::run()
                     ((pu8Buf[i+4]&0x80) == 0x80)
                    )
                 {
-//                    if((pu8Buf[i + 3] &0x1F) == 0x5)
-//                    {
-
-//                    }
                     bFindStart = HI_TRUE;
                     i += 4;
                     break;
@@ -288,6 +375,7 @@ void VdecThread::run()
 //            usleep(s32IntervalTime);
         }
         usleep(getSleepTime());//控制向vdec解码通道发送码流的速度即给予vdec解码时间
+    }
     }
     printf("file end\n");
     if (pu8Buf != HI_NULL)

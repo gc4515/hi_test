@@ -274,10 +274,10 @@ HI_S32 SystemInit::SAMPLE_Vdec_CreateVdecChn(HI_S32 s32ChnId,SIZE_S *pstSize,PAY
 }
 HI_S32 SystemInit::Vo_ModuleInit()
 {
-    SAMPLE_VO_MODE_E enVoMode; //定义输出模式：几路输出
-    VO_PUB_ATTR_S stPutAttr;//定义视频输出公共属性结构体
+    SAMPLE_VO_MODE_E enVoMode;
+    VO_PUB_ATTR_S stPutAttr;
 
-    enVoMode = VO_MODE_1MUX;//不分屏
+    enVoMode = VO_MODE_1MUX;
 
     stPutAttr.enIntfType = VO_INTF_VGA | VO_INTF_HDMI;
     stPutAttr.enIntfSync = VO_OUTPUT_1280x800_60;
@@ -286,7 +286,6 @@ HI_S32 SystemInit::Vo_ModuleInit()
 
     m_u32ViFrmRate = (VIDEO_ENCODING_MODE_PAL == gs_enNorm)?25:30;
 
-    //开启视频层
     s32Ret = SAMPLE_COMM_VO_StartDevLayer(0,&stPutAttr,25);
     if(HI_SUCCESS != s32Ret)
     {
@@ -300,11 +299,6 @@ HI_S32 SystemInit::Vo_ModuleInit()
         SAMPLE_PRT("SAMPLE_COMM_VO_StartChn failed\n");
         return NULL;
     }
-//    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,50);
-//    if(s32Ret != HI_SUCCESS)
-//    {
-//        printf("HI_MPI_VO_SetChnFrameRate failed\n");
-//    }
 }
 
 HI_S32 SystemInit::HifbInit()

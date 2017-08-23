@@ -4,7 +4,7 @@
 #include <QWidget>
 #include <QCloseEvent>
 #include <QTimer>
-
+#include <QMouseEvent>
 namespace Ui {
 class ShowForm;
 }
@@ -17,6 +17,7 @@ public:
     explicit ShowForm(QWidget *parent = 0);
     ~ShowForm();
     void closeEvent(QCloseEvent *e);
+    void mouseMoveEvent(QMouseEvent *e);
 signals:
     void signalPause();
     void signalResume();
@@ -24,6 +25,10 @@ signals:
     void signalFastPlay();
     void signalSlowPlay();
     void signalRealPlay();
+    void signalDelay10(int value);
+    void signalDelay2(int value);
+    void signalFF10(int value);
+    void signalFF2(int value);
 private slots:
     void slotTimerOut();
     void on_pb_pause_clicked();
@@ -33,6 +38,14 @@ private slots:
     void on_pb_slow_clicked();
 
     void on_pb_realplay_clicked();
+
+    void on_pb_delay10_clicked();
+
+    void on_pb_delay1_clicked();
+
+    void on_pb_FF10_clicked();
+
+    void on_pb_FF1_clicked();
 
 private:
     int max;

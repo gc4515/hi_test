@@ -27,13 +27,14 @@ public:
     QPushButton *pb_pause;
     QPushButton *pb_delay1;
     QPushButton *pb_delay10;
-    QPushButton *pb_fast1;
-    QPushButton *pb_fast10;
+    QPushButton *pb_FF1;
+    QPushButton *pb_FF10;
     QPushButton *pb_fast;
     QPushButton *pb_slow;
     QPushButton *pb_realplay;
     QSlider *horizontalSlider;
     QLabel *label_time;
+    QLabel *label_current;
 
     void setupUi(QWidget *ShowForm)
     {
@@ -78,24 +79,24 @@ public:
         icon3.addFile(QString::fromUtf8(":/new/prefix1/delay10.png"), QSize(), QIcon::Normal, QIcon::Off);
         pb_delay10->setIcon(icon3);
         pb_delay10->setIconSize(QSize(30, 30));
-        pb_fast1 = new QPushButton(ShowForm);
-        pb_fast1->setObjectName(QString::fromUtf8("pb_fast1"));
-        pb_fast1->setGeometry(QRect(310, 660, 30, 30));
-        pb_fast1->setFocusPolicy(Qt::NoFocus);
-        pb_fast1->setStyleSheet(QString::fromUtf8("QPushButton{border-radius:3px}"));
+        pb_FF1 = new QPushButton(ShowForm);
+        pb_FF1->setObjectName(QString::fromUtf8("pb_FF1"));
+        pb_FF1->setGeometry(QRect(310, 660, 30, 30));
+        pb_FF1->setFocusPolicy(Qt::NoFocus);
+        pb_FF1->setStyleSheet(QString::fromUtf8("QPushButton{border-radius:3px}"));
         QIcon icon4;
         icon4.addFile(QString::fromUtf8(":/new/prefix1/fast1.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pb_fast1->setIcon(icon4);
-        pb_fast1->setIconSize(QSize(30, 30));
-        pb_fast10 = new QPushButton(ShowForm);
-        pb_fast10->setObjectName(QString::fromUtf8("pb_fast10"));
-        pb_fast10->setGeometry(QRect(350, 659, 31, 31));
-        pb_fast10->setFocusPolicy(Qt::NoFocus);
-        pb_fast10->setStyleSheet(QString::fromUtf8("QPushButton{border-radius:3px}"));
+        pb_FF1->setIcon(icon4);
+        pb_FF1->setIconSize(QSize(30, 30));
+        pb_FF10 = new QPushButton(ShowForm);
+        pb_FF10->setObjectName(QString::fromUtf8("pb_FF10"));
+        pb_FF10->setGeometry(QRect(350, 659, 31, 31));
+        pb_FF10->setFocusPolicy(Qt::NoFocus);
+        pb_FF10->setStyleSheet(QString::fromUtf8("QPushButton{border-radius:3px}"));
         QIcon icon5;
         icon5.addFile(QString::fromUtf8(":/new/prefix1/fast10.png"), QSize(), QIcon::Normal, QIcon::Off);
-        pb_fast10->setIcon(icon5);
-        pb_fast10->setIconSize(QSize(30, 30));
+        pb_FF10->setIcon(icon5);
+        pb_FF10->setIconSize(QSize(30, 30));
         pb_fast = new QPushButton(ShowForm);
         pb_fast->setObjectName(QString::fromUtf8("pb_fast"));
         pb_fast->setGeometry(QRect(380, 660, 31, 27));
@@ -129,6 +130,9 @@ public:
         label_time = new QLabel(ShowForm);
         label_time->setObjectName(QString::fromUtf8("label_time"));
         label_time->setGeometry(QRect(780, 630, 67, 17));
+        label_current = new QLabel(ShowForm);
+        label_current->setObjectName(QString::fromUtf8("label_current"));
+        label_current->setGeometry(QRect(410, 600, 67, 17));
 
         retranslateUi(ShowForm);
 
@@ -141,12 +145,13 @@ public:
         pb_pause->setText(QString());
         pb_delay1->setText(QString());
         pb_delay10->setText(QString());
-        pb_fast1->setText(QString());
-        pb_fast10->setText(QString());
+        pb_FF1->setText(QString());
+        pb_FF10->setText(QString());
         pb_fast->setText(QApplication::translate("ShowForm", "f", 0, QApplication::UnicodeUTF8));
         pb_slow->setText(QApplication::translate("ShowForm", "s", 0, QApplication::UnicodeUTF8));
         pb_realplay->setText(QApplication::translate("ShowForm", "r", 0, QApplication::UnicodeUTF8));
         label_time->setText(QApplication::translate("ShowForm", "0", 0, QApplication::UnicodeUTF8));
+        label_current->setText(QApplication::translate("ShowForm", "0", 0, QApplication::UnicodeUTF8));
     } // retranslateUi
 
 };

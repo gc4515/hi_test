@@ -8,12 +8,11 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include <unistd.h>
-//void signalBus(int);
-//void signalBus(int)
-//{
-//    sigaction();
-//    printf("signalbus\n");
-//}
+void signalBus(int);
+void signalBus(int)
+{
+    printf("signalbus\n");
+}
 
 int main(int argc,char *argv[])
 {
@@ -24,7 +23,7 @@ int main(int argc,char *argv[])
 //    vdec m_vdec;
     systeminit.HifbInit();
     QApplication a(argc,argv);
-    signal(SIGBUS,SIG_IGN);
+    signal(SIGBUS,signalBus);//SIG_IGN
     Logiclayer logic;
     QObject::connect(&logic,SIGNAL(signalVideoPlayStart()),&systeminit,SLOT(slotVideoPlayStart()));
 

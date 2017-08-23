@@ -5,6 +5,7 @@
 #include "chead.h"
 #include <QReadWriteLock>
 #include <QFile>
+#include <QStringList>
 
 class VdecThread : public QThread
 {
@@ -28,6 +29,7 @@ public:
     const HI_U64 &getSleepTime()const;
 
     static SAMPLE_VDEC_SENDPARAM_S *gs_sendParam;
+    static QStringList *m_stringList;
 signals:
 
 public slots:
@@ -35,6 +37,10 @@ public slots:
     void slotFastPlay();
     void slotSlowPlay();
     void slotRealPlay();
+    void slotDelay10(int value);
+    void slotDelay2(int value);
+    void slotFF10(int value);
+    void slotFF2(int value);
 private:
     HI_S64 s32UsedBytes;
     QReadWriteLock *m_readlock;

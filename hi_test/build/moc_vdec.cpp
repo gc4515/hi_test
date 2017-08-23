@@ -22,26 +22,34 @@ static const uint qt_meta_data_vdec[] = {
        6,       // revision
        0,       // classname
        0,    0, // classinfo
-      10,   14, // methods
+      18,   14, // methods
        0,    0, // properties
        0,    0, // enums/sets
        0,    0, // constructors
        0,       // flags
-       4,       // signalCount
+       8,       // signalCount
 
  // signals: signature, parameters, type, tag, flags
       22,    6,    5,    5, 0x05,
       52,    5,    5,    5, 0x05,
       69,    5,    5,    5, 0x05,
       86,    5,    5,    5, 0x05,
+     109,  103,    5,    5, 0x05,
+     128,  103,    5,    5, 0x05,
+     146,  103,    5,    5, 0x05,
+     162,  103,    5,    5, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-     103,    5,    5,    5, 0x0a,
-     115,    5,    5,    5, 0x0a,
-     128,    5,    5,    5, 0x0a,
-     143,    5,    5,    5, 0x0a,
-     158,    5,    5,    5, 0x0a,
-     173,    6,    5,    5, 0x0a,
+     177,    5,    5,    5, 0x0a,
+     189,    5,    5,    5, 0x0a,
+     202,    5,    5,    5, 0x0a,
+     217,    5,    5,    5, 0x0a,
+     232,    5,    5,    5, 0x0a,
+     247,  103,    5,    5, 0x0a,
+     264,  103,    5,    5, 0x0a,
+     280,  103,    5,    5, 0x0a,
+     294,  103,    5,    5, 0x0a,
+     307,    6,    5,    5, 0x0a,
 
        0        // eod
 };
@@ -50,9 +58,13 @@ static const char qt_meta_stringdata_vdec[] = {
     "vdec\0\0filepath,status\0"
     "signalVideoPlay(QString,bool)\0"
     "signalFastPlay()\0signalSlowPlay()\0"
-    "signalRealPlay()\0slotPause()\0slotResume()\0"
+    "signalRealPlay()\0value\0signalDelay10(int)\0"
+    "signalDelay2(int)\0signalFF10(int)\0"
+    "signalFF2(int)\0slotPause()\0slotResume()\0"
     "slotFastPlay()\0slotSlowPlay()\0"
-    "slotRealPlay()\0slotVideoPlay(QString,bool)\0"
+    "slotRealPlay()\0slotDelay10(int)\0"
+    "slotDelay2(int)\0slotFF10(int)\0"
+    "slotFF2(int)\0slotVideoPlay(QString,bool)\0"
 };
 
 void vdec::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -65,12 +77,20 @@ void vdec::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void *
         case 1: _t->signalFastPlay(); break;
         case 2: _t->signalSlowPlay(); break;
         case 3: _t->signalRealPlay(); break;
-        case 4: _t->slotPause(); break;
-        case 5: _t->slotResume(); break;
-        case 6: _t->slotFastPlay(); break;
-        case 7: _t->slotSlowPlay(); break;
-        case 8: _t->slotRealPlay(); break;
-        case 9: _t->slotVideoPlay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 4: _t->signalDelay10((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 5: _t->signalDelay2((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 6: _t->signalFF10((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 7: _t->signalFF2((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 8: _t->slotPause(); break;
+        case 9: _t->slotResume(); break;
+        case 10: _t->slotFastPlay(); break;
+        case 11: _t->slotSlowPlay(); break;
+        case 12: _t->slotRealPlay(); break;
+        case 13: _t->slotDelay10((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 14: _t->slotDelay2((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 15: _t->slotFF10((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 16: _t->slotFF2((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 17: _t->slotVideoPlay((*reinterpret_cast< QString(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         default: ;
         }
     }
@@ -108,9 +128,9 @@ int vdec::qt_metacall(QMetaObject::Call _c, int _id, void **_a)
     if (_id < 0)
         return _id;
     if (_c == QMetaObject::InvokeMetaMethod) {
-        if (_id < 10)
+        if (_id < 18)
             qt_static_metacall(this, _c, _id, _a);
-        _id -= 10;
+        _id -= 18;
     }
     return _id;
 }
@@ -138,5 +158,33 @@ void vdec::signalSlowPlay()
 void vdec::signalRealPlay()
 {
     QMetaObject::activate(this, &staticMetaObject, 3, 0);
+}
+
+// SIGNAL 4
+void vdec::signalDelay10(int _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 4, _a);
+}
+
+// SIGNAL 5
+void vdec::signalDelay2(int _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 5, _a);
+}
+
+// SIGNAL 6
+void vdec::signalFF10(int _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 6, _a);
+}
+
+// SIGNAL 7
+void vdec::signalFF2(int _t1)
+{
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    QMetaObject::activate(this, &staticMetaObject, 7, _a);
 }
 QT_END_MOC_NAMESPACE

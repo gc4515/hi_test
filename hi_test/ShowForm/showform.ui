@@ -26,7 +26,7 @@
    <string>Video</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../build/image/pbicon.qrc">
+   <iconset resource="../hi_test/Resource/image.qrc">
     <normaloff>:/new/prefix1/play.png</normaloff>:/new/prefix1/play.png</iconset>
   </property>
   <property name="styleSheet">
@@ -134,7 +134,7 @@
     </size>
    </property>
   </widget>
-  <widget class="QPushButton" name="pb_fast1">
+  <widget class="QPushButton" name="pb_FF1">
    <property name="geometry">
     <rect>
      <x>310</x>
@@ -163,7 +163,7 @@
     </size>
    </property>
   </widget>
-  <widget class="QPushButton" name="pb_fast10">
+  <widget class="QPushButton" name="pb_FF10">
    <property name="geometry">
     <rect>
      <x>350</x>
@@ -283,8 +283,22 @@ QSlider::handle:horizontal {
     <string>0</string>
    </property>
   </widget>
+  <widget class="QLabel" name="label_current">
+   <property name="geometry">
+    <rect>
+     <x>410</x>
+     <y>600</y>
+     <width>67</width>
+     <height>17</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>0</string>
+   </property>
+  </widget>
  </widget>
  <resources>
+  <include location="../hi_test/Resource/image.qrc"/>
   <include location="../build/image/pbicon.qrc"/>
  </resources>
  <connections/>
