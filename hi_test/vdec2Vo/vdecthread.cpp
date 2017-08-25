@@ -75,12 +75,12 @@ void VdecThread::slotVideoPlay(QString filepath,bool status)
 //    printf("%s\n",m_saveFile->fileName().toLocal8Bit().data());
     if(status == 0)//实时
     {
-        setPts(33000);
+        setPts(40000);
         setSleepTime(20000);
         setFilePath(filepath);
     }else{                      //录像文件播放
-        setPts(40000);
-        setSleepTime(20000);
+//        setPts(40000);
+//        setSleepTime(20000);
         filepath = filepath.left(filepath.length() - 1);
         setFilePath(filepath);
     }
@@ -95,13 +95,18 @@ void VdecThread::slotFastPlay()
     {
         printf("HI_MPI_VDEC_StopRecvStream failed\n");
     }
+    s32Ret = HI_MPI_VO_EnableChn(0,0);
+    if(HI_SUCCESS != s32Ret)
+    {
+        printf("HI_MPI_VO_EnableChn failed\n");
+    }
     s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,50);
     if(HI_SUCCESS != s32Ret)
     {
         printf("HI_MPI_VO_SetChnFrameRate failed\n");
     }
-    setPts(20000);
-    setSleepTime(10000);
+    //setPts(20000);
+    setSleepTime(0);
     s32Ret = HI_MPI_VDEC_StartRecvStream(0);
     if(HI_SUCCESS != s32Ret)
     {
@@ -117,7 +122,7 @@ void VdecThread::slotSlowPlay()
     {
         printf("HI_MPI_VDEC_StopRecvStream failed\n");
     }
-    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,15);
+    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,13);
     if(HI_SUCCESS != s32Ret)
     {
         printf("HI_MPI_VO_SetChnFrameRate failed\n");
@@ -149,42 +154,75 @@ void VdecThread::slotRealPlay()
     {
         printf("HI_MPI_VO_SetChnFrameRate failed\n");
     }
-    if(play_status == 0)
-    {
-        setPts(40000);
-        setSleepTime(20000);
-    }else{
-        setPts(40000);
-        setSleepTime(20000);
-    }
+//    if(play_status == 0)
+//    {
+//        setPts(40000);
+//        setSleepTime(20000);
+//    }else{
+//        setPts(40000);
+//        setSleepTime(20000);
+//    }
 }
 
 void VdecThread::slotPause()
 {
-    setPts(40000);
-    setSleepTime(20000);
-    run_flag = HI_FALSE;
+    MPP_CHN_S stSrcChn;
+    MPP_CHN_S stDestChn;
+
+    stSrcChn.enModId = HI_ID_VDEC;
+    stSrcChn.s32DevId = 0;
+    stSrcChn.s32ChnId = 0;
+
+    stDestChn.enModId = HI_ID_VPSS;
+    stDestChn.s32DevId = 1;
+    stDestChn.s32ChnId = 2;
+
+    HI_MPI_SYS_UnBind(&stSrcChn,&stDestChn);
+    HI_MPI_VDEC_StopRecvStream(0);
 }
 
 void VdecThread::slotResume()
 {
-    run_flag = HI_TRUE;
+    HI_S32 s32Ret;
+    s32Ret = SAMLE_COMM_VDEC_BindVpss(0, 1);
+    if (HI_SUCCESS !=s32Ret)
+    {
+        SAMPLE_PRT("vdec bind vpss failed!\n");
+    }
+    HI_MPI_VDEC_StartRecvStream(0);
 }
 void VdecThread::slotDelay10(int value)
 {
     printf("value %d  %s \n",value,VdecThread::m_stringList->at(value-10).toLocal8Bit().data());
-    setPts(40000);
-    setSleepTime(20000);
+
     HI_S32 s32Ret;
 
     //run_flag = HI_FALSE;
     HI_MPI_VDEC_StopRecvStream(0);
     HI_MPI_VDEC_ResetChn(0);
+//    MPP_CHN_S stSrcChn;
+//    MPP_CHN_S stDestChn;
+
+//    stSrcChn.enModId = HI_ID_VDEC;
+//    stSrcChn.s32DevId = 0;
+//    stSrcChn.s32ChnId = 0;
+
+//    stDestChn.enModId = HI_ID_VPSS;
+//    stDestChn.s32DevId = 1;
+//    stDestChn.s32ChnId = 2;
+
+//    HI_MPI_SYS_UnBind(&stSrcChn,&stDestChn);
+
     //fseeko64(fp, VdecThread::m_stringList->at(10).toLongLong(), SEEK_SET);
     HI_U64 set= VdecThread::m_stringList->at(value -10).toLongLong();
     setUsedBytes(set);
-    HI_MPI_VO_ChnRefresh(0,0);
+//    s32Ret = SAMLE_COMM_VDEC_BindVpss(0, 1);
+//    if (HI_SUCCESS !=s32Ret)
+//    {
+//        SAMPLE_PRT("vdec bind vpss failed!\n");
+//    }
     HI_MPI_VDEC_StartRecvStream(0);
+    //run_flag = HI_TRUE;
     //run_flag = HI_TRUE;
     //HI_MPI_VO_ChnResume(0,0);
 }
@@ -192,12 +230,10 @@ void VdecThread::slotDelay10(int value)
 void VdecThread::slotDelay2(int value)
 {
     printf("value %d  %s \n",value,VdecThread::m_stringList->at(value-2).toLocal8Bit().data());
-    setPts(40000);
-    setSleepTime(20000);
 
     HI_MPI_VDEC_StopRecvStream(0);
     HI_MPI_VDEC_ResetChn(0);
-    HI_U64 set= VdecThread::m_stringList->at(value -2).toLongLong();
+    HI_U64 set= VdecThread::m_stringList->at(value - 3).toLongLong();
     setUsedBytes(set);
     HI_MPI_VO_ChnRefresh(0,0);
     HI_MPI_VDEC_StartRecvStream(0);
@@ -205,11 +241,6 @@ void VdecThread::slotDelay2(int value)
 
 void VdecThread::slotFF10(int value,bool realPlay)
 {
-    if(realPlay == HI_TRUE)
-    {
-        setPts(33000);
-        setSleepTime(20000);
-    }
     HI_MPI_VDEC_StopRecvStream(0);
     HI_MPI_VDEC_ResetChn(0);
     HI_U64 set = VdecThread::m_stringList->at(value + 10).toLongLong();
@@ -241,13 +272,8 @@ void VdecThread::openFile()
     {
         usleep(10);
         fp = fopen64(getFilePath().toLocal8Bit().data(),"r");
-//        if(HI_NULL == fp)
-//        {
-//            SAMPLE_PRT("can't open file %s in send stream thread:%d\n", getFilePath().toLocal8Bit().data(),VdecThread::gs_sendParam->VdChn);
-//        }
     }
 
-//    printf("open file [%s] ok in send stream thread:%d!\n", getFilePath().toLocal8Bit().data(),VdecThread::gs_sendParam->VdChn);
     /******************* malloc the  stream buffer in user space *****************/
     if(VdecThread::gs_sendParam->s32MinBufSize!=0)
     {
@@ -343,17 +369,11 @@ void VdecThread::run()
         if(VdecThread::gs_sendParam->enVideoMode==VIDEO_MODE_FRAME)
         {
             u64pts+=getPts();
-            //printf("pts :%llu\n",getPts());
         }
-        //printf("get\n");
         /******************* send stream *****************/
         if (s32BlockMode == HI_IO_BLOCK)
         {
-            //if(run_flag == HI_TRUE)
-            {
-                //printf("send\n");
-                s32Ret=HI_MPI_VDEC_SendStream(VdecThread::gs_sendParam->VdChn, &stStream, HI_IO_BLOCK);
-            }
+            s32Ret=HI_MPI_VDEC_SendStream(VdecThread::gs_sendParam->VdChn, &stStream, HI_IO_BLOCK);
         }else if (s32BlockMode == HI_IO_NOBLOCK)
         {
             s32Ret=HI_MPI_VDEC_SendStream(VdecThread::gs_sendParam->VdChn, &stStream, HI_IO_NOBLOCK);

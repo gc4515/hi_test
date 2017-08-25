@@ -50,29 +50,29 @@ HI_S32 SystemInit::Mpp_ModuleInit()
     memset(&stVbConf,0,sizeof(VB_CONF_S));
     u32BlkSize = SAMPLE_COMM_SYS_CalcPicVbBlkSize(gs_enNorm,PIC_HD1080,\
                                                   SAMPLE_PIXEL_FORMAT,SAMPLE_SYS_ALIGN_WIDTH);
-    stVbConf.u32MaxPoolCnt = 128;
+    stVbConf.u32MaxPoolCnt = 256;
 
     /*  ddro video buffer   */
     stVbConf.astCommPool[0].u32BlkSize = u32BlkSize;
-    stVbConf.astCommPool[0].u32BlkCnt = u32ViChnCnt *16;
+    stVbConf.astCommPool[0].u32BlkCnt = u32ViChnCnt *88;
     memset(stVbConf.astCommPool[0].acMmzName,\
             0,sizeof(stVbConf.astCommPool[0].acMmzName));
 
 //    /*ddr0 hist buffer  */
-    stVbConf.astCommPool[1].u32BlkSize = u32BlkSize;
-    stVbConf.astCommPool[1].u32BlkCnt = u32ViChnCnt * 16;
-    memset(stVbConf.astCommPool[0].acMmzName,\
-            0,sizeof(stVbConf.astCommPool[0].acMmzName));
+//    stVbConf.astCommPool[4].u32BlkSize = u32BlkSize;
+//    stVbConf.astCommPool[4].u32BlkCnt = u32ViChnCnt * 16;
+//    memset(stVbConf.astCommPool[4].acMmzName,\
+//            0,sizeof(stVbConf.astCommPool[4].acMmzName));
 
-//    /*  ddr1 video buffer  */
-    stVbConf.astCommPool[2].u32BlkSize = u32BlkSize;
-    stVbConf.astCommPool[2].u32BlkCnt = u32ViChnCnt * 16;
-    strcpy(stVbConf.astCommPool[2].acMmzName,"ddr1");
+//    /*  ddr1 video buffer   */
+//    stVbConf.astCommPool[2].u32BlkSize = u32BlkSize;
+//    stVbConf.astCommPool[2].u32BlkCnt = u32ViChnCnt * 16;
+//    strcpy(stVbConf.astCommPool[2].acMmzName,"ddr1");
 
-//    /*  ddr1 hist buffer    */
-    stVbConf.astCommPool[3].u32BlkSize = u32BlkSize;
-    stVbConf.astCommPool[3].u32BlkCnt = u32ViChnCnt * 16;
-    strcpy(stVbConf.astCommPool[3].acMmzName,"ddr1");
+////    /*  ddr1 hist buffer    */
+//    stVbConf.astCommPool[3].u32BlkSize = u32BlkSize;
+//    stVbConf.astCommPool[3].u32BlkCnt = u32ViChnCnt * 16;
+//    strcpy(stVbConf.astCommPool[3].acMmzName,"ddr1");
 
     /***********************************************
      * step 1: mpp init
@@ -191,7 +191,7 @@ HI_S32 SystemInit::Vdec_ModuleInit()
     {
         stSize.u32Width = 180;
     }
-    s32Ret = SAMPLE_Vdec_CreateVdecChn(0, &stSize, PT_H264, VIDEO_MODE_FRAME);
+    s32Ret = SAMPLE_Vdec_CreateVdecChn(0, &stSize, PT_H264, VIDEO_MODE_STREAM);
     if (HI_SUCCESS !=s32Ret)
     {
         SAMPLE_PRT("create vdec chn failed!\n");
@@ -335,7 +335,7 @@ HI_S32 SystemInit::HifbInit()
     var.green = {8,8,0};
     var.blue = {0,8,0};
     var.bits_per_pixel = 32;
-
+    var.activate = FB_ACTIVATE_ALL;
     if(ioctl(fd,FBIOPUT_VSCREENINFO,&var) < 0)
     {
         printf("FBIOPUT_VSCREENINFO failed!\n");
@@ -356,6 +356,7 @@ HI_S32 SystemInit::HifbInit()
     stAlpha.u8Alpha0 = 0x0;
     stAlpha.u8Alpha1 = 0xff;
     stAlpha.u8GlobalAlpha = 0xff;
+
     if(ioctl(fd,FBIOPUT_ALPHA_HIFB,&stAlpha) < 0)
     {
         printf(" set alpha failed\n");

@@ -40,7 +40,7 @@ ShowForm::~ShowForm()
 
 void ShowForm::mouseMoveEvent(QMouseEvent *e)
 {
-    signal(SIGBUS,SIG_IGN);
+    signal(SIGBUS,signalprint);
 }
 void ShowForm::mousePressEvent(QMouseEvent *e)
 {
@@ -118,7 +118,7 @@ void ShowForm::on_pb_realplay_clicked()
 //后退10S
 void ShowForm::on_pb_delay10_clicked()
 {
-    signal(SIGBUS,SIG_IGN);
+    signal(SIGBUS,signalprint);
     //HI_MPI_VO_ChnPause(0,0);
     //HI_MPI_VDEC_StopRecvStream(0);
     HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);

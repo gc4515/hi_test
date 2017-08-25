@@ -13,6 +13,8 @@ CXX           = arm-hisiv200-linux-g++
 DEFINES       = -DQT_GUI_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -DQT_SHARED
 CFLAGS        = -pipe -g -Wall -W -D_REENTRANT $(DEFINES)
 CXXFLAGS      = -pipe -g -Wall -W -D_REENTRANT $(DEFINES)
+CFLAGS        += -march=armv7-a -mcpu=cortex-a9  -mfpu=vfpv3-d16
+CXXFlAGS      +=-march=armv7-a -mcpu=cortex-a9  -mfpu=vfpv3-d16
 INCPATH       = -I../../../Hisiqt/Qt/build_qt/mkspecs/qws/linux-hisi3531-g++ -I../hi_test -I../../../Hisiqt/Qt/build_qt/include/QtCore -I../../../Hisiqt/Qt/build_qt/include/QtNetwork -I../../../Hisiqt/Qt/build_qt/include/QtGui -I../../../Hisiqt/Qt/build_qt/include -IPWD/include -I../SystemInit -I../ShowForm -I../CSourceCode -I../Venc2H264 -I../vdec2Vo -I../../../Hisiqt/Qt/build_qt/hinclude -I. -I. -I../hi_test -I.
 LINK          = arm-hisiv200-linux-g++
 LFLAGS        = 
