@@ -1,4 +1,5 @@
 #include "vdecthread.h"
+#include "chead.h"
 #define _FILE_OFFSET_BITS 64
 SAMPLE_VDEC_SENDPARAM_S *VdecThread::gs_sendParam = new SAMPLE_VDEC_SENDPARAM_S;
 QStringList *VdecThread::m_stringList = new QStringList;
@@ -89,11 +90,6 @@ void VdecThread::slotFastPlay()
 {
     HI_S32 s32Ret;
 
-//    s32Ret = HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
-//    if(s32Ret != HI_SUCCESS)
-//    {
-//        printf("HI_MPI_VO_ClearChnBuffer failed\n");
-//    }
     s32Ret = HI_MPI_VDEC_StopRecvStream(0);
     if(HI_SUCCESS != s32Ret)
     {
@@ -121,12 +117,12 @@ void VdecThread::slotSlowPlay()
     {
         printf("HI_MPI_VDEC_StopRecvStream failed\n");
     }
-    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,25);
+    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,15);
     if(HI_SUCCESS != s32Ret)
     {
         printf("HI_MPI_VO_SetChnFrameRate failed\n");
     }
-    setPts(80000);
+    //setPts(40000);
     //setSleepTime(10000);
     s32Ret = HI_MPI_VDEC_StartRecvStream(0);
     if(HI_SUCCESS != s32Ret)
@@ -148,7 +144,7 @@ void VdecThread::slotRealPlay()
         printf("HI_MPI_VO_ClearChnBuffer failed\n");
     }
 
-    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,30);
+    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,25);
     if(HI_SUCCESS != s32Ret)
     {
         printf("HI_MPI_VO_SetChnFrameRate failed\n");
@@ -163,33 +159,32 @@ void VdecThread::slotRealPlay()
     }
 }
 
+void VdecThread::slotPause()
+{
+    setPts(40000);
+    setSleepTime(20000);
+    run_flag = HI_FALSE;
+}
+
+void VdecThread::slotResume()
+{
+    run_flag = HI_TRUE;
+}
 void VdecThread::slotDelay10(int value)
 {
     printf("value %d  %s \n",value,VdecThread::m_stringList->at(value-10).toLocal8Bit().data());
-//    HI_MPI_VDEC_StopRecvStream(0);
-//    HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
     setPts(40000);
     setSleepTime(20000);
-    setUsedBytes((VdecThread::m_stringList->at(value -10).toLongLong()));
-    HI_MPI_VDEC_StartRecvStream(0);
-    //HI_MPI_VO_ChnPause(0,0);
+    HI_S32 s32Ret;
+
     //run_flag = HI_FALSE;
-//    HI_S32 s32Ret;
-//    s32Ret = HI_MPI_VDEC_StopRecvStream(0);
-//    if(HI_SUCCESS != s32Ret)
-//    {
-//        printf("HI_MPI_VDEC_StopRecvStream failed\n");
-//    }
-//    HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
-
-//    HI_MPI_VO_ChnRefresh(0,0);
-
-//    setUsedBytes((VdecThread::m_stringList->at(value -10).toLongLong()));
-//    s32Ret = HI_MPI_VDEC_StartRecvStream(0);
-//    if(HI_SUCCESS != s32Ret)
-//    {
-//        printf("HI_MPI_VDEC_StartRecvStream failed\n");
-//    }
+    HI_MPI_VDEC_StopRecvStream(0);
+    HI_MPI_VDEC_ResetChn(0);
+    //fseeko64(fp, VdecThread::m_stringList->at(10).toLongLong(), SEEK_SET);
+    HI_U64 set= VdecThread::m_stringList->at(value -10).toLongLong();
+    setUsedBytes(set);
+    HI_MPI_VO_ChnRefresh(0,0);
+    HI_MPI_VDEC_StartRecvStream(0);
     //run_flag = HI_TRUE;
     //HI_MPI_VO_ChnResume(0,0);
 }
@@ -199,43 +194,45 @@ void VdecThread::slotDelay2(int value)
     printf("value %d  %s \n",value,VdecThread::m_stringList->at(value-2).toLocal8Bit().data());
     setPts(40000);
     setSleepTime(20000);
-    setUsedBytes((VdecThread::m_stringList->at(value -2).toLongLong()));
-    HI_MPI_VDEC_StartRecvStream(0);
-//    HI_MPI_VO_ChnPause(0,0);
-//    run_flag = HI_FALSE;
-//    HI_S32 s32Ret;
-//    s32Ret = HI_MPI_VDEC_StopRecvStream(0);
-//    if(HI_SUCCESS != s32Ret)
-//    {
-//        printf("HI_MPI_VDEC_StopRecvStream failed\n");
-//    }
-//    HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
 
-//    HI_MPI_VO_ChnRefresh(0,0);
-////    setPts(40000);
-////    setSleepTime(20000);
-//    setUsedBytes((VdecThread::m_stringList->at(value -2).toLongLong()));
-//    s32Ret = HI_MPI_VDEC_StartRecvStream(0);
-//    if(HI_SUCCESS != s32Ret)
-//    {
-//        printf("HI_MPI_VDEC_StartRecvStream failed\n");
-//    }
-//    run_flag = HI_TRUE;
-//    HI_MPI_VO_ChnResume(0,0);
-}
-
-void VdecThread::slotFF10(int value)
-{
-    setUsedBytes((VdecThread::m_stringList->at(value + 10).toLongLong()));
+    HI_MPI_VDEC_StopRecvStream(0);
+    HI_MPI_VDEC_ResetChn(0);
+    HI_U64 set= VdecThread::m_stringList->at(value -2).toLongLong();
+    setUsedBytes(set);
+    HI_MPI_VO_ChnRefresh(0,0);
     HI_MPI_VDEC_StartRecvStream(0);
 }
-void VdecThread::slotFF2(int value)
+
+void VdecThread::slotFF10(int value,bool realPlay)
 {
-    setUsedBytes(VdecThread::m_stringList->at(value + 2).toLongLong());
+    if(realPlay == HI_TRUE)
+    {
+        setPts(33000);
+        setSleepTime(20000);
+    }
+    HI_MPI_VDEC_StopRecvStream(0);
+    HI_MPI_VDEC_ResetChn(0);
+    HI_U64 set = VdecThread::m_stringList->at(value + 10).toLongLong();
+    setUsedBytes(set);
+    HI_MPI_VO_ChnRefresh(0,0);
+    HI_MPI_VDEC_StartRecvStream(0);
+}
+void VdecThread::slotFF2(int value, bool realPlay)
+{
+    if(realPlay == HI_TRUE)
+    {
+        setPts(33000);
+        setSleepTime(20000);
+    }
+    HI_MPI_VDEC_StopRecvStream(0);
+    HI_MPI_VDEC_ResetChn(0);
+    HI_U64 set = VdecThread::m_stringList->at(value + 2).toLongLong();
+    setUsedBytes(set);
+    HI_MPI_VO_ChnRefresh(0,0);
     HI_MPI_VDEC_StartRecvStream(0);
 }
 /*********************************************
- * 打开文件并且分配缓存
+ * 打开文件并且分配内存
  * *******************************************/
 void VdecThread::openFile()
 {
@@ -268,7 +265,7 @@ void VdecThread::openFile()
 
 void VdecThread::run()
 {
-    VDEC_STREAM_S stStream;
+//    VDEC_STREAM_S stStream;
     //SAMPLE_VDEC_SENDPARAM_S *pstSendParam;
     //char sFileName[50], sFilePostfix[20];
     //FILE* fp = NULL;
@@ -288,7 +285,7 @@ void VdecThread::run()
     openFile();
     while (HI_TRUE == VdecThread::gs_sendParam->bRun)
     {
-        while(run_flag == HI_TRUE)
+        if(run_flag == HI_TRUE)
         {
         signal(SIGBUS,SIG_IGN);
         //printf("usedbyte: %llu\n",getUsedBytes());
@@ -352,7 +349,11 @@ void VdecThread::run()
         /******************* send stream *****************/
         if (s32BlockMode == HI_IO_BLOCK)
         {
-            s32Ret=HI_MPI_VDEC_SendStream(VdecThread::gs_sendParam->VdChn, &stStream, HI_IO_BLOCK);
+            //if(run_flag == HI_TRUE)
+            {
+                //printf("send\n");
+                s32Ret=HI_MPI_VDEC_SendStream(VdecThread::gs_sendParam->VdChn, &stStream, HI_IO_BLOCK);
+            }
         }else if (s32BlockMode == HI_IO_NOBLOCK)
         {
             s32Ret=HI_MPI_VDEC_SendStream(VdecThread::gs_sendParam->VdChn, &stStream, HI_IO_NOBLOCK);
@@ -372,7 +373,7 @@ void VdecThread::run()
                 SAMPLE_PRT("failret:%x\n",s32Ret);
             }
             usleep(40000);
-//            usleep(s32IntervalTime);
+            //usleep(s32IntervalTime);
         }
         usleep(getSleepTime());//控制向vdec解码通道发送码流的速度即给予vdec解码时间
     }

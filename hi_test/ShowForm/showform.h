@@ -18,6 +18,7 @@ public:
     ~ShowForm();
     void closeEvent(QCloseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
+    void mousePressEvent(QMouseEvent *e);
 signals:
     void signalPause();
     void signalResume();
@@ -27,8 +28,8 @@ signals:
     void signalRealPlay();
     void signalDelay10(int value);
     void signalDelay2(int value);
-    void signalFF10(int value);
-    void signalFF2(int value);
+    void signalFF10(int value,bool realPlay);
+    void signalFF2(int value,bool realPlay);
 private slots:
     void slotTimerOut();
     void on_pb_pause_clicked();

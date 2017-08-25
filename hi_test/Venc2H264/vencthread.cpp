@@ -48,7 +48,7 @@ void VencThread::run()
     HI_S32 s32Ret;
     VENC_CHN VencChn;
     PAYLOAD_TYPE_E enPayLoadType[VENC_MAX_CHN_NUM];
-
+    HI_U64 u64pts = 0;
     /********************************************
      * step 1: check &prepare save-file &venc-fd
      * ******************************************/
@@ -149,7 +149,8 @@ void VencThread::run()
                      step 2.3 : call mpi to get one-frame stream
                     *******************************************************/
                     stStream.u32PackCount = stStat.u32CurPacks;
-                    //stStream.pstPack->u64PTS +=40000;
+                    stStream.pstPack->u64PTS +=u64pts;
+                    u64pts +=40000;
                     s32Ret = HI_MPI_VENC_GetStream(i, &stStream, HI_TRUE);
                     if (HI_SUCCESS != s32Ret)
                     {
@@ -196,17 +197,17 @@ void VencThread::run()
 HI_S32 VencThread::SAMPLE_COMM_VENC_SaveH264(FILE *fpH264File, VENC_STREAM_S *pstStream)
 {
     HI_S32 i;
-    m_lock->lockForWrite();
+    //m_lock->lockForWrite();
     //printf("pack: %d\n",pstStream->u32PackCount);
 
     for(i = 0; i < pstStream->u32PackCount;i++)
     {
-        fflush(fpH264File);
+        //fflush(fpH264File);
             //printf("stream: %x\n",pstStream->pstPack[i].pu8Addr[0][4]);
             if(pstStream->pstPack[i].pu8Addr[0][4] == 101)
             {
                 VdecThread::m_stringList->append(QString::number(ftello64(fpH264File)));
-                printf("I: %d   %llu\n",m_Icount++,ftello64(fpH264File));
+                //printf("I: %d   %llu\n",m_Icount++,ftello64(fpH264File));
                 //printf("where: %llu\n",ftello64(fpH264File));
             }
         fwrite(pstStream->pstPack[i].pu8Addr[0],\
@@ -221,7 +222,7 @@ HI_S32 VencThread::SAMPLE_COMM_VENC_SaveH264(FILE *fpH264File, VENC_STREAM_S *ps
             fflush(fpH264File);
         }
     }
-    m_lock->unlock();
+    //m_lock->unlock();
     return HI_SUCCESS;
 }
 

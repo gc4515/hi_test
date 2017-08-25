@@ -196,17 +196,17 @@ HI_S32 SystemInit::Vdec_ModuleInit()
     {
         SAMPLE_PRT("create vdec chn failed!\n");
     }
-//    VDEC_CHN_PARAM_S pstParam;
-//    pstParam.s32ChanErrThr = 20;
-//    pstParam.s32ChanStrmOFThr = 0;
-//    pstParam.s32DecMode = 1;
-//    pstParam.s32DecOrderOutput = 1;
+    VDEC_CHN_PARAM_S pstParam;
+    pstParam.s32ChanErrThr = 10;
+    pstParam.s32ChanStrmOFThr = 0;
+    pstParam.s32DecMode = 1;
+    pstParam.s32DecOrderOutput = 0;//输出顺序：0:显示序  1:解码序
 
-//    s32Ret = HI_MPI_VDEC_SetChnParam(0,&pstParam);
-//    if(HI_SUCCESS != s32Ret)
-//    {
-//        SAMPLE_PRT("HI_MPI_VDEC_SetChnParam failed with %x\n",s32Ret);
-//    }
+    s32Ret = HI_MPI_VDEC_SetChnParam(0,&pstParam);
+    if(HI_SUCCESS != s32Ret)
+    {
+        SAMPLE_PRT("HI_MPI_VDEC_SetChnParam failed with %x\n",s32Ret);
+    }
 }
 HI_S32 SystemInit::SAMPLE_Vdec_CreateVdecChn(HI_S32 s32ChnId,SIZE_S *pstSize,PAYLOAD_TYPE_E enType,VIDEO_MODE_E enVdecMode)
 {

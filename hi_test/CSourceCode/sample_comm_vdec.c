@@ -43,7 +43,7 @@ HI_S32 SAMLE_COMM_VDEC_BindVpss(VDEC_CHN VdChn, VPSS_GRP VpssGrp)
 
     stDestChn.enModId = HI_ID_VPSS;
     stDestChn.s32DevId = VpssGrp;
-    stDestChn.s32ChnId = 0;
+    stDestChn.s32ChnId = 2;
 
     s32Ret = HI_MPI_SYS_Bind(&stSrcChn, &stDestChn);
     if (s32Ret != HI_SUCCESS)

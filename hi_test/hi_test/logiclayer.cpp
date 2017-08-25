@@ -71,8 +71,8 @@ void Logiclayer::slotVideoShow(QString filepath,bool status)
     connect(m_showForm,SIGNAL(signalDelay10(int)),m_vdec,SLOT(slotDelay10(int)));//后退10S
     connect(m_showForm,SIGNAL(signalDelay2(int)),m_vdec,SLOT(slotDelay2(int))); //后退2S
 
-    connect(m_showForm,SIGNAL(signalFF10(int)),m_vdec,SLOT(slotFF10(int)));//快进10S
-    connect(m_showForm,SIGNAL(signalFF2(int)),m_vdec,SLOT(slotFF2(int)));//快进2S
+    connect(m_showForm,SIGNAL(signalFF10(int,bool)),m_vdec,SLOT(slotFF10(int,bool)));//快进10S
+    connect(m_showForm,SIGNAL(signalFF2(int,bool)),m_vdec,SLOT(slotFF2(int,bool)));//快进2S
 
     emit signalVideoPlay(filepath,status);
     HI_MPI_VO_ChnShow(0,0);

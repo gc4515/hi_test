@@ -40,11 +40,16 @@ ShowForm::~ShowForm()
 
 void ShowForm::mouseMoveEvent(QMouseEvent *e)
 {
-    signal(SIGBUS,signalprint);
+    signal(SIGBUS,SIG_IGN);
+}
+void ShowForm::mousePressEvent(QMouseEvent *e)
+{
+    signal(SIGBUS,SIG_IGN);
 }
 //关闭事件
 void ShowForm::closeEvent(QCloseEvent *e)
 {
+    signal(SIGBUS,SIG_IGN);
     int r = QMessageBox::question(this,tr("exit"),QObject::trUtf8("确定要退出吗？"),
                                   QMessageBox::Yes|QMessageBox::Default,QMessageBox::No|QMessageBox::Escape);
     if(r == QMessageBox::Yes)
@@ -60,20 +65,25 @@ void ShowForm::closeEvent(QCloseEvent *e)
 
 void ShowForm::slotTimerOut()
 {
+        HI_MPI_VDEC_ResetChn(0);
         ui->label_time->setText(QString(trUtf8("%1 秒").arg(QString::number(max))));
         ui->horizontalSlider->setMaximum(max++);
-        int value = ui->horizontalSlider->value();
-        ui->label_current->setText(QString::number(value));
-        //printf("%d\n",value);
-        value+=1;
-        ui->horizontalSlider->setValue(value);
-
-        value = 0;
+        if(m_videoFlag == 0)
+        {
+            int value = ui->horizontalSlider->value();
+            ui->label_current->setText(QString::number(value));
+            //printf("%d\n",value);
+            value+=1;
+            ui->horizontalSlider->setValue(value);
+            value = 0;
+        }
 }
 
 // 暂停/恢复功能
 void ShowForm::on_pb_pause_clicked()
 {
+    signal(SIGBUS,SIG_IGN);
+
     if(m_videoFlag == 0)//当前为播放态
     {
         m_videoFlag = 1;
@@ -108,7 +118,9 @@ void ShowForm::on_pb_realplay_clicked()
 //后退10S
 void ShowForm::on_pb_delay10_clicked()
 {
-    HI_MPI_VDEC_StopRecvStream(0);
+    signal(SIGBUS,SIG_IGN);
+    //HI_MPI_VO_ChnPause(0,0);
+    //HI_MPI_VDEC_StopRecvStream(0);
     HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
 
     //printf("value: %d\n",ui->horizontalSlider->value());
@@ -124,8 +136,10 @@ void ShowForm::on_pb_delay10_clicked()
 
 void ShowForm::on_pb_delay1_clicked()
 {
+    signal(SIGBUS,SIG_IGN);
+
     HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
-    HI_MPI_VDEC_StopRecvStream(0);
+    //HI_MPI_VDEC_StopRecvStream(0);
     //printf("value: %d\n",ui->horizontalSlider->value());
     if(ui->horizontalSlider->value() <= 2)
     {
@@ -139,29 +153,32 @@ void ShowForm::on_pb_delay1_clicked()
 
 void ShowForm::on_pb_FF10_clicked()
 {
+    signal(SIGBUS,SIG_IGN);
+
     HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
-    HI_MPI_VDEC_StopRecvStream(0);
+//    HI_MPI_VDEC_StopRecvStream(0);
     if((ui->horizontalSlider->value() + 10) >= ui->horizontalSlider->maximum())
     {
-        emit signalFF10(ui->horizontalSlider->maximum()-10);
+        emit signalFF10(ui->horizontalSlider->maximum()-10,HI_TRUE);
         ui->horizontalSlider->setValue(ui->horizontalSlider->maximum());
     }else{
-        emit signalFF10(ui->horizontalSlider->value());
+        emit signalFF10(ui->horizontalSlider->value(),HI_FALSE);
         ui->horizontalSlider->setValue(ui->horizontalSlider->value() + 10);
     }
-
 }
 
 void ShowForm::on_pb_FF1_clicked()
 {
+    signal(SIGBUS,SIG_IGN);
+
     HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
-    HI_MPI_VDEC_StopRecvStream(0);
+//    HI_MPI_VDEC_StopRecvStream(0);
     if((ui->horizontalSlider->value() + 2) >= ui->horizontalSlider->maximum())
     {
-        emit signalFF2(ui->horizontalSlider->maximum() - 2);
+        emit signalFF2(ui->horizontalSlider->maximum() - 3,HI_TRUE);
         ui->horizontalSlider->setValue(ui->horizontalSlider->maximum());
     }else{
-        emit signalFF2(ui->horizontalSlider->value());
+        emit signalFF2(ui->horizontalSlider->value(),HI_FALSE);
         ui->horizontalSlider->setValue(ui->horizontalSlider->value() + 2);
     }
 }

@@ -38,19 +38,19 @@ static const uint qt_meta_data_ShowForm[] = {
       97,    9,    9,    9, 0x05,
      120,  114,    9,    9, 0x05,
      139,  114,    9,    9, 0x05,
-     157,  114,    9,    9, 0x05,
-     173,  114,    9,    9, 0x05,
+     172,  157,    9,    9, 0x05,
+     193,  157,    9,    9, 0x05,
 
  // slots: signature, parameters, type, tag, flags
-     188,    9,    9,    9, 0x08,
-     203,    9,    9,    9, 0x08,
-     225,    9,    9,    9, 0x08,
-     246,    9,    9,    9, 0x08,
-     267,    9,    9,    9, 0x08,
+     213,    9,    9,    9, 0x08,
+     228,    9,    9,    9, 0x08,
+     250,    9,    9,    9, 0x08,
+     271,    9,    9,    9, 0x08,
      292,    9,    9,    9, 0x08,
-     316,    9,    9,    9, 0x08,
-     339,    9,    9,    9, 0x08,
-     360,    9,    9,    9, 0x08,
+     317,    9,    9,    9, 0x08,
+     341,    9,    9,    9, 0x08,
+     364,    9,    9,    9, 0x08,
+     385,    9,    9,    9, 0x08,
 
        0        // eod
 };
@@ -60,10 +60,10 @@ static const char qt_meta_stringdata_ShowForm[] = {
     "signalDesktopFormShow()\0signalFastPlay()\0"
     "signalSlowPlay()\0signalRealPlay()\0"
     "value\0signalDelay10(int)\0signalDelay2(int)\0"
-    "signalFF10(int)\0signalFF2(int)\0"
-    "slotTimerOut()\0on_pb_pause_clicked()\0"
-    "on_pb_fast_clicked()\0on_pb_slow_clicked()\0"
-    "on_pb_realplay_clicked()\0"
+    "value,realPlay\0signalFF10(int,bool)\0"
+    "signalFF2(int,bool)\0slotTimerOut()\0"
+    "on_pb_pause_clicked()\0on_pb_fast_clicked()\0"
+    "on_pb_slow_clicked()\0on_pb_realplay_clicked()\0"
     "on_pb_delay10_clicked()\0on_pb_delay1_clicked()\0"
     "on_pb_FF10_clicked()\0on_pb_FF1_clicked()\0"
 };
@@ -82,8 +82,8 @@ void ShowForm::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, vo
         case 5: _t->signalRealPlay(); break;
         case 6: _t->signalDelay10((*reinterpret_cast< int(*)>(_a[1]))); break;
         case 7: _t->signalDelay2((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 8: _t->signalFF10((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 9: _t->signalFF2((*reinterpret_cast< int(*)>(_a[1]))); break;
+        case 8: _t->signalFF10((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 9: _t->signalFF2((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
         case 10: _t->slotTimerOut(); break;
         case 11: _t->on_pb_pause_clicked(); break;
         case 12: _t->on_pb_fast_clicked(); break;
@@ -188,16 +188,16 @@ void ShowForm::signalDelay2(int _t1)
 }
 
 // SIGNAL 8
-void ShowForm::signalFF10(int _t1)
+void ShowForm::signalFF10(int _t1, bool _t2)
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 8, _a);
 }
 
 // SIGNAL 9
-void ShowForm::signalFF2(int _t1)
+void ShowForm::signalFF2(int _t1, bool _t2)
 {
-    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)) };
+    void *_a[] = { 0, const_cast<void*>(reinterpret_cast<const void*>(&_t1)), const_cast<void*>(reinterpret_cast<const void*>(&_t2)) };
     QMetaObject::activate(this, &staticMetaObject, 9, _a);
 }
 QT_END_MOC_NAMESPACE

@@ -34,13 +34,15 @@ signals:
 
 public slots:
     void slotVideoPlay(QString filepath, bool status);
+    void slotPause();
+    void slotResume();
     void slotFastPlay();
     void slotSlowPlay();
     void slotRealPlay();
     void slotDelay10(int value);
     void slotDelay2(int value);
-    void slotFF10(int value);
-    void slotFF2(int value);
+    void slotFF10(int value,bool realPlay);
+    void slotFF2(int value,bool realPlay);
 private:
     HI_S64 s32UsedBytes;
     QReadWriteLock *m_readlock;
@@ -53,6 +55,7 @@ private:
     bool play_status;
     bool run_flag;
     HI_U32 m_ICount;
+    VDEC_STREAM_S stStream;
 };
 
 #endif // VDECTHREAD_H
