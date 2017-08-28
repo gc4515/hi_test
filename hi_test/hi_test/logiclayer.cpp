@@ -28,6 +28,13 @@ Logiclayer::~Logiclayer()
 
 }
 
+/********************************************
+ * function: setStatus(bool status)
+ * 类别：类成员函数
+ * 参数：status
+ * 返回值：void
+ * 功能：设置状态：实时|录像文件播放
+ * ******************************************/
 void Logiclayer::setStatus(bool status)
 {
     status_flag = status;
@@ -38,6 +45,13 @@ const bool &Logiclayer::getStatus() const
     return status_flag;
 }
 
+/********************************************
+ * function: slotSelectFile()
+ * 类别：类成员函数
+ * 参数：void
+ * 返回值：void
+ * 功能：检索录像文件
+ * ******************************************/
 void Logiclayer::slotSelectFile()
 {
     m_documentForm = new DocumentForm();
@@ -113,6 +127,13 @@ void Logiclayer::slotDesktopFormShow()
     delete m_vdec;
 }
 
+/***************************************************
+ * function: viUnbindVenc(VI_CHN srcChn,VENC_CHN destChn)
+ * 类别：类成员函数
+ * 参数：srcChn:输入通道 destChn:venc编码通道
+ * 返回值：void
+ * 功能：vi解绑venc
+ * *************************************************/
 void Logiclayer::viUnbindVenc(VI_CHN srcChn,VENC_CHN destChn)
 {
     MPP_CHN_S stSrcChn;
@@ -128,6 +149,14 @@ void Logiclayer::viUnbindVenc(VI_CHN srcChn,VENC_CHN destChn)
 
     HI_MPI_SYS_UnBind(&stSrcChn,&stDestChn);
 }
+
+/********************************************************
+ * function: vdecUnbindVpss(VDEC_CHN srcChn, VPSS_CHN destChn)
+ * 类别：类成员函数
+ * 参数：srcChn:解码通道 destChn:VPSS通道
+ * 返回值：void
+ * 功能：vdec解绑VPSS
+ * ******************************************************/
 void Logiclayer::vdecUnbindVpss(VDEC_CHN srcChn, VPSS_CHN destChn)
 {
     MPP_CHN_S stSrcChn;
@@ -143,7 +172,13 @@ void Logiclayer::vdecUnbindVpss(VDEC_CHN srcChn, VPSS_CHN destChn)
 
     HI_MPI_SYS_UnBind(&stSrcChn,&stDestChn);
 }
-
+/********************************************************
+ * function: vpssUnbindVo(VPSS_CHN vpssChn, VO_CHN voChn)
+ * 类别：类成员函数
+ * 参数：vpssChn:VPSS通道 voChn:Vo通道
+ * 返回值：void
+ * 功能：VPSS解绑VO
+ * ******************************************************/
 void Logiclayer::vpssUnbindVo(VPSS_CHN vpssChn, VO_CHN voChn)
 {
     MPP_CHN_S stSrcChn1;

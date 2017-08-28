@@ -20,7 +20,7 @@ ShowForm::ShowForm(QWidget *parent) :
     QPalette pal = palette();
     pal.setColor(QPalette::Background, QColor(0x00,0xff,0x00,0x00));
     setPalette(pal);
-    max = 1;
+    max = 0;
 //    m_timer = new QTimer();
 //    connect(m_timer,SIGNAL(timeout()),this,SLOT(slotTimerOut()));
 //    m_timer->setInterval(1000);
@@ -49,23 +49,21 @@ void ShowForm::mousePressEvent(QMouseEvent *e)
 //关闭事件
 void ShowForm::closeEvent(QCloseEvent *e)
 {
-    signal(SIGBUS,SIG_IGN);
-    int r = QMessageBox::question(this,tr("exit"),QObject::trUtf8("确定要退出吗？"),
-                                  QMessageBox::Yes|QMessageBox::Default,QMessageBox::No|QMessageBox::Escape);
-    if(r == QMessageBox::Yes)
-    {
+//    int r = QMessageBox::question(this,trUtf8("exit"),QObject::trUtf8("确定要退出吗？"),
+//                                  QMessageBox::Yes|QMessageBox::Default,QMessageBox::No|QMessageBox::Escape);
+//    if(r == QMessageBox::Yes)
+//    {
         ui->label_time->clear();
-        max = 1;
+        max = 0;
         emit signalDesktopFormShow();
-        e->accept();
-    }else{
-        e->ignore();
-    }
+//        e->accept();
+//    }else{
+//        e->ignore();
+//    }
 }
 
 void ShowForm::slotTimerOut()
 {
-        HI_MPI_VDEC_ResetChn(0);
         ui->label_time->setText(QString(trUtf8("%1 秒").arg(QString::number(max))));
         ui->horizontalSlider->setMaximum(max++);
         if(m_videoFlag == 0)
@@ -119,11 +117,8 @@ void ShowForm::on_pb_realplay_clicked()
 void ShowForm::on_pb_delay10_clicked()
 {
     signal(SIGBUS,signalprint);
-    //HI_MPI_VO_ChnPause(0,0);
-    //HI_MPI_VDEC_StopRecvStream(0);
     HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
 
-    //printf("value: %d\n",ui->horizontalSlider->value());
     if(ui->horizontalSlider->value() <= 10)
     {
         emit signalDelay10(10);

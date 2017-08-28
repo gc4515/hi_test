@@ -50,11 +50,11 @@ HI_S32 SystemInit::Mpp_ModuleInit()
     memset(&stVbConf,0,sizeof(VB_CONF_S));
     u32BlkSize = SAMPLE_COMM_SYS_CalcPicVbBlkSize(gs_enNorm,PIC_HD1080,\
                                                   SAMPLE_PIXEL_FORMAT,SAMPLE_SYS_ALIGN_WIDTH);
-    stVbConf.u32MaxPoolCnt = 256;
+    stVbConf.u32MaxPoolCnt = 128;
 
     /*  ddro video buffer   */
     stVbConf.astCommPool[0].u32BlkSize = u32BlkSize;
-    stVbConf.astCommPool[0].u32BlkCnt = u32ViChnCnt *88;
+    stVbConf.astCommPool[0].u32BlkCnt = u32ViChnCnt *8;
     memset(stVbConf.astCommPool[0].acMmzName,\
             0,sizeof(stVbConf.astCommPool[0].acMmzName));
 

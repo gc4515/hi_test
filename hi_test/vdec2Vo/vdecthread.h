@@ -54,6 +54,7 @@ private:
     QFile *m_saveFile;
     bool play_status;
     bool run_flag;
+    bool fast_flag;
     HI_U32 m_ICount;
     VDEC_STREAM_S stStream;
 };

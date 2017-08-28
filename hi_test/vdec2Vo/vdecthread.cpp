@@ -10,6 +10,7 @@ VdecThread::VdecThread(QObject *parent) :
     fp = NULL;
     pu8Buf = NULL;
     run_flag = HI_TRUE;
+    fast_flag = HI_FALSE;
     m_ICount = 0;
 //    m_saveFile = new QFile();
 
@@ -77,19 +78,27 @@ void VdecThread::slotVideoPlay(QString filepath,bool status)
     {
         setPts(40000);
         setSleepTime(20000);
+        HI_MPI_VO_SetChnFrameRate(0,0,30);
         setFilePath(filepath);
     }else{                      //录像文件播放
-//        setPts(40000);
-//        setSleepTime(20000);
+        setPts(40000);
+        setSleepTime(20000);
         filepath = filepath.left(filepath.length() - 1);
         setFilePath(filepath);
     }
 }
 
+/********************************************
+ * function: slotFastPlay()
+ * 类别：槽函数
+ * 参数：void
+ * 返回值：void
+ * 功能：快放 50帧/S
+ * ******************************************/
 void VdecThread::slotFastPlay()
 {
     HI_S32 s32Ret;
-
+    fast_flag = HI_TRUE;
     s32Ret = HI_MPI_VDEC_StopRecvStream(0);
     if(HI_SUCCESS != s32Ret)
     {
@@ -114,6 +123,14 @@ void VdecThread::slotFastPlay()
     }
     printf("fast\n");
 }
+
+/********************************************
+ * function: slotSlowPlay()
+ * 类别：槽函数
+ * 参数：void
+ * 返回值：void
+ * 功能：慢放 13帧/S
+ * ******************************************/
 void VdecThread::slotSlowPlay()
 {
     HI_S32 s32Ret;
@@ -136,10 +153,14 @@ void VdecThread::slotSlowPlay()
     }
     printf("slow\n");
 }
-/***********************************************
- * function:
- * 
- * *********************************************/
+
+/********************************************
+ * function: slotFastPlay()
+ * 类别：槽函数
+ * 参数：void
+ * 返回值：void
+ * 功能：恢复正常播放25/S
+ * ******************************************/
 void VdecThread::slotRealPlay()
 {
     HI_S32 s32Ret;
@@ -164,6 +185,13 @@ void VdecThread::slotRealPlay()
 //    }
 }
 
+/********************************************
+ * function: slotPause()
+ * 类别：槽函数
+ * 参数：void
+ * 返回值：void
+ * 功能：暂停播放 解绑vdec与VPSS
+ * ******************************************/
 void VdecThread::slotPause()
 {
     MPP_CHN_S stSrcChn;
@@ -181,6 +209,13 @@ void VdecThread::slotPause()
     HI_MPI_VDEC_StopRecvStream(0);
 }
 
+/********************************************
+ * function: slotResume()
+ * 类别：槽函数
+ * 参数：void
+ * 返回值：void
+ * 功能：恢复播放 重新绑定vdec与vpss
+ * ******************************************/
 void VdecThread::slotResume()
 {
     HI_S32 s32Ret;
@@ -191,42 +226,40 @@ void VdecThread::slotResume()
     }
     HI_MPI_VDEC_StartRecvStream(0);
 }
+
+/********************************************
+ * function: slotDelay10(int value)
+ * 类别：槽函数
+ * 参数：value 当前播放位置
+ * 返回值：void
+ * 功能：当前播放位置后退10秒
+ * ******************************************/
 void VdecThread::slotDelay10(int value)
 {
     printf("value %d  %s \n",value,VdecThread::m_stringList->at(value-10).toLocal8Bit().data());
-
+    if(fast_flag == HI_FALSE)
+    {
+        HI_MPI_VO_SetChnFrameRate(0,0,25);
+    }
     HI_S32 s32Ret;
 
-    //run_flag = HI_FALSE;
     HI_MPI_VDEC_StopRecvStream(0);
     HI_MPI_VDEC_ResetChn(0);
-//    MPP_CHN_S stSrcChn;
-//    MPP_CHN_S stDestChn;
-
-//    stSrcChn.enModId = HI_ID_VDEC;
-//    stSrcChn.s32DevId = 0;
-//    stSrcChn.s32ChnId = 0;
-
-//    stDestChn.enModId = HI_ID_VPSS;
-//    stDestChn.s32DevId = 1;
-//    stDestChn.s32ChnId = 2;
-
-//    HI_MPI_SYS_UnBind(&stSrcChn,&stDestChn);
 
     //fseeko64(fp, VdecThread::m_stringList->at(10).toLongLong(), SEEK_SET);
     HI_U64 set= VdecThread::m_stringList->at(value -10).toLongLong();
     setUsedBytes(set);
-//    s32Ret = SAMLE_COMM_VDEC_BindVpss(0, 1);
-//    if (HI_SUCCESS !=s32Ret)
-//    {
-//        SAMPLE_PRT("vdec bind vpss failed!\n");
-//    }
+
     HI_MPI_VDEC_StartRecvStream(0);
-    //run_flag = HI_TRUE;
-    //run_flag = HI_TRUE;
-    //HI_MPI_VO_ChnResume(0,0);
 }
 
+/********************************************
+ * function: slotDelay2(int value)
+ * 类别：槽函数
+ * 参数：value 当前播放位置
+ * 返回值：void
+ * 功能：当前播放位置后退2秒
+ * ******************************************/
 void VdecThread::slotDelay2(int value)
 {
     printf("value %d  %s \n",value,VdecThread::m_stringList->at(value-2).toLocal8Bit().data());
@@ -239,6 +272,13 @@ void VdecThread::slotDelay2(int value)
     HI_MPI_VDEC_StartRecvStream(0);
 }
 
+/********************************************
+ * function: slotFF10(int value,bool realPlay)
+ * 类别：槽函数
+ * 参数：value:当前播放位置 realPlay:是否实时播放
+ * 返回值：void
+ * 功能：当前播放位置快进10S
+ * ******************************************/
 void VdecThread::slotFF10(int value,bool realPlay)
 {
     HI_MPI_VDEC_StopRecvStream(0);
@@ -248,6 +288,14 @@ void VdecThread::slotFF10(int value,bool realPlay)
     HI_MPI_VO_ChnRefresh(0,0);
     HI_MPI_VDEC_StartRecvStream(0);
 }
+
+/********************************************
+ * function: slotFF2(int value,bool realPlay)
+ * 类别：槽函数
+ * 参数：value:当前播放位置 realPlay:是否实时播放
+ * 返回值：void
+ * 功能：当前播放位置快进2S
+ * ******************************************/
 void VdecThread::slotFF2(int value, bool realPlay)
 {
     if(realPlay == HI_TRUE)
@@ -262,9 +310,14 @@ void VdecThread::slotFF2(int value, bool realPlay)
     HI_MPI_VO_ChnRefresh(0,0);
     HI_MPI_VDEC_StartRecvStream(0);
 }
-/*********************************************
- * 打开文件并且分配内存
- * *******************************************/
+
+/********************************************
+ * function: openFile()
+ * 类别：类成员函数
+ * 参数：void
+ * 返回值：void
+ * 功能：打开待解码文件并执行malloc分配内存
+ * ******************************************/
 void VdecThread::openFile()
 {
     fp = fopen64(getFilePath().toLocal8Bit().data(),"r");
@@ -289,6 +342,13 @@ void VdecThread::openFile()
     }
 }
 
+/********************************************
+ * function: run()
+ * 类别：重写函数run()
+ * 参数：void
+ * 返回值：void
+ * 功能：解码线程
+ * ******************************************/
 void VdecThread::run()
 {
 //    VDEC_STREAM_S stStream;

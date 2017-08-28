@@ -22,7 +22,13 @@ vdec::~vdec()
 {
 
 }
-
+/********************************************
+ * function: VdecBindVpss()
+ * 类别：类成员函数
+ * 参数：void
+ * 返回值：void
+ * 功能：vdec绑定vpss
+ * *******************************************/
 void vdec::VdecBindVpss()
 {
     HI_S32 s32Ret;
@@ -33,6 +39,13 @@ void vdec::VdecBindVpss()
     }
 }
 
+/********************************************
+ * function: VpssBindVo()
+ * 类别：类成员函数
+ * 参数：void
+ * 返回值：void
+ * 功能：Vpss绑定Vo 并启动解码线程
+ * *******************************************/
 void vdec::VpssBindVo()
 {
     SIZE_S stSize;
@@ -48,6 +61,7 @@ void vdec::VpssBindVo()
     {
         SAMPLE_PRT("get picture size failed!\n");
     }
+    printf("stsize: %d %d\n",stSize.u32Width,stSize.u32Height);
     if (704 == stSize.u32Width)
     {
         stSize.u32Width = 720;
@@ -71,58 +85,114 @@ void vdec::VpssBindVo()
     m_vdecThread->start();
 }
 
+
 void vdec::slotVideoPlay(QString filepath,bool status)
 {
     emit signalVideoPlay(filepath,status);
 }
 
-//暂停播放
+/********************************************
+ * function: slotPause()
+ * 类别：槽函数
+ * 参数：void
+ * 返回值：void
+ * 功能：发送暂停信号到解码控制线程
+ * *******************************************/
 void vdec::slotPause()
 {
     emit signalPause();
-    printf("pause\n");
 }
 
-//恢复播放
+/********************************************
+ * function: slotResume()
+ * 类别：槽函数
+ * 参数：void
+ * 返回值：void
+ * 功能：发送恢复播放信号到解码控制线程
+ * *******************************************/
 void vdec::slotResume()
 {
     emit signalResume();
-    printf("resume\n");
 }
 
-//快放 50帧/S
+/********************************************
+ * function: slotFastPlay()
+ * 类别：槽函数
+ * 参数：void
+ * 返回值：void
+ * 功能：发送快放信号到解码控制线程
+ * *******************************************/
 void vdec::slotFastPlay()
 {
     emit signalFastPlay();
 }
 
-//慢放 13帧/S
+/********************************************
+ * function: slotSlowPlay()
+ * 类别：槽函数
+ * 参数：void
+ * 返回值：void
+ * 功能：发送慢放信号到解码控制线程
+ * *******************************************/
 void vdec::slotSlowPlay()
 {
     emit signalSlowPlay();
 }
 
+/********************************************
+ * function: slotRealPlay()
+ * 类别：槽函数
+ * 参数：void
+ * 返回值：void
+ * 功能：发送恢复正常播放信号到解码控制线程
+ * *******************************************/
 void vdec::slotRealPlay()
 {
     emit signalRealPlay();
 }
 
-//后退10S
+/********************************************
+ * function: slotDelay10(int value)
+ * 类别：槽函数
+ * 参数：value:当前播放位置
+ * 返回值：void
+ * 功能：发送后退10S信号到解码控制线程
+ * *******************************************/
 void vdec::slotDelay10(int value)
 {
     emit signalDelay10(value);
 }
-//后退2S
+/********************************************
+ * function: slotDelay2(int value)
+ * 类别：槽函数
+ * 参数：value:当前播放位置
+ * 返回值：void
+ * 功能：发送后退2S信号到解码控制线程
+ * *******************************************/
 void vdec::slotDelay2(int value)
 {
     emit signalDelay2(value);
 }
-//快进10S
+
+/********************************************
+ * function: slotFF10(int value,bool realPlay)
+ * 类别：槽函数
+ * 参数：value:当前播放位置 realPlay:是否实时播放
+ * 返回值：void
+ * 功能：发送快进10S信号到解码控制线程
+ * *******************************************/
 void vdec::slotFF10(int value,bool realPlay)
 {
     emit signalFF10(value,realPlay);
 }
 
+/********************************************
+ * function: slotFF2(int value, bool realPlay)
+ * 类别：槽函数
+ * 参数：value:当前播放位置 realPlay:是否实时播放
+ * 返回值：void
+ * 功能：发送快进2S信号到解码控制线程
+ * *******************************************/
 void vdec::slotFF2(int value, bool realPlay)
 {
     emit signalFF2(value,realPlay);
