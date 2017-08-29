@@ -1,8 +1,11 @@
 #include "vdecthread.h"
 #include "chead.h"
+#include <QList>
+#include <QStringList>
 #define _FILE_OFFSET_BITS 64
 SAMPLE_VDEC_SENDPARAM_S *VdecThread::gs_sendParam = new SAMPLE_VDEC_SENDPARAM_S;
 QStringList *VdecThread::m_stringList = new QStringList;
+HI_S32 VdecThread::g_Icount = 0;
 VdecThread::VdecThread(QObject *parent) :
     QThread(parent)
 {
@@ -68,12 +71,14 @@ void VdecThread::slotVideoPlay(QString filepath,bool status)
     play_status = status;
     //filepath= filepath.replace(QString("\n"),QString(""));
 //    printf("vdec:%s\n",filepath.toLocal8Bit().data());
-//    m_saveFile = new QFile(filepath.left(filepath.size() -5));
-//    if(!m_saveFile->open(QIODevice::ReadWrite))
-//    {
-//        printf("open save file error\n");
-//    }
-//    printf("%s\n",m_saveFile->fileName().toLocal8Bit().data());
+   QString savepath = filepath;
+    m_saveFile = new QFile(savepath.left(savepath.size() -6));
+    if(!m_saveFile->open(QIODevice::ReadWrite))
+    {
+        printf("open save file error\n");
+    }
+    m_ICountList = QString(m_saveFile->readAll()).split("|");
+    g_Icount = m_ICountList.size();
     if(status == 0)//实时
     {
         setPts(40000);
@@ -81,10 +86,13 @@ void VdecThread::slotVideoPlay(QString filepath,bool status)
         HI_MPI_VO_SetChnFrameRate(0,0,30);
         setFilePath(filepath);
     }else{                      //录像文件播放
+
+//        printf("file size: %d\n",VdecThread::m_stringList->at(10).toInt());
         setPts(40000);
         setSleepTime(20000);
         filepath = filepath.left(filepath.length() - 1);
         setFilePath(filepath);
+
     }
 }
 
@@ -139,7 +147,7 @@ void VdecThread::slotSlowPlay()
     {
         printf("HI_MPI_VDEC_StopRecvStream failed\n");
     }
-    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,13);
+    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,5);
     if(HI_SUCCESS != s32Ret)
     {
         printf("HI_MPI_VO_SetChnFrameRate failed\n");
@@ -234,20 +242,28 @@ void VdecThread::slotResume()
  * 返回值：void
  * 功能：当前播放位置后退10秒
  * ******************************************/
-void VdecThread::slotDelay10(int value)
+void VdecThread::slotDelay10(int value, bool playStatus)
 {
-    printf("value %d  %s \n",value,VdecThread::m_stringList->at(value-10).toLocal8Bit().data());
-    if(fast_flag == HI_FALSE)
+//    printf("Icount: %d\n",m_ICountList.size());
+    HI_U64 set;
+    HI_S32 s32Ret;
+    if(fast_flag == HI_FALSE)//是否为快放状态 否：恢复25帧/S
     {
         HI_MPI_VO_SetChnFrameRate(0,0,25);
     }
-    HI_S32 s32Ret;
 
     HI_MPI_VDEC_StopRecvStream(0);
     HI_MPI_VDEC_ResetChn(0);
-
     //fseeko64(fp, VdecThread::m_stringList->at(10).toLongLong(), SEEK_SET);
-    HI_U64 set= VdecThread::m_stringList->at(value -10).toLongLong();
+    if(playStatus == 0)
+    {
+        set= VdecThread::m_stringList->at(value -10).toLongLong();
+    }else{
+        //printf("else\n");
+        set = m_ICountList.at(value -10).toLongLong();
+        printf("%llu\n",set);
+    }
+
     setUsedBytes(set);
 
     HI_MPI_VDEC_StartRecvStream(0);
@@ -260,13 +276,17 @@ void VdecThread::slotDelay10(int value)
  * 返回值：void
  * 功能：当前播放位置后退2秒
  * ******************************************/
-void VdecThread::slotDelay2(int value)
+void VdecThread::slotDelay2(int value, bool playStatus)
 {
-    printf("value %d  %s \n",value,VdecThread::m_stringList->at(value-2).toLocal8Bit().data());
-
+    HI_U64 set;
     HI_MPI_VDEC_StopRecvStream(0);
     HI_MPI_VDEC_ResetChn(0);
-    HI_U64 set= VdecThread::m_stringList->at(value - 3).toLongLong();
+    if(playStatus == 0)//实时流
+    {
+        set= VdecThread::m_stringList->at(value - 2).toLongLong();
+    }else {
+        set= m_ICountList.at(value -2).toLongLong();
+    }
     setUsedBytes(set);
     HI_MPI_VO_ChnRefresh(0,0);
     HI_MPI_VDEC_StartRecvStream(0);
@@ -279,11 +299,17 @@ void VdecThread::slotDelay2(int value)
  * 返回值：void
  * 功能：当前播放位置快进10S
  * ******************************************/
-void VdecThread::slotFF10(int value,bool realPlay)
+void VdecThread::slotFF10(int value,bool realPlay,bool playStatus)
 {
+    HI_U64 set;
     HI_MPI_VDEC_StopRecvStream(0);
     HI_MPI_VDEC_ResetChn(0);
-    HI_U64 set = VdecThread::m_stringList->at(value + 10).toLongLong();
+    if(playStatus == 0)
+    {
+        set = VdecThread::m_stringList->at(value + 10).toLongLong();
+    }else{
+        set = m_ICountList.at(value + 10).toLongLong();
+}
     setUsedBytes(set);
     HI_MPI_VO_ChnRefresh(0,0);
     HI_MPI_VDEC_StartRecvStream(0);
@@ -296,8 +322,9 @@ void VdecThread::slotFF10(int value,bool realPlay)
  * 返回值：void
  * 功能：当前播放位置快进2S
  * ******************************************/
-void VdecThread::slotFF2(int value, bool realPlay)
+void VdecThread::slotFF2(int value, bool realPlay, bool playStatus)
 {
+    HI_U64 set;
     if(realPlay == HI_TRUE)
     {
         setPts(33000);
@@ -305,7 +332,12 @@ void VdecThread::slotFF2(int value, bool realPlay)
     }
     HI_MPI_VDEC_StopRecvStream(0);
     HI_MPI_VDEC_ResetChn(0);
-    HI_U64 set = VdecThread::m_stringList->at(value + 2).toLongLong();
+    if(playStatus == 0)
+    {
+        set = VdecThread::m_stringList->at(value + 2).toLongLong();
+    }else{
+        set = m_ICountList.at(value + 2).toLongLong();
+    }
     setUsedBytes(set);
     HI_MPI_VO_ChnRefresh(0,0);
     HI_MPI_VDEC_StartRecvStream(0);
@@ -375,6 +407,7 @@ void VdecThread::run()
         {
         signal(SIGBUS,SIG_IGN);
         //printf("usedbyte: %llu\n",getUsedBytes());
+
         fseeko64(fp, getUsedBytes(), SEEK_SET);
         s32ReadLen = fread(pu8Buf, 1, VdecThread::gs_sendParam->s32MinBufSize, fp);
         if (s32ReadLen<0)
@@ -382,6 +415,7 @@ void VdecThread::run()
              printf("file end.\n");
              break;
         }
+
         //printf("readLen: %llu\n",s32ReadLen);
         /******************* cutting the stream for frame *****************/
         if( (VdecThread::gs_sendParam->enVideoMode==VIDEO_MODE_FRAME) && (VdecThread::gs_sendParam->enPayload== PT_H264) )
@@ -395,6 +429,12 @@ void VdecThread::run()
                     ((pu8Buf[i+4]&0x80) == 0x80)
                    )
                 {
+//                    if(pu8Buf[i] == 0 &&pu8Buf[i + 1] == 0&&pu8Buf[i + 2] == 1 &&pu8Buf[i + 3] == 101)
+//                    {
+//                        QString writeMsg = QString::number(getUsedBytes()) + "|";
+//                        m_saveFile->write(writeMsg.toLocal8Bit().data());
+//                        printf("where: %llu\n",getUsedBytes());
+//                    }
                     bFindStart = HI_TRUE;
                     i += 4;
                     break;

@@ -200,7 +200,7 @@ HI_S32 SystemInit::Vdec_ModuleInit()
     pstParam.s32ChanErrThr = 10;
     pstParam.s32ChanStrmOFThr = 0;
     pstParam.s32DecMode = 1;
-    pstParam.s32DecOrderOutput = 0;//输出顺序：0:显示序  1:解码序
+    pstParam.s32DecOrderOutput = 1;//输出顺序：0:显示序  1:解码序
 
     s32Ret = HI_MPI_VDEC_SetChnParam(0,&pstParam);
     if(HI_SUCCESS != s32Ret)

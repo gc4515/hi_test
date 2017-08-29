@@ -202,13 +202,9 @@ HI_S32 VencThread::SAMPLE_COMM_VENC_SaveH264(FILE *fpH264File, VENC_STREAM_S *ps
 
     for(i = 0; i < pstStream->u32PackCount;i++)
     {
-        //fflush(fpH264File);
-            //printf("stream: %x\n",pstStream->pstPack[i].pu8Addr[0][4]);
             if(pstStream->pstPack[i].pu8Addr[0][4] == 101)
             {
                 VdecThread::m_stringList->append(QString::number(ftello64(fpH264File)));
-                //printf("I: %d   %llu\n",m_Icount++,ftello64(fpH264File));
-                //printf("where: %llu\n",ftello64(fpH264File));
             }
         fwrite(pstStream->pstPack[i].pu8Addr[0],\
                 pstStream->pstPack[i].u32Len[0],1,fpH264File);

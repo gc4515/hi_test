@@ -19,6 +19,9 @@ public:
     void closeEvent(QCloseEvent *e);
     void mouseMoveEvent(QMouseEvent *e);
     void mousePressEvent(QMouseEvent *e);
+    void setPlayStatus(const bool &status);
+    const bool &getPlayStatus()const;
+    void setMaxSeconds();
 signals:
     void signalPause();
     void signalResume();
@@ -51,9 +54,11 @@ private slots:
 private:
     int max;
     Ui::ShowForm *ui;
+    int m_FastorSlow;//0:fast 1:slow
     bool m_videoFlag;//0:play 1:pause
-    int m_status;
+    bool m_playStatus;//0:realPlay 1: filePlay
     QTimer *m_timer;
+    int m_timerCount;
 };
 
 #endif // SHOWFORM_H

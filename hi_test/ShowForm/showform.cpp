@@ -7,7 +7,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include <unistd.h>
-
+#include "vdecthread.h"
 void signalprint(int);
 void signalprint(int)
 {
@@ -21,11 +21,8 @@ ShowForm::ShowForm(QWidget *parent) :
     pal.setColor(QPalette::Background, QColor(0x00,0xff,0x00,0x00));
     setPalette(pal);
     max = 0;
-//    m_timer = new QTimer();
-//    connect(m_timer,SIGNAL(timeout()),this,SLOT(slotTimerOut()));
-//    m_timer->setInterval(1000);
-//    m_timer->start();
-    //this->setAttribute(Qt::WA_TranslucentBackground,true);
+    m_FastorSlow  = 2;
+    m_timerCount = 0;
     QWSServer::setBackground(QColor(0x0,0x0,0x0,0x0));
 
     ui->setupUi(this);
@@ -37,10 +34,17 @@ ShowForm::~ShowForm()
 {
     delete ui;
 }
-
+void ShowForm::setPlayStatus(const bool &status)
+{
+    m_playStatus = status;
+}
+const bool &ShowForm::getPlayStatus()const
+{
+    return m_playStatus;
+}
 void ShowForm::mouseMoveEvent(QMouseEvent *e)
 {
-    signal(SIGBUS,signalprint);
+    signal(SIGBUS,SIG_IGN);
 }
 void ShowForm::mousePressEvent(QMouseEvent *e)
 {
@@ -54,6 +58,8 @@ void ShowForm::closeEvent(QCloseEvent *e)
 //    if(r == QMessageBox::Yes)
 //    {
         ui->label_time->clear();
+        ui->label_current->clear();
+        ui->horizontalSlider->setValue(0);
         max = 0;
         emit signalDesktopFormShow();
 //        e->accept();
@@ -64,17 +70,48 @@ void ShowForm::closeEvent(QCloseEvent *e)
 
 void ShowForm::slotTimerOut()
 {
-        ui->label_time->setText(QString(trUtf8("%1 秒").arg(QString::number(max))));
+    int value;
+    if(getPlayStatus() == 0)//实时流播放状态
+    {
+        ui->label_time->setText(QString(trUtf8("%1秒").arg(QString::number(max))));
         ui->horizontalSlider->setMaximum(max++);
-        if(m_videoFlag == 0)
+        if(m_videoFlag == 0)//是否暂停态
         {
-            int value = ui->horizontalSlider->value();
+            value = ui->horizontalSlider->value();
             ui->label_current->setText(QString::number(value));
             //printf("%d\n",value);
-            value+=1;
+            value++;
+            ui->horizontalSlider->setValue(value);
+        }
+    }/*     录像文件播放  */
+    else{
+        ui->label_time->setText(QString(trUtf8("%1 秒").arg(QString::number(VdecThread::g_Icount))));
+        ui->horizontalSlider->setMaximum(VdecThread::g_Icount);
+        if(m_videoFlag == 0)//是否暂停态 0:否
+        {
+            value = ui->horizontalSlider->value();
+            ui->label_current->setText(QString::number(value));
+            //printf("%d\n",value);
+            if(m_FastorSlow == 0)
+            {
+                value+=2;
+            }else if(m_FastorSlow == 1)
+            {
+                m_timerCount++;
+                if(m_timerCount ==5)
+                {
+                    value++;
+                    m_timerCount = 0;
+                }
+
+            }else{
+                value++;
+            }
             ui->horizontalSlider->setValue(value);
             value = 0;
+            //printf("value: %d\n",ui->horizontalSlider->value());
         }
+    }
 }
 
 // 暂停/恢复功能
@@ -98,25 +135,28 @@ void ShowForm::on_pb_pause_clicked()
 //快放
 void ShowForm::on_pb_fast_clicked()
 {
+    m_FastorSlow = 0;
     emit signalFastPlay();
 }
 
 //慢放
 void ShowForm::on_pb_slow_clicked()
 {
+    m_FastorSlow = 1;
     emit signalSlowPlay();
 }
 
 //恢复实时播放
 void ShowForm::on_pb_realplay_clicked()
 {
+    m_FastorSlow = 2;
     emit signalRealPlay();
 }
 
 //后退10S
 void ShowForm::on_pb_delay10_clicked()
 {
-    signal(SIGBUS,signalprint);
+    signal(SIGBUS,SIG_IGN);
     HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
 
     if(ui->horizontalSlider->value() <= 10)

@@ -36,10 +36,10 @@ static const uint qt_meta_data_VdecThread[] = {
       81,   11,   11,   11, 0x0a,
       96,   11,   11,   11, 0x0a,
      111,   11,   11,   11, 0x0a,
-     132,  126,   11,   11, 0x0a,
-     149,  126,   11,   11, 0x0a,
-     180,  165,   11,   11, 0x0a,
-     199,  165,   11,   11, 0x0a,
+     143,  126,   11,   11, 0x0a,
+     165,  126,   11,   11, 0x0a,
+     212,  186,   11,   11, 0x0a,
+     236,  186,   11,   11, 0x0a,
 
        0        // eod
 };
@@ -48,9 +48,10 @@ static const char qt_meta_stringdata_VdecThread[] = {
     "VdecThread\0\0filepath,status\0"
     "slotVideoPlay(QString,bool)\0slotPause()\0"
     "slotResume()\0slotFastPlay()\0slotSlowPlay()\0"
-    "slotRealPlay()\0value\0slotDelay10(int)\0"
-    "slotDelay2(int)\0value,realPlay\0"
-    "slotFF10(int,bool)\0slotFF2(int,bool)\0"
+    "slotRealPlay()\0value,playStatus\0"
+    "slotDelay10(int,bool)\0slotDelay2(int,bool)\0"
+    "value,realPlay,playStatus\0"
+    "slotFF10(int,bool,bool)\0slotFF2(int,bool,bool)\0"
 };
 
 void VdecThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, void **_a)
@@ -65,10 +66,10 @@ void VdecThread::qt_static_metacall(QObject *_o, QMetaObject::Call _c, int _id, 
         case 3: _t->slotFastPlay(); break;
         case 4: _t->slotSlowPlay(); break;
         case 5: _t->slotRealPlay(); break;
-        case 6: _t->slotDelay10((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 7: _t->slotDelay2((*reinterpret_cast< int(*)>(_a[1]))); break;
-        case 8: _t->slotFF10((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
-        case 9: _t->slotFF2((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 6: _t->slotDelay10((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 7: _t->slotDelay2((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2]))); break;
+        case 8: _t->slotFF10((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2])),(*reinterpret_cast< bool(*)>(_a[3]))); break;
+        case 9: _t->slotFF2((*reinterpret_cast< int(*)>(_a[1])),(*reinterpret_cast< bool(*)>(_a[2])),(*reinterpret_cast< bool(*)>(_a[3]))); break;
         default: ;
         }
     }

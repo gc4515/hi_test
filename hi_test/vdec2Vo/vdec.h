@@ -22,10 +22,10 @@ signals:
     void signalFastPlay();
     void signalSlowPlay();
     void signalRealPlay();
-    void signalDelay10(int value);
-    void signalDelay2(int value);
-    void signalFF10(int value,bool realPlay);
-    void signalFF2(int value,bool realPlay);
+    void signalDelay10(int value,bool playStatus);
+    void signalDelay2(int value,bool playStatus);
+    void signalFF10(int value,bool realPlay,bool playStatus);
+    void signalFF2(int value,bool realPlay,bool playStatus);
 public slots:
     void slotPause();
     void slotResume();
@@ -39,6 +39,7 @@ public slots:
     void slotVideoPlay(QString filepath, bool status);
 private:
     VdecThread *m_vdecThread;
+    bool m_playStatus;
 };
 
 #endif // VDEC_H

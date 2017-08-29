@@ -22,7 +22,7 @@ typedef struct sample_vdec_sendparam
     HI_BOOL bRun;
     VDEC_CHN VdChn;
     PAYLOAD_TYPE_E enPayload;
-    HI_S32 s32MinBufSize;
+    HI_S64 s32MinBufSize;
     VIDEO_MODE_E enVideoMode;
 }SAMPLE_VDEC_SENDPARAM_S;
 

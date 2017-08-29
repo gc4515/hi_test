@@ -10,10 +10,10 @@ vdec::vdec(QObject *parent) :
     connect(this,SIGNAL(signalFastPlay()),m_vdecThread,SLOT(slotFastPlay()));//快放
     connect(this,SIGNAL(signalSlowPlay()),m_vdecThread,SLOT(slotSlowPlay()));//慢放
     connect(this,SIGNAL(signalRealPlay()),m_vdecThread,SLOT(slotRealPlay()));//恢复正常播放
-    connect(this,SIGNAL(signalDelay10(int)),m_vdecThread,SLOT(slotDelay10(int)));//后退10S
-    connect(this,SIGNAL(signalDelay2(int)),m_vdecThread,SLOT(slotDelay2(int)));//后退2S
-    connect(this,SIGNAL(signalFF10(int,bool)),m_vdecThread,SLOT(slotFF10(int,bool)));//快进10S
-    connect(this,SIGNAL(signalFF2(int,bool)),m_vdecThread,SLOT(slotFF2(int,bool)));//快进2S
+    connect(this,SIGNAL(signalDelay10(int,bool)),m_vdecThread,SLOT(slotDelay10(int,bool)));//后退10S
+    connect(this,SIGNAL(signalDelay2(int,bool)),m_vdecThread,SLOT(slotDelay2(int,bool)));//后退2S
+    connect(this,SIGNAL(signalFF10(int,bool,bool)),m_vdecThread,SLOT(slotFF10(int,bool,bool)));//快进10S
+    connect(this,SIGNAL(signalFF2(int,bool,bool)),m_vdecThread,SLOT(slotFF2(int,bool,bool)));//快进2S
     VdecBindVpss();
     VpssBindVo();
 
@@ -88,6 +88,7 @@ void vdec::VpssBindVo()
 
 void vdec::slotVideoPlay(QString filepath,bool status)
 {
+    m_playStatus = status;
     emit signalVideoPlay(filepath,status);
 }
 
@@ -160,7 +161,7 @@ void vdec::slotRealPlay()
  * *******************************************/
 void vdec::slotDelay10(int value)
 {
-    emit signalDelay10(value);
+    emit signalDelay10(value,m_playStatus);
 }
 /********************************************
  * function: slotDelay2(int value)
@@ -171,7 +172,7 @@ void vdec::slotDelay10(int value)
  * *******************************************/
 void vdec::slotDelay2(int value)
 {
-    emit signalDelay2(value);
+    emit signalDelay2(value,m_playStatus);
 }
 
 /********************************************
@@ -183,7 +184,7 @@ void vdec::slotDelay2(int value)
  * *******************************************/
 void vdec::slotFF10(int value,bool realPlay)
 {
-    emit signalFF10(value,realPlay);
+    emit signalFF10(value,realPlay,m_playStatus);
 }
 
 /********************************************
@@ -195,5 +196,5 @@ void vdec::slotFF10(int value,bool realPlay)
  * *******************************************/
 void vdec::slotFF2(int value, bool realPlay)
 {
-    emit signalFF2(value,realPlay);
+    emit signalFF2(value,realPlay,m_playStatus);
 }

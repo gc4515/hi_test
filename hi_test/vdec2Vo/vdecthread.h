@@ -30,6 +30,7 @@ public:
 
     static SAMPLE_VDEC_SENDPARAM_S *gs_sendParam;
     static QStringList *m_stringList;
+    static HI_S32 g_Icount;
 signals:
 
 public slots:
@@ -39,10 +40,10 @@ public slots:
     void slotFastPlay();
     void slotSlowPlay();
     void slotRealPlay();
-    void slotDelay10(int value);
-    void slotDelay2(int value);
-    void slotFF10(int value,bool realPlay);
-    void slotFF2(int value,bool realPlay);
+    void slotDelay10(int value, bool playStatus);
+    void slotDelay2(int value,bool playStatus);
+    void slotFF10(int value, bool realPlay, bool playStatus);
+    void slotFF2(int value,bool realPlay,bool playStatus);
 private:
     HI_S64 s32UsedBytes;
     QReadWriteLock *m_readlock;
@@ -51,11 +52,12 @@ private:
     QString m_filePath;
     HI_U64 m_pts;
     HI_U64 m_sleepTime;
-    QFile *m_saveFile;
-    bool play_status;
+    QFile *m_saveFile;//I帧信息索引文件
+    bool play_status;//播放状态：实时、文件
     bool run_flag;
-    bool fast_flag;
-    HI_U32 m_ICount;
+    bool fast_flag;//快放标志
+    HI_U32 m_ICount;//I帧总数
+    QStringList m_ICountList;//索引List
     VDEC_STREAM_S stStream;
 };
 

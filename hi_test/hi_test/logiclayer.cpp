@@ -90,6 +90,7 @@ void Logiclayer::slotVideoShow(QString filepath,bool status)
 
     emit signalVideoPlay(filepath,status);
     HI_MPI_VO_ChnShow(0,0);
+    m_showForm->setPlayStatus(status);
     m_DesktopForm->hide();
     m_showForm->showMaximized();
 }
