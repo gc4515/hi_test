@@ -5,7 +5,7 @@ vdec::vdec(QObject *parent) :
 {
     m_vdecThread = new VdecThread();
     connect(this,SIGNAL(signalVideoPlay(QString,bool)),m_vdecThread,SLOT(slotVideoPlay(QString,bool)));
-    connect(this,SIGNAL(signalPause()),m_vdecThread,SLOT(slotPause()));
+    connect(this,SIGNAL(signalPause()),m_vdecThread,SLOT(slotPause()));//暂停
     connect(this,SIGNAL(signalResume()),m_vdecThread,SLOT(slotResume()));
     connect(this,SIGNAL(signalFastPlay()),m_vdecThread,SLOT(slotFastPlay()));//快放
     connect(this,SIGNAL(signalSlowPlay()),m_vdecThread,SLOT(slotSlowPlay()));//慢放
@@ -14,9 +14,9 @@ vdec::vdec(QObject *parent) :
     connect(this,SIGNAL(signalDelay2(int,bool)),m_vdecThread,SLOT(slotDelay2(int,bool)));//后退2S
     connect(this,SIGNAL(signalFF10(int,bool,bool)),m_vdecThread,SLOT(slotFF10(int,bool,bool)));//快进10S
     connect(this,SIGNAL(signalFF2(int,bool,bool)),m_vdecThread,SLOT(slotFF2(int,bool,bool)));//快进2S
+    connect(this,SIGNAL(signalSliderReleased(int,bool)),m_vdecThread,SLOT(slotSliderReleased(int,bool)));
     VdecBindVpss();
     VpssBindVo();
-
 }
 vdec::~vdec()
 {
@@ -197,4 +197,9 @@ void vdec::slotFF10(int value,bool realPlay)
 void vdec::slotFF2(int value, bool realPlay)
 {
     emit signalFF2(value,realPlay,m_playStatus);
+}
+
+void vdec::slotSliderReleased(int value)
+{
+    emit signalSliderReleased(value,m_playStatus);
 }

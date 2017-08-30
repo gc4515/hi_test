@@ -26,7 +26,7 @@
    <string>Video</string>
   </property>
   <property name="windowIcon">
-   <iconset resource="../hi_test/Resource/image.qrc">
+   <iconset resource="../build/image/pbicon.qrc">
     <normaloff>:/new/prefix1/play.png</normaloff>:/new/prefix1/play.png</iconset>
   </property>
   <property name="styleSheet">
@@ -298,7 +298,6 @@ QSlider::handle:horizontal {
   </widget>
  </widget>
  <resources>
-  <include location="../hi_test/Resource/image.qrc"/>
   <include location="../build/image/pbicon.qrc"/>
  </resources>
  <connections/>

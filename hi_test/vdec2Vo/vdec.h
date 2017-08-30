@@ -26,6 +26,7 @@ signals:
     void signalDelay2(int value,bool playStatus);
     void signalFF10(int value,bool realPlay,bool playStatus);
     void signalFF2(int value,bool realPlay,bool playStatus);
+    void signalSliderReleased(const int &value,bool playStatus);
 public slots:
     void slotPause();
     void slotResume();
@@ -37,6 +38,7 @@ public slots:
     void slotFF10(int value, bool realPlay);
     void slotFF2(int value,bool realPlay);
     void slotVideoPlay(QString filepath, bool status);
+    void slotSliderReleased(int value);
 private:
     VdecThread *m_vdecThread;
     bool m_playStatus;

@@ -2,6 +2,8 @@
 #include "chead.h"
 #include <QList>
 #include <QStringList>
+#include <sys/time.h>
+#include <QTime>
 #define _FILE_OFFSET_BITS 64
 SAMPLE_VDEC_SENDPARAM_S *VdecThread::gs_sendParam = new SAMPLE_VDEC_SENDPARAM_S;
 QStringList *VdecThread::m_stringList = new QStringList;
@@ -22,7 +24,7 @@ VdecThread::VdecThread(QObject *parent) :
 
 VdecThread::~VdecThread()
 {
-
+    m_saveFile->close();
 }
 
 void VdecThread::setUsedBytes(const HI_S64 &usedbytes)
@@ -69,30 +71,28 @@ const HI_U64 &VdecThread::getSleepTime()const
 void VdecThread::slotVideoPlay(QString filepath,bool status)
 {
     play_status = status;
-    //filepath= filepath.replace(QString("\n"),QString(""));
-//    printf("vdec:%s\n",filepath.toLocal8Bit().data());
    QString savepath = filepath;
-    m_saveFile = new QFile(savepath.left(savepath.size() -6));
-    if(!m_saveFile->open(QIODevice::ReadWrite))
-    {
-        printf("open save file error\n");
-    }
-    m_ICountList = QString(m_saveFile->readAll()).split("|");
-    g_Icount = m_ICountList.size();
+    QString path = savepath.replace(0,6,"/home/.");
+    printf("left : %s\n",path.toLocal8Bit().data());
+
     if(status == 0)//实时
     {
         setPts(40000);
-        setSleepTime(20000);
+        setSleepTime(0);
         HI_MPI_VO_SetChnFrameRate(0,0,30);
         setFilePath(filepath);
     }else{                      //录像文件播放
-
-//        printf("file size: %d\n",VdecThread::m_stringList->at(10).toInt());
+        m_saveFile = new QFile(path.left(savepath.size() -6));
+        if(!m_saveFile->open(QIODevice::ReadWrite))
+        {
+            printf("open save file error\n");
+        }
+        m_ICountList = QString(m_saveFile->readAll()).split("|");
+        g_Icount = m_ICountList.size();
         setPts(40000);
-        setSleepTime(20000);
+        setSleepTime(0);
         filepath = filepath.left(filepath.length() - 1);
         setFilePath(filepath);
-
     }
 }
 
@@ -123,7 +123,7 @@ void VdecThread::slotFastPlay()
         printf("HI_MPI_VO_SetChnFrameRate failed\n");
     }
     //setPts(20000);
-    setSleepTime(0);
+    //setSleepTime(0);
     s32Ret = HI_MPI_VDEC_StartRecvStream(0);
     if(HI_SUCCESS != s32Ret)
     {
@@ -172,13 +172,13 @@ void VdecThread::slotSlowPlay()
 void VdecThread::slotRealPlay()
 {
     HI_S32 s32Ret;
-    s32Ret = HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);
+    s32Ret = HI_MPI_VO_ClearChnBuffer(0,0,HI_FALSE);//清除VO通道缓存
     if(s32Ret != HI_SUCCESS)
     {
         printf("HI_MPI_VO_ClearChnBuffer failed\n");
     }
 
-    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,25);
+    s32Ret = HI_MPI_VO_SetChnFrameRate(0,0,25);//设置设备显示帧率
     if(HI_SUCCESS != s32Ret)
     {
         printf("HI_MPI_VO_SetChnFrameRate failed\n");
@@ -247,10 +247,10 @@ void VdecThread::slotDelay10(int value, bool playStatus)
 //    printf("Icount: %d\n",m_ICountList.size());
     HI_U64 set;
     HI_S32 s32Ret;
-    if(fast_flag == HI_FALSE)//是否为快放状态 否：恢复25帧/S
-    {
-        HI_MPI_VO_SetChnFrameRate(0,0,25);
-    }
+//    if(fast_flag == HI_FALSE)//是否为快放状态 否：恢复25帧/S
+//    {
+//        HI_MPI_VO_SetChnFrameRate(0,0,25);
+//    }
 
     HI_MPI_VDEC_StopRecvStream(0);
     HI_MPI_VDEC_ResetChn(0);
@@ -295,7 +295,7 @@ void VdecThread::slotDelay2(int value, bool playStatus)
 /********************************************
  * function: slotFF10(int value,bool realPlay)
  * 类别：槽函数
- * 参数：value:当前播放位置 realPlay:是否实时播放
+ * 参数：value:当前播放位置 realPlay:是否实时播放 playStatus:File or real
  * 返回值：void
  * 功能：当前播放位置快进10S
  * ******************************************/
@@ -343,6 +343,22 @@ void VdecThread::slotFF2(int value, bool realPlay, bool playStatus)
     HI_MPI_VDEC_StartRecvStream(0);
 }
 
+void VdecThread::slotSliderReleased(const int &value,bool playStatus)
+{
+    HI_U64 set;
+    HI_MPI_VDEC_StopRecvStream(0);
+    HI_MPI_VDEC_ResetChn(0);
+
+    if(playStatus == 0)//real play
+    {
+        set = VdecThread::m_stringList->at(value).toLongLong();
+    }else{          //file play
+        set = m_ICountList.at(value).toLongLong();
+}
+    setUsedBytes(set);
+    HI_MPI_VO_ChnRefresh(0,0);
+    HI_MPI_VDEC_StartRecvStream(0);
+}
 /********************************************
  * function: openFile()
  * 类别：类成员函数
@@ -433,7 +449,8 @@ void VdecThread::run()
 //                    {
 //                        QString writeMsg = QString::number(getUsedBytes()) + "|";
 //                        m_saveFile->write(writeMsg.toLocal8Bit().data());
-//                        printf("where: %llu\n",getUsedBytes());
+//                        m_saveFile->flush();
+//                        //printf("where\n");
 //                    }
                     bFindStart = HI_TRUE;
                     i += 4;

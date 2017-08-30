@@ -1,0 +1,44 @@
+gdb-arm-hisiv20: page allocation failure: order:0, mode:0x200da
+Backtrace: 
+[<c0040edc>] (dump_backtrace+0x0/0x110) from [<c051c1e8>] (dump_stack+0x18/0x1c)
+ r6:00000000 r5:000200da r4:00000000 r3:c0642674
+[<c051c1d0>] (dump_stack+0x0/0x1c) from [<c009fed8>] (warn_alloc_failed+0xa0/0x114)
+[<c009fe38>] (warn_alloc_failed+0x0/0x114) from [<c00a03d8>] (__alloc_pages_nodemask+0x3cc/0x604)
+ r3:00000000 r2:00000000
+ r8:00000001 r7:00000000 r6:c0663080 r5:c0662a80 r4:00000000
+[<c00a000c>] (__alloc_pages_nodemask+0x0/0x604) from [<c00b42bc>] (handle_pte_fault+0x5f8/0xb30)
+[<c00b3cc4>] (handle_pte_fault+0x0/0xb30) from [<c00b4c70>] (handle_mm_fault+0x9c/0xcc)
+[<c00b4bd4>] (handle_mm_fault+0x0/0xcc) from [<c0045528>] (do_page_fault+0x170/0x1e4)
+[<c00453b8>] (do_page_fault+0x0/0x1e4) from [<c00364d0>] (do_DataAbort+0x3c/0xa4)
+[<c0036494>] (do_DataAbort+0x0/0xa4) from [<c003c72c>] (__dabt_svc+0x4c/0x60)
+Exception stack(0xc28a3d50 to 0xc28a3d98)
+3d40:                                     41677a70 0000f000 00000000 00000000
+3d60: c28a3e44 00074000 00001000 0000f00f c34182d0 00000000 c06d78e0 c28a3dc4
+3d80: 41678a6f c28a3d98 0000f01f c0097698 20000013 ffffffff
+ r7:0000f00f r6:00001000 r5:c28a3d84 r4:ffffffff
+[<c00975d8>] (file_read_actor+0x0/0x128) from [<c0099f2c>] (generic_file_aio_read+0x348/0x81c)
+[<c0099be4>] (generic_file_aio_read+0x0/0x81c) from [<c00cb4f0>] (do_sync_read+0xb4/0xf4)
+[<c00cb43c>] (do_sync_read+0x0/0xf4) from [<c00cc364>] (vfs_read+0xb4/0x19c)
+[<c00cc2b0>] (vfs_read+0x0/0x19c) from [<c00cc528>] (sys_read+0x44/0x74)
+ r8:0016a000 r7:00000003 r6:003ea000 r5:41301a70 r4:c0873d20
+[<c00cc4e4>] (sys_read+0x0/0x74) from [<c003cb80>] (ret_fast_syscall+0x0/0x30)
+ r9:c28a2000 r8:c003cd28 r6:4002c000 r5:003ea611 r4:00b86a48
+Mem-info:
+Normal per-cpu:
+CPU    0: hi:   18, btch:   3 usd:   2
+CPU    1: hi:   18, btch:   3 usd:  17
+active_anon:8078 inactive_anon:3401 isolated_anon:0
+ active_file:0 inactive_file:17 isolated_file:0
+ unevictable:0 dirty:0 writeback:0 unstable:0
+ free:0 slab_reclaimable:107 slab_unreclaimable:1203
+ mapped:0 shmem:3517 pagetables:37 bounce:0
+Normal free:0kB min:1016kB low:1268kB high:1524kB active_anon:32312kB inactive_anon:13604kB active_file:0kB inactive_file:68kB unevictable:0kB s
+lowmem_reserve[]: 0 0
+Normal: 0*4kB 0*8kB 0*16kB 0*32kB 0*64kB 0*128kB 0*256kB 0*512kB 0*1024kB 0*2048kB 0*4096kB = 0kB
+3543 total pagecache pages
+16384 pages of RAM
+79 free pages
+1842 reserved pages
+546 slab pages
+26 pages shared
+0 pages swap cached

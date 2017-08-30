@@ -6,6 +6,7 @@
 #include "chead.h"
 #include <QReadWriteLock>
 #include <QDateTime>
+#include <QFile>
 class VencThread : public QThread
 {
     Q_OBJECT
@@ -27,6 +28,7 @@ private:
     QReadWriteLock *m_lock;
     QString m_vencFilePath;
     int m_Icount;
+    QFile *m_savefile;
 };
 
 #endif // VENCTHREAD_H

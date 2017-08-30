@@ -33,6 +33,7 @@ signals:
     void signalDelay2(int value);
     void signalFF10(int value,bool realPlay);
     void signalFF2(int value,bool realPlay);
+    void signalSliderReleased(int value);
 private slots:
     void slotTimerOut();
     void on_pb_pause_clicked();
@@ -50,6 +51,9 @@ private slots:
     void on_pb_FF10_clicked();
 
     void on_pb_FF1_clicked();
+    void on_horizontalSlider_sliderMoved(int position);
+
+    void on_horizontalSlider_sliderReleased();
 
 private:
     int max;

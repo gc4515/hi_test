@@ -80,6 +80,13 @@ void VencThread::run()
                    getVencFilePath().toLocal8Bit().data());
         }
 
+        QString savepath = getVencFilePath();
+         QString path = savepath.replace(0,6,"/home/.");
+         m_savefile = new QFile(path.left(savepath.size() -5));
+         if(!m_savefile->open(QIODevice::ReadWrite))
+         {
+             printf("open save file error\n");
+         }
         /*Set Venc Fd*/
         VencFd[i] = HI_MPI_VENC_GetFd(i);
         if (VencFd[i] < 0)
@@ -205,6 +212,9 @@ HI_S32 VencThread::SAMPLE_COMM_VENC_SaveH264(FILE *fpH264File, VENC_STREAM_S *ps
             if(pstStream->pstPack[i].pu8Addr[0][4] == 101)
             {
                 VdecThread::m_stringList->append(QString::number(ftello64(fpH264File)));
+                QString msg = QString::number(ftello64(fpH264File)) + "|";
+                m_savefile->write(msg.toLocal8Bit().data());
+                m_savefile->flush();
             }
         fwrite(pstStream->pstPack[i].pu8Addr[0],\
                 pstStream->pstPack[i].u32Len[0],1,fpH264File);

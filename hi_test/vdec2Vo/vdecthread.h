@@ -44,6 +44,7 @@ public slots:
     void slotDelay2(int value,bool playStatus);
     void slotFF10(int value, bool realPlay, bool playStatus);
     void slotFF2(int value,bool realPlay,bool playStatus);
+    void slotSliderReleased(const int &value, bool playStatus);
 private:
     HI_S64 s32UsedBytes;
     QReadWriteLock *m_readlock;

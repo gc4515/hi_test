@@ -23,6 +23,7 @@ ShowForm::ShowForm(QWidget *parent) :
     max = 0;
     m_FastorSlow  = 2;
     m_timerCount = 0;
+    m_videoFlag = 0;
     QWSServer::setBackground(QColor(0x0,0x0,0x0,0x0));
 
     ui->setupUi(this);
@@ -53,19 +54,19 @@ void ShowForm::mousePressEvent(QMouseEvent *e)
 //关闭事件
 void ShowForm::closeEvent(QCloseEvent *e)
 {
-//    int r = QMessageBox::question(this,trUtf8("exit"),QObject::trUtf8("确定要退出吗？"),
-//                                  QMessageBox::Yes|QMessageBox::Default,QMessageBox::No|QMessageBox::Escape);
-//    if(r == QMessageBox::Yes)
-//    {
+    int r = QMessageBox::question(this,trUtf8("exit"),QObject::trUtf8("确定要退出吗？"),
+                                  QMessageBox::Yes|QMessageBox::Default,QMessageBox::No|QMessageBox::Escape);
+    if(r == QMessageBox::Yes)
+    {
         ui->label_time->clear();
         ui->label_current->clear();
         ui->horizontalSlider->setValue(0);
         max = 0;
         emit signalDesktopFormShow();
-//        e->accept();
-//    }else{
-//        e->ignore();
-//    }
+        e->accept();
+    }else{
+        e->ignore();
+    }
 }
 
 void ShowForm::slotTimerOut()
@@ -82,9 +83,11 @@ void ShowForm::slotTimerOut()
             //printf("%d\n",value);
             value++;
             ui->horizontalSlider->setValue(value);
+            value = 0;
         }
     }/*     录像文件播放  */
     else{
+        //printf("count: %d\n",VdecThread::g_Icount);
         ui->label_time->setText(QString(trUtf8("%1 秒").arg(QString::number(VdecThread::g_Icount))));
         ui->horizontalSlider->setMaximum(VdecThread::g_Icount);
         if(m_videoFlag == 0)//是否暂停态 0:否
@@ -122,12 +125,12 @@ void ShowForm::on_pb_pause_clicked()
     if(m_videoFlag == 0)//当前为播放态
     {
         m_videoFlag = 1;
-        ui->pb_pause->setIcon(QIcon("./image/play.png"));
+        ui->pb_pause->setIcon(QIcon("/opt/image/play.png"));
         emit signalPause();
-    }else if(m_videoFlag == 1)
+    }else
     {
         m_videoFlag = 0;
-        ui->pb_pause->setIcon(QIcon("./image/pause.png"));
+        ui->pb_pause->setIcon(QIcon("/opt/image/pause.png"));
         emit signalResume();
     }
 }
@@ -216,4 +219,25 @@ void ShowForm::on_pb_FF1_clicked()
         emit signalFF2(ui->horizontalSlider->value(),HI_FALSE);
         ui->horizontalSlider->setValue(ui->horizontalSlider->value() + 2);
     }
+}
+
+
+void ShowForm::on_horizontalSlider_sliderMoved(int position)
+{
+    ui->label_current->setText(QString::number(position));
+    emit signalSliderReleased(position);
+
+    //printf("move: %d\n",position);
+}
+
+void ShowForm::on_horizontalSlider_sliderReleased()
+{
+    printf("released: %d\n",ui->horizontalSlider->value());
+    if(ui->horizontalSlider->value() == ui->horizontalSlider->maximum())
+    {
+        emit signalSliderReleased(ui->horizontalSlider->value() - 1);
+    }else{
+        emit signalSliderReleased(ui->horizontalSlider->value());
+    }
+
 }

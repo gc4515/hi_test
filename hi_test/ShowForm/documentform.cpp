@@ -34,7 +34,7 @@ void DocumentForm::updateDocumentForm()
 {
     ui->listWidget->clear();
     QDir dir("/home");
-    dir.setFilter(QDir::Files | QDir::Hidden | QDir::NoSymLinks);
+    dir.setFilter(QDir::Files | QDir::NoSymLinks);
     dir.setSorting(QDir::Size | QDir::Reversed);
     QFileInfoList list = dir.entryInfoList();
 
@@ -50,10 +50,11 @@ void DocumentForm::updateDocumentForm()
         {
             itemname = itemname + stringlist.at(j) +"\n";
         }
-        QListWidgetItem *newItem = new QListWidgetItem(QIcon("./image/file.png"),\
+        QListWidgetItem *newItem = new QListWidgetItem(QIcon("/opt/image/file.png"),\
                                                        itemname,ui->listWidget);
     }
 }
+
 void DocumentForm::slotItem(QListWidgetItem *item)
 {
     //printf("%s\n",item->text().toLocal8Bit().data());
